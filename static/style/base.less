@@ -1,0 +1,141 @@
+.border(@num,@color){
+  border:@num solid @color;
+}
+.border-bottom(@num,@color){
+  border-bottom:@num solid @color;
+}
+.text-overflow{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.img-wrap(@width,@height){
+  display: inline-block;
+  width:@width;
+  height:@height;
+  font-size:0;
+  overflow:hidden;
+  img{
+    width:100%;
+    max-height:100%;
+    vertical-align:middle;
+  }
+  &:after{
+    content:'';
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+  }
+}
+.wrapper{
+  position:absolute;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #f5f5f5;
+}
+.clBlue{
+	color:#336699;
+}
+.clRed{
+	color:#cc0000;
+}
+.clGray{
+	color:#999999;
+}
+//左右滑动切换效果
+.slide-fade-enter-active, .slide-fade-leave-active{
+  position: absolute;
+  width: 100%;
+  transition:all .5s ease;
+}
+.slide-fade-enter{
+  position: static;
+  transform:translateX(18rem);
+  opacity:0;
+}
+.slide-fade-leave-active{
+  transform:translateX(-18rem);
+  opacity:0;
+}
+.text-style{
+  background: #fff;
+  padding:0.6rem;
+  box-sizing: border-box;
+  h1{
+    text-align:center;
+    font-size:1rem;
+    line-height:2.2rem;
+  }
+  h2{
+    text-align:center;
+    font-size:0.9rem;
+    line-height:2rem;
+  }
+  h3{
+    text-align:center;
+    font-size:0.8rem;
+    line-height:1.8rem;
+  }
+  p{
+    text-indent:2em;
+    line-height:1rem;
+    margin-bottom:0.4rem;
+  }
+}
+.submit-btn{
+  width:100%;
+  padding:0.5rem 0.6rem;
+  background:#ffffff;
+  position:fixed;
+  left:0;
+  bottom:0;
+  border-top:1px solid #ccc;
+  box-sizing:border-box;
+  a, input{
+    display:block;
+    width:100%;
+    line-height:1.8rem;
+    background:#ccc;
+    color:#ffffff;
+    font-size:0.7rem;
+    text-align:center;
+    border-radius:0.15rem;
+    &.act{
+      background:#cc0000;
+    }
+  }
+}
+.radio-wrapper{
+  display: inline-block;
+  font-size: 0;
+  vertical-align: top;
+  .text{
+    font-size: 0.7rem;
+  }
+  .innerCircle{
+    display: inline-block;
+    width:0.6rem;
+    height:0.6rem;
+    border-radius:50%;
+    margin-right:0.2rem;
+  }
+  .outCircle{
+    .innerCircle;
+    padding:0.1rem;
+    border:1px solid #696969;
+    vertical-align: top;
+  }
+  input[type="radio"]:checked + span .innerCircle{
+    background:#cc0000;
+  }
+  input{
+    display:none;
+  }
+  label{
+    margin-right:0.4rem;
+  }
+}
