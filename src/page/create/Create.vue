@@ -30,7 +30,7 @@ export default {
       ],
       show: false,
       state: {
-        name: 'presonInfo'
+        name: 'describe'
       },
       validateMsg: {
         unempty: '*此项不能为空',

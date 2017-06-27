@@ -3,7 +3,7 @@
     <textarea maxlength="50" class="textarea" v-model="textarea" name="idiograph"></textarea>
     <p class="length">{{textarea.length}}/50</p>
     <div class="submit-btn">
-      <a :class="act" @click="confirm">确认修改</a>
+      <a class="act" @click="confirm">确认修改</a>
     </div>
   </div>
 </template>
@@ -21,7 +21,6 @@ export default {
       this.$http.post(this.apiURL + 'member/modifySignature.jhtml', {'wxbdopenId': this.id, 'idiograph': this.textarea}).then((response) => {
         window.history.go(-1)
       }, () => {
-        this.$indicator.close()
         alert('签名修改失败')
       })
     }

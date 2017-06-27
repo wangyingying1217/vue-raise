@@ -1,6 +1,6 @@
 <template>
   <div class="imageupload-wrapper wrapper">
-    <img class="img" :src="localPic" v-scale>
+    <img class="img" :src="src" v-scale>
     <div class="clip" :class="{'circle': type === 'headPic','rectangle': type === 'cover'}"></div>
     <div class="btn-bg"></div>
     <div class="btn-wrapper">
@@ -12,7 +12,12 @@
 
 <script>
 export default {
-  props: ['apiURL', 'id', 'localPic', 'type'],
+  props: {
+    apiURL: [String, Number],
+    id: [String, Number],
+    file: [String, File],
+    type: [String]
+  },
   data () {
     return {
       xAxle: '',
@@ -28,7 +33,7 @@ export default {
     ensure: function () {
       let formData = new FormData()
       let URL = this.type === 'headPic' ? 'member/modifyHead.jhtml' : 'tailor/picture.jhtml'
-      formData.append('path', this.localPic)
+      formData.append('file', this.file)
       formData.append('state', localStorage.getItem('state'))
       formData.append('wxbdopenId', this.id)
       formData.append('xAxle', this.xAxle)
@@ -149,6 +154,13 @@ export default {
           vnode.context.width = parseInt(WIDTH * BASE_SIZE * size)
           vnode.context.height = parseInt(HEIGHT * BASE_SIZE * size)
         }
+      }
+    }
+  },
+  computed: {
+    src: function () {
+      if (typeof this.file !== 'string') {
+        return window.URL.createObjectURL(this.file)
       }
     }
   }

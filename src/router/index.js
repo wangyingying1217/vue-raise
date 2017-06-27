@@ -35,6 +35,7 @@ import OrderProduct from '@/page/myorder/children/product'
 import Mynotice from '@/page/mynotice/Mynotice'
 import Myinfo from '@/page/myinfo/Myinfo'
 import Tel from '@/page/myinfo/children/Tel'
+import UserName from '@/page/myinfo/children/userName'
 import Email from '@/page/myinfo/children/Email'
 import Signature from '@/page/myinfo/children/Signature'
 import Address from '@/page/myinfo/children/Address'
@@ -285,6 +286,9 @@ export default new Router({
     }, {
       path: '/myinfo/tel', // 修改电话
       component: Tel
+    }, {
+      path: '/myinfo/userName', // 修改昵称
+      component: UserName
     }, {
       path: '/myinfo/email', // 修改电话
       component: Email

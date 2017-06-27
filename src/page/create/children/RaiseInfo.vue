@@ -4,7 +4,7 @@
       <dt class="raise-title">创建你的项目信息</dt>
       <dd class="raise-box">
         <span class="box-input-title">设置封面：</span>
-        <Upload class="filePic" :apiURL="apiURL" :id="id" @pic="localPic">
+        <Upload class="filePic" :apiURL="apiURL" :id="id" @pic="getfile">
           <div v-show="!valid.cover.value">
             <img class="bg" src="../../../../static/image/addPic.png">
             <span v-show="!valid.cover.value">建议尺寸640*480，图片大小不要超过5M</span>
@@ -55,7 +55,7 @@
       <input class="submit act w6" type="button" value="下一步" @click="submit">
     </div>
     <transition name="slide-fade">
-      <router-view :apiURL="apiURL" :id="id" :localPic="pic" @pic="setCover" type="cover"></router-view>
+      <router-view :apiURL="apiURL" :id="id" :file="file" @pic="setCover" type="cover"></router-view>
     </transition>
   </div>
 </template>
@@ -105,7 +105,7 @@ export default {
       cityDate: [],
       province: '',
       city: '',
-      pic: ''
+      file: ''
     }
   },
   components: {
@@ -168,8 +168,8 @@ export default {
         this.state.name = 'describe'
       }
     },
-    localPic: function (url) {
-      this.pic = url
+    getfile: function (file) {
+      this.file = file
       this.$router.push({ path: 'ImageClip' })
     },
     setCover: function (url) {

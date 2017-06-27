@@ -4,7 +4,7 @@
       <div class="wrapper">
         <dl class="personalInfo mt1">
           <dt>
-            <Upload :apiURL="apiURL" :id="id" @pic="getLocalPic">
+            <Upload :apiURL="apiURL" :id="id" @pic="getfile" :clip="true">
               <div class="box clearfix">头像
                 <div class="head-pic">
                   <img ref="img" :src="avater" alt="pic">
@@ -12,12 +12,12 @@
               </div>
             </Upload>
           </dt>
-          <dd>
+          <router-link :to="'/myinfo/userName'" tag="dd">
             <div class="box">昵称
-              <input type="text" class="text" name="userName" v-model="nickname">
+              <div class="text">{{nickname}}</div>
             </div>
-          </dd>
-          <dd>
+          </router-link>
+            <dd>
             <div class="box">性别
               <div class="text">{{gender | sex}}</div>
             </div>
@@ -63,15 +63,11 @@
             <div class="box">修改密码</div>
           </router-link>
         </dl>
-        <input type="hidden" name="wxbdopenId" :value="id">
-        <input type="hidden" :value="redirectUrl" name="redirect">
-        <div class="submit-btn" v-show="change">
-          <input class="act" type="button" @click="submit" value="确认修改">
-        </div>
       </div>
     </form>
     <transition name="slide-fade">
-      <router-view :apiURL="apiURL" :id="id" :signature="signature" :emailPre="email" :isEmail="isEmail" @tel="(value) => {tel = value}" @email="(value) => {email = value}" :localPic="localPic" @pic="(value) => {avater = value}" type="headPic"></router-view>
+      <router-view :apiURL="apiURL" :id="id" :signature="signature" :emailPre="email" :isEmail="isEmail"
+      :username="nickname" :file="file" type="headPic"></router-view>
     </transition>
   </div>
 </template>
@@ -91,8 +87,7 @@ export default {
       isEmail: '',
       signature: '',
       gender: '',
-      change: false,
-      localPic: ''
+      file: ''
     }
   },
   components: {
@@ -113,21 +108,17 @@ export default {
           this.gender = response.data.gender
           this.show = true
           this.$indicator.close()
-          setTimeout(() => {
-            this.change = false
-          }, 10)
         }, () => {
           this.$indicator.close()
           alert('请求失败')
         })
       }
     },
-    getLocalPic: function (url) {
-      this.localPic = url
+    getfile: function (file) {
+      this.file = file
       this.$router.push({ path: 'ImageUpload' })
     },
     submit: function () {
-      // this.$http.get(this.apiURL + 'member/modifyInfo.jhtml?wxbdopenId=' + this.id).then((response) => {
       this.$http.post(this.apiURL + 'member/modifyInfo.jhtml', {'wxbdopenId': this.id, 'userName': this.nickname, 'gender': this.gender}).then((response) => {
       }, () => {
         alert('修改失败')
@@ -135,12 +126,6 @@ export default {
     }
   },
   watch: {
-    nickname: function () {
-      this.change = true
-    },
-    gender: function () {
-      this.change = true
-    },
     id: function () {
       this.getCustomers()
     },
