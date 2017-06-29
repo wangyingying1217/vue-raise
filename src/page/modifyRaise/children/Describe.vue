@@ -1,6 +1,7 @@
 <template>
   <div class="raise-wrapper">
     <div class="raise-inner">
+      <!--项目描述  S-->
       <dl>
         <dt class="raise-title">描述你的项目</dt>
         <dd class="media raise-box" v-show="video">

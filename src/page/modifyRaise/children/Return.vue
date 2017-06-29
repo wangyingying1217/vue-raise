@@ -146,13 +146,13 @@
           <div v-if="item.productOrigin=='upload'">
             <div class="raise-box">
               <span class="box-input-title">商品分类：</span>
-              <select class="box-input" :name="'productType'+indexParent" @change="shapeData($event.target.value, item)" v-model="item.productType">
+              <select class="box-input" :name="'productType'+indexParent" @change="shapeData($event.target.value, item)">
                 <option v-if="index !== 0" v-for="(item, index) in productTypeList" :key="item.classify" :value="item.classify">{{item.classify}}</option>
               </select>
             </div>
             <div class="raise-box" v-if="item.productFormOptions.length > 1">
               <span class="box-input-title">商品形态：</span>
-              <select class="box-input" :name="'productForm'+indexParent" v-model="item.productForm">
+              <select class="box-input" :name="'productForm'+indexParent">
                 <option v-if="index !== 0" v-for="(item, index) in item.productFormOptions" :key="item" :value="item">{{item}}</option>
               </select>
             </div>
@@ -253,10 +253,8 @@ export default {
           returnType: 'product',  // 抽奖回报：lottery，商品回报：product
           productOrigin: 'online',  // 在线选择：online；自行上传：upload
           productType: '',
-          productForm: '',
           productFormOptions: ['全部'],
           picSrc: [],
-          serverId: [],
           online: {
             returnProductA: {
               value: '',
@@ -304,7 +302,6 @@ export default {
         returnType: 'product',  // 抽奖回报：lottery，商品回报：product
         productOrigin: 'online',  // 在线选择：online；自行上传：upload
         productType: '',
-        productForm: '',
         productFormOptions: [],
         picSrc: [],
         online: {

@@ -177,13 +177,14 @@ export default {
   },
   created() {
     this.getCustomers()
+    console.log(this.$route)
   },
   watch: {
     id: function () {
       this.getCustomers()
     },
     $route: function () {
-      this.getCustomers()
+      this.$indicator.close()
     }
   },
   computed: {

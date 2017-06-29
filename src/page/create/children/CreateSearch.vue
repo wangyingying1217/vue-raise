@@ -140,7 +140,7 @@ export default {
       handler: function (val, oldVal) {
         if (val.state === 'loading') {
           this.page ++
-          this.$http.post(this.apiURL + 'sponsor/proSearch.jhtml', this.searchInfo).then((response) => {
+          this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
             if (response.data.length) {
               this.info = this.info.concat(response.data)
               this.loadMore.state = ''

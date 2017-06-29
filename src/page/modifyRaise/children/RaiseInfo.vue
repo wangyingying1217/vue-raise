@@ -1,6 +1,6 @@
 <template>
   <div class="raise-wrapper">
-    <dl class="raise-inner">
+    <dl v-show="$route.path !== '/ModifyRaise/search'" class="raise-inner">
       <dt class="raise-title">创建你的项目信息</dt>
       <dd class="raise-box">
         <span class="box-input-title">设置封面：</span>
@@ -50,7 +50,7 @@
         <p class="errors" v-show="selfdomValid.selfdomnum.invalid">{{validateMsg.selfdomnum}}</p>
       </dd>
     </dl>
-    <div class="submit-wrapper">
+    <div v-show="$route.path !== '/ModifyRaise/search'" class="submit-wrapper">
       <input class="submit act w6 mr2" type="button" value="上一步" @click=" state.name = 'presonInfo'">
       <input class="submit act w6" type="button" value="下一步" @click="submit">
     </div>
@@ -154,7 +154,7 @@ export default {
     },
     localPic: function (url) {
       this.pic = url
-      this.$router.push({ path: 'ImageClip' })
+      this.$router.push({ path: '/Modify/ImageClip' })
     },
     setCover: function (url) {
       this.valid.cover.value = url

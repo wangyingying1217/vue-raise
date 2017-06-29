@@ -328,6 +328,9 @@ export default new Router({
     children: [{
       path: '/ModifyRaise/search', // 我的收藏-众筹
       component: ModifySearch
+    }, {
+      path: '/Modify/ImageClip', // 修改头像
+      component: ImageUpload
     }]
   }, {
     // 发表动态

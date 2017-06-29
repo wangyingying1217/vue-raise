@@ -84,9 +84,9 @@ export default {
   },
   methods: {
     getCustomers: function () {
-      if (!this.onlineIndex) {
-        this.$router.push('/create')
-      }
+      // if (!this.onlineIndex) {
+      //   this.$router.push('/create')
+      // }
       this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
         this.info = response.data
         this.$indicator.close()
@@ -104,11 +104,10 @@ export default {
       } else if (attr) {
         this[attr] = item
       }
-      this.$http.post(this.apiURL + 'sponsor/proSearch.jhtml', this.searchInfo).then((response) => {
+      this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
         this.info = response.data
         this.loadMore.state = ''
       }, () => {
-        this.$indicator.close()
         alert('请求失败')
       })
     },
@@ -141,7 +140,7 @@ export default {
       handler: function (val, oldVal) {
         if (val.state === 'loading') {
           this.page ++
-          this.$http.post(this.apiURL + 'sponsor/proSearch.jhtml', this.searchInfo).then((response) => {
+          this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
             if (response.data.length) {
               this.info = this.info.concat(response.data)
               this.loadMore.state = ''
@@ -149,7 +148,6 @@ export default {
               this.loadMore.state = 'loaded'
             }
           }, () => {
-            this.$indicator.close()
             alert('请求失败')
           })
         }

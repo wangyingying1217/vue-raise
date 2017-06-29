@@ -82,12 +82,16 @@ export default {
         })
       } else if (val && this.type === 'abolishOrder') {
         this.$http.get(this.apiURL + 'member/order/cancel.jhtml?orderCode=' + this.item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
-          if (this.state === 'all') {
-            this.item.state = '交易关闭'
+          if (response.data.state) {
+            if (this.state === 'all') {
+              this.item.state = '交易关闭'
+            } else {
+              this.info = this.info.filter((item) => {
+                return item.orderCode !== this.item.orderCode
+              })
+            }
           } else {
-            this.info = this.info.filter((item) => {
-              return item.orderCode !== this.item.orderCode
-            })
+            alert(response.data.msg)
           }
         }, () => {
           alert('请求失败')
