@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="state-wrapper" ref="wrapper" :class="{'right-icon': rightIcon}">
-      <ul :style="{'width':mapProduct.length*4.5+'rem'}" @touchmove="scroll" ref="ul">
+    <div class="state-wrapper" ref="wrapper" @scroll="scroll">
+      <ul :style="{'width':mapProduct.length*4.5+'rem'}" ref="ul">
         <router-link :to="'/myorder/product/'+ mapState[index]" replace v-for="(item, index) in mapProduct" :key="item.key" tag="li">{{item}}</router-link>
       </ul>
+      <span :style="{'top':iconTop+'rem'}" v-show="scrollState !== 'left'" class="left-icon" @click="scrollStart"></span>
+      <span :style="{'top':iconTop+'rem'}" v-show="scrollState !== 'right'" class="right-icon" @click="scrollEnd"></span>
     </div>
     <router-view :info="info" :type="'myOrder'"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
@@ -33,8 +35,8 @@ export default {
       loadMore: {
         state: ''
       },
-      rightIcon: true,
-      log: ''
+      scrollState: 'left',
+      iconTop: 2.5
     }
   },
   components: {
@@ -55,11 +57,34 @@ export default {
       }
     },
     scroll: function () {
-      if (this.$refs.wrapper.scrollLeft + this.$refs.wrapper.offsetWidth < this.$refs.ul.offsetWidth - 40) {
-        this.rightIcon = true
-      } else {
-        this.rightIcon = false
+      if (this.$refs.wrapper) {
+        if (this.$refs.wrapper.scrollLeft + this.$refs.wrapper.offsetWidth > this.$refs.ul.offsetWidth - 40) {
+          this.scrollState = 'right'
+        } else if (this.$refs.wrapper.scrollLeft < 40) {
+          this.scrollState = 'left'
+        } else {
+          this.scrollState = ''
+        }
       }
+    },
+    scrollStart: function () {
+      let timer = setInterval(() => {
+        if (this.$refs.wrapper.scrollLeft > 0) {
+          this.$refs.wrapper.scrollLeft = this.$refs.wrapper.scrollLeft - 20
+        } else {
+          clearInterval(timer)
+        }
+      }, 10)
+    },
+    scrollEnd: function () {
+      let length = this.$refs.ul.offsetWidth - this.$refs.wrapper.offsetWidth
+      let timer = setInterval(() => {
+        if (this.$refs.wrapper.scrollLeft < length) {
+          this.$refs.wrapper.scrollLeft = this.$refs.wrapper.scrollLeft + 20
+        } else {
+          clearInterval(timer)
+        }
+      }, 10)
     },
     confirm: function (val) {
       this.confirmState = false
@@ -162,6 +187,21 @@ export default {
   created () {
     // 组件创建完后获取数据，
     this.getCustomers()
+    let iWidth = document.documentElement.clientWidth || document.body.clientWidth
+    let baseSize = iWidth / 18 + 'px'
+    const baseTop = 2.5
+    if (window.addEventListener) {
+      window.addEventListener('scroll', () => {
+        console.log(document.body.scrollTop)
+        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        this.iconTop = baseTop - scrollTop / baseSize
+      }, false)
+    } else {
+      window.attachEvent('scroll', () => {
+        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        this.iconTop = baseTop - scrollTop / baseSize
+      }, false)
+    }
   }
 }
 </script>
@@ -187,8 +227,22 @@ export default {
       }
     }
   }
-  &.right-icon{
-    background: url('../../../../static/image/arrowRight.png') no-repeat 17rem center;
+  .right-icon{
+    position: fixed ;
+    right: 0;
+    top: 2.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: url('../../../../static/image/arrowRight.png') no-repeat center center;
+    background-size: 0.6rem;
+  }
+  .left-icon{
+    position: fixed ;
+    left: 0;
+    top: 2.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: url('../../../../static/image/arrowLeft.png') no-repeat center center;
     background-size: 0.6rem;
   }
 }

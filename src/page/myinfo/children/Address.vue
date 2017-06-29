@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div>
+    <div v-show="$route.path == '/myinfo/address'">
       <ul class="address-list">
         <li v-for="(item,index) in info" @click="send(item)">
           <div class="info-wrap">

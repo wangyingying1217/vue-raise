@@ -246,17 +246,14 @@ input[readonly]{
 	margin-bottom:1rem;
 }
 .raise-wrapper{
-  min-height: 100%;
-  overflow: auto;
   background: #fff;
+  padding-bottom: 2rem;
   .raise-inner{
-    min-height: 100%;
-    padding-bottom: 5.4rem;
     box-sizing: border-box;
   }
   .submit-wrapper{
     text-align: center;
-    margin-top: -3.6rem;
+    margin-top: 1.6rem;
     font-size: 0;
     .submit{
       color: #ffffff;

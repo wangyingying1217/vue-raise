@@ -13,7 +13,7 @@ document.write('<meta name="viewport" content="width=device-width, user-scalable
     resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
     recalc = function() {
       var oHtml = document.getElementsByTagName('html')[0];
-      var iWidth = document.documentElement.clientWidth;
+      var iWidth = document.documentElement.clientWidth || document.body.clientWidth;
       oHtml.style.fontSize = iWidth/ 18 + 'px';
     };
   if (!doc.addEventListener) return;

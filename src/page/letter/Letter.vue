@@ -6,7 +6,7 @@
         <div class="info">
           <p>
             <span class="tit">项目通知</span>
-            <span class="fr">{{info.itemInfo.time}}</span>
+            <span class="fr">{{info.itemInfo.acceptTime}}</span>
           </p>
           <p v-if="info.itemInfo.content">{{info.itemInfo.content}}</p>
           <p v-else>暂无项目通知</p>
@@ -17,7 +17,7 @@
         <div class="info">
           <p>
             <span class="tit">支持消息</span>
-            <span class="fr">{{info.supportInfo.time}}</span>
+            <span class="fr">{{info.supportInfo.acceptTime}}</span>
           </p>
           <p v-if="info.supportInfo.userName">【{{info.supportInfo.userName}}】支持了您的项目“{{info.supportInfo.title}}”{{info.supportInfo.money}}元</p>
           <p v-else>暂无项目通知</p>

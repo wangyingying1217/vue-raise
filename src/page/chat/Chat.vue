@@ -54,7 +54,6 @@ export default {
         if (this.id) {
           this.$http.post(this.apiURL + 'member/message/chat.jhtml', {prevContentId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId}).then((response) => {
             this.info.content.push(...response.data.content)
-            window.scrollTo(0, document.body.scrollHeight)
           })
         }
       }, 500)
@@ -62,7 +61,6 @@ export default {
     send: function () {
       if (this.text.trim()) {
         this.$http.post(this.apiURL + 'member/message/sendChat.jhtml', {prevChatId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId, content: encodeURI(this.text)}).then((response) => {
-          // this.sendMessage.push(this.text)
           this.text = ''
         }, (err) => {
           alert(JSON.stringify(err))
@@ -71,6 +69,11 @@ export default {
     }
   },
   watch: {
+    info: function () {
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight)
+      }, 10)
+    },
     id: function () {
       this.getCustomers()
     },

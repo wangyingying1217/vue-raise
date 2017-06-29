@@ -5,11 +5,11 @@
       <dl>
         <dt class="raise-title">描述你的项目</dt>
         <dd class="media raise-box" v-show="video">
-          <video width="100%" height="180px" controls="controls" :src="videoSrc"></video>
+          <video width="100%" height="180px" controls="controls" :src="video"></video>
         </dd>
         <dd class="raise-box">
           <span class="box-input-title">宣传视频：</span>
-          <Upload class="video" :apiURL="apiURL" :id="id" @pic="(url) => {video = url}" type="video" :clip="true">
+          <Upload class="video" :apiURL="apiURL" :id="id" @pic="(url) => {video = url}" type="video">
             请选择本地要上传的路径
             <span class="video_del" v-show="video" @click="video = ''">删除</span>
             <input type="hidden" name="video" :value="video"/>
@@ -175,11 +175,6 @@ export default {
       return this.details.some((item, index) => {
         return (item.titleEdit && item.titleEdit.replace(/\s*/g, '')) || (item.contentEdit && item.contentEdit.replace(/\s*/g, '')) || (item.picSrc && item.picSrc.replace(/\s*/g, ''))
       })
-    },
-    videoSrc: function () {
-      if (typeof this.video !== 'string') {
-        return window.URL.createObjectURL(this.video)
-      }
     }
   },
   created () {

@@ -3,13 +3,13 @@
     <form :action="apiURL+'member/approve.jhtml'" method="post" ref="form">
       <div class="wrapper" v-show="state.name === ''">
         <div class="tab-menu">
-          <a v-if="!(identification && tabIndex == 'company')" :class="{'act': tabIndex == 'person'}" @click="tabIndex = 'person'">个人认证</a>
-          <a v-if="!(identification && tabIndex == 'person')" :class="{'act': tabIndex == 'company'}" @click="tabIndex = 'company'">企业认证</a>
+          <a v-if="!(identification !== '未认证' && tabIndex == 'company')" :class="{'act': tabIndex == 'person'}" @click="tabIndex = 'person'">个人认证</a>
+          <a v-if="!(identification !== '未认证' && tabIndex == 'person')" :class="{'act': tabIndex == 'company'}" @click="tabIndex = 'company'">企业认证</a>
         </div>
         <ul class="identification" v-if="tabIndex == 'person'">
           <li>
             <span class="title">中文姓名</span>：
-            <input class="text" type="text" placeholder="输入中文姓名" name="perContact" v-bind="{'readonly':identification !== '未认证'}" v-model="userName">
+            <input class="text" type="text" placeholder="输入您的真实姓名" name="perContact" v-bind="{'readonly':identification !== '未认证'}" v-model="userName">
           </li>
           <li>
             <span class="title">身份证号</span>：
@@ -17,7 +17,7 @@
           </li>
           <li>
             <span class="title">联系方式</span>：
-            <input class="text" type="tel" placeholder="输入手机号码" name="perPhone" v-bind="{'readonly':identification !== '未认证'}" v-model="tel">
+            <input class="text" v-bind:readonly="telReadonly" type="tel" placeholder="输入手机号码" name="mobile" v-bind="{'readonly':identification !== '未认证'}" v-model="tel">
           </li>
           <li>
             <span class="title">联系地点</span>：
@@ -67,7 +67,7 @@
           </li>
           <li>
             <span class="title">联系方式</span>：
-            <input class="text" type="tel" placeholder="发起联系人手机号" name="busPhone" v-bind="{'readonly':identification !== '未认证'}" v-model="tel">
+            <input class="text" v-bind:readonly="telReadonly" type="tel" placeholder="发起联系人手机号" name="mobile" v-bind="{'readonly':identification !== '未认证'}" v-model="tel">
           </li>
           <li v-if="identification === '未认证'">
             <span class="title">营业执照图</span>：
@@ -110,6 +110,7 @@ export default {
       userName: '',
       IDcard: '',
       tel: '',
+      telReadonly: false,
       prov: '',
       city: '',
       tradeName: '',
@@ -136,7 +137,6 @@ export default {
         // 获取个人信息
         this.$http.get(this.apiURL + 'member/authentication.jhtml?wxbdopenId=' + this.id).then((response) => {
           this.identification = response.data.state
-          alert(JSON.stringify(response.data))
           if (response.data.state !== '未认证') {
             this.tabIndex = response.data.cardType
             if (response.data.state === '未通过') {
@@ -157,6 +157,9 @@ export default {
               this.userName = response.data.busContact
               this.tel = response.data.busPhone
             }
+          } else if (response.data.phone) {
+            this.tel = response.data.phone
+            this.telReadonly = true
           }
           this.$indicator.close()
         }, () => {

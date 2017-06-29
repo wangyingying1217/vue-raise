@@ -1,10 +1,10 @@
 <template>
   <div v-if="show">
-    <form v-show="$route.path == '/myinfo'" method="post">
+    <div v-show="$route.path == '/myinfo'">
       <div class="wrapper">
         <dl class="personalInfo mt1">
           <dt>
-            <Upload :apiURL="apiURL" :id="id" @pic="getfile" :clip="true">
+            <Upload :apiURL="apiURL" :id="id" @pic="getLocalPic">
               <div class="box clearfix">头像
                 <div class="head-pic">
                   <img ref="img" :src="avater" alt="pic">
@@ -17,7 +17,7 @@
               <div class="text">{{nickname}}</div>
             </div>
           </router-link>
-            <dd>
+          <dd>
             <div class="box">性别
               <div class="text">{{gender | sex}}</div>
             </div>
@@ -64,10 +64,10 @@
           </router-link>
         </dl>
       </div>
-    </form>
+    </div>
     <transition name="slide-fade">
       <router-view :apiURL="apiURL" :id="id" :signature="signature" :emailPre="email" :isEmail="isEmail"
-      :username="nickname" :file="file" type="headPic"></router-view>
+      :username="nickname" :localPic="localPic" type="headPic"></router-view>
     </transition>
   </div>
 </template>
@@ -87,7 +87,7 @@ export default {
       isEmail: '',
       signature: '',
       gender: '',
-      file: ''
+      localPic: ''
     }
   },
   components: {
@@ -114,18 +114,24 @@ export default {
         })
       }
     },
-    getfile: function (file) {
-      this.file = file
+    getLocalPic: function (url) {
+      this.localPic = url
       this.$router.push({ path: 'ImageUpload' })
     },
-    submit: function () {
-      this.$http.post(this.apiURL + 'member/modifyInfo.jhtml', {'wxbdopenId': this.id, 'userName': this.nickname, 'gender': this.gender}).then((response) => {
+    changSex: function () {
+      this.$http.post(this.apiURL + 'member/modify/gender.jhtml', {'wxbdopenId': this.id, 'gender': this.gender}).then((response) => {
+        if (!response.data.state) {
+          alert('性别修改失败')
+        }
       }, () => {
-        alert('修改失败')
+        alert('性别修改失败')
       })
     }
   },
   watch: {
+    gender: function () {
+      this.changSex()
+    },
     id: function () {
       this.getCustomers()
     },
@@ -144,11 +150,6 @@ export default {
       } else if (value === 'male') {
         return '男'
       }
-    }
-  },
-  computed: {
-    redirectUrl: function () {
-      return location.href.split('#')[0] + '#/person'
     }
   }
 }

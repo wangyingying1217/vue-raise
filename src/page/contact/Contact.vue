@@ -3,7 +3,7 @@
     <p>联系电话：{{info.phone}}</p>
     <p>电子邮箱：{{info.email}}</p>
     <p>邮政编码：{{info.zipCode}}</p>
-    <p>地&nbsp;&nbsp;&nbsp;&nbsp;址：{{info.address}}</p>
+    <p>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：{{info.address}}</p>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="tel-wrapper"><input type="text" v-model="nickname"></div>
+    <div class="tel-wrapper"><input type="text" placeholder="您的昵称" v-model="nickname"></div>
     <div class="submit-btn">
       <a :class="{'act':nickname}" @click="confirm">确认修改</a>
     </div>
@@ -24,8 +24,8 @@ export default {
   methods: {
     confirm: function () {
       if (this.nickname.trim()) {
-        if (/^ds/.test(this.nickname)) {
-          this.$http.post(this.apiURL + 'member/verifysendCode.jhtml', {'wxbdopenId': this.id, 'mobile': this.nickname, 'code': this.verifyCode}).then((response) => {
+        if (/^[\u4E00-\u9FA5A-Za-z0-9_]{1,12}$/.test(this.nickname)) {
+          this.$http.post(this.apiURL + 'member/modify/nickname.jhtml', {'wxbdopenId': this.id, 'nickname': this.nickname}).then((response) => {
             if (response.data.state) {
               window.history.go(-1)
             } else {
@@ -35,7 +35,7 @@ export default {
             alert('请求失败')
           })
         } else {
-          this.tip.text = '用户名格式不正确'
+          this.tip.text = '支持中文、英文、数字、下划线的组合，<br/>1-12个字符'
         }
       } else {
         this.tip.text = '用户名不能为空'

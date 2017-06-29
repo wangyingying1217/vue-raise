@@ -22,15 +22,28 @@ export default {
   },
   created () {
     // 组件创建完后执行，
-    window.onscroll = () => {
-      if (this.info.state !== 'loaded') {
-        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-        var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-        var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-        if (scrollTop + windowHeight === scrollHeight && scrollTop !== 0) {
-          this.info.state = 'loading'
+    if (window.addEventListener) {
+      window.addEventListener('scroll', () => {
+        if (this.info.state !== 'loaded') {
+          var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+          var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+          var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+          if (scrollTop + windowHeight === scrollHeight && scrollTop !== 0) {
+            this.info.state = 'loading'
+          }
         }
-      }
+      }, false)
+    } else {
+      window.attachEvent('scroll', () => {
+        if (this.info.state !== 'loaded') {
+          var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+          var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+          var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+          if (scrollTop + windowHeight === scrollHeight && scrollTop !== 0) {
+            this.info.state = 'loading'
+          }
+        }
+      }, false)
     }
   }
 }

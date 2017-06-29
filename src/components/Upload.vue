@@ -16,10 +16,6 @@ export default {
     type: {
       type: String,
       default: 'image'
-    },
-    clip: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
@@ -33,25 +29,20 @@ export default {
   },
   methods: {
     upload: function () {
+      let formData = new FormData()
       let file = this.$refs.file.files[0]
       let size = file.size / 1024 / 1024
       if (size > 100) {
         alert('请上传大小在100M以内的文件')
         return
       }
-      if (this.clip) {
-        this.$emit('pic', file)
+      formData.append('file', file)
+      this.$http.post(this.apiURL + 'upload_file.jhtml', formData).then((res) => {
+        this.$emit('pic', res.data.filePath)
         this.$refs.file.value = ''
-      } else {
-        let formData = new FormData()
-        formData.append('file', file)
-        this.$http.post(this.apiURL + 'upload_file.jhtml', formData).then((res) => {
-          this.$emit('pic', res.data.filePath)
-          this.$refs.file.value = ''
-        }, (res) => {
-          alert('上传失败')
-        })
-      }
+      }, (res) => {
+        alert('上传失败')
+      })
     }
   },
   created() {

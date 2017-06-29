@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="tipWrap" v-show="mask">
-      <div class="tip">{{info.text}}</div>
+      <div class="tip" v-html="info.text"></div>
     </div>
   </transition>
 </template>
@@ -54,10 +54,9 @@ export default {
 }
 .tip{
 	display:inline-block;
-	height:2rem;
 	font-size:0.7rem;
-	line-height:2rem;
-	padding:0 1rem;
+	line-height:1.6rem;
+	padding:0.2rem 1rem;
 	background: rgba(0,0,0,0.6);
 	border-radius:0.1rem;
 	color:#ffffff;
