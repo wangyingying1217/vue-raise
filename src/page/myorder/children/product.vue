@@ -188,11 +188,10 @@ export default {
     // 组件创建完后获取数据，
     this.getCustomers()
     let iWidth = document.documentElement.clientWidth || document.body.clientWidth
-    let baseSize = iWidth / 18 + 'px'
+    let baseSize = iWidth / 18
     const baseTop = 2.5
     if (window.addEventListener) {
       window.addEventListener('scroll', () => {
-        console.log(document.body.scrollTop)
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
         this.iconTop = baseTop - scrollTop / baseSize
       }, false)

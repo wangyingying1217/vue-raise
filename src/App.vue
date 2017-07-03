@@ -19,22 +19,22 @@ export default {
     }
   },
   created () {
-    localStorage.setItem('openId', 'oxMYaszMJBAD6SDNjR--bELoeAeU')
-    localStorage.setItem('state', 1)
-    let data = {openId: this.openId, state: this.state}
-    let url = encodeURIComponent(document.URL.split('#')[0])
-    // let data = {}
+    // localStorage.setItem('openId', 'oxMYaszMJBAD6SDNjR--bELoeAeU')
+    // localStorage.setItem('state', 1)
+    // let data = {openId: this.openId, state: this.state}
     // let url = encodeURIComponent(document.URL.split('#')[0])
-    // let parameter = location.search.split('?')[1]
-    // let code = parameter.split('&')[0].split('=')[1]
-    // if (code !== this.code) {
-    //   let state = parameter.split('&')[1].split('=')[1]
-    //   localStorage.setItem('code', code)
-    //   localStorage.setItem('state', state.indexOf('%') ? state.split('%')[0] : state)
-    //   data = {code: code, state: this.state}
-    // } else {
-    //   data = {openId: this.openId, state: this.state}
-    // }
+    let data = {}
+    let url = encodeURIComponent(document.URL.split('#')[0])
+    let parameter = location.search.split('?')[1]
+    let code = parameter.split('&')[0].split('=')[1]
+    if (code !== this.code) {
+      let state = parameter.split('&')[1].split('=')[1]
+      localStorage.setItem('code', code)
+      localStorage.setItem('state', state.indexOf('%') ? state.split('%')[0] : state)
+      data = {code: code, state: this.state}
+    } else {
+      data = {openId: this.openId, state: this.state}
+    }
     this.$http.post(this.apiURL + 'gainWx.jhtml', data).then((response) => {
       localStorage.setItem('wxbdopenId', response.data.unionId)
       localStorage.setItem('openId', response.data.openId)
