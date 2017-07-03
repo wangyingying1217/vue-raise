@@ -21,7 +21,7 @@
             <div class="box">性别
               <div class="text">{{gender | sex}}</div>
             </div>
-            <select class="hidden" v-model="gender" name="gender">
+            <select class="hidden" v-model="gender" name="gender" @change="changSex">
               <option :checked="gender=='male'" value="male">男</option>
               <option :checked="gender=='female'" value="female">女</option>
             </select>
@@ -129,9 +129,6 @@ export default {
     }
   },
   watch: {
-    gender: function () {
-      this.changSex()
-    },
     id: function () {
       this.getCustomers()
     },
