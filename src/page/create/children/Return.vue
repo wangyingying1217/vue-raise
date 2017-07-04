@@ -30,7 +30,7 @@
             <p class="errors" v-if="item.public.supportAmount.invalid">{{validateMsg.faMoney}}</p>
           </div>
           <div class="raise-box">
-            <span class="box-input-title">份额数量：</span>
+            <span class="box-input-title">总份额数：</span>
             <input class="box-input" type="number" placeholder="每个人最多支持份数（“0”为不限制）" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
             <p class="errors" v-if="item.public.lotNum.invalid">{{validateMsg.nonegative}}</p>
           </div>
@@ -50,7 +50,7 @@
             <p class="errors" v-if="item.lottery.lotteryUnit.invalid">{{validateMsg.integer}}</p>
           </div>
           <div class="raise-box">
-            <span class="box-input-title">份额上限：</span>
+            <span class="box-input-title">支持上限：</span>
             <input class="box-input" type="number" placeholder="“0”为不限名额" :name="'lotLimit'+indexParent" v-model="item.public.lotLimit.value" @input="validate('faPeople',item.public.lotLimit)" @blur="validate('faPeople',item.public.lotLimit)">
             <p class="errors" v-if="item.public.lotLimit.invalid">{{validateMsg.faPeople}}</p>
           </div>

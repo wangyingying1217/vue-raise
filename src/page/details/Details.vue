@@ -1,7 +1,7 @@
 <template>
   <div class="bg" v-if="show" :style="{'min-height': height}">
     <div class="detial-wrapper">
-      <video v-if="video" controls='controls' :src='video'></video>
+      <video v-if="video" controls='controls' :src='video' :poster="poster"></video>
       <div v-for="(item, index) in info" :key="index">
         <h1 v-if="item.titleEdit">{{item.title}}</h1>
         <div v-if="item.contentEdit" v-html="item.content"></div>
@@ -21,6 +21,7 @@ export default {
     return {
       show: false,
       video: '',
+      poster: '',
       info: [],
       contentId: ''
     }
@@ -32,6 +33,7 @@ export default {
       if (this.contentId && this.id) {
         this.$http.get(this.apiURL + 'projectDetails.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
           this.video = response.data.videos
+          this.poster = response.data.poster
           this.info = response.data.intro
           this.show = true
           this.$indicator.close()

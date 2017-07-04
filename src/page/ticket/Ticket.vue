@@ -60,10 +60,14 @@ export default {
       this.confirmState = false
       if (val) {
         this.$http.get(this.apiURL + 'member/conCoupon.jhtml?wxbdopenId=' + this.id + '&id=' + this.$route.params.id).then((response) => {
-          this.tipInfo.text = '兑换成功'
-          setTimeout(() => {
-            this.$router.push('/mycoupons/discount')
-          }, 1000)
+          if (response.data.state) {
+            this.tipInfo.text = '兑换成功'
+            setTimeout(() => {
+              this.$router.push('/mycoupons/discount')
+            }, 1000)
+          } else {
+            this.tipInfo.text = response.data.msg
+          }
         }, () => {
           this.tipInfo.text = '兑换失败'
         })

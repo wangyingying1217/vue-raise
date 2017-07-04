@@ -4,26 +4,29 @@
       <p class="title">感谢您的无私支持</p>
       <div class="support-money">
         <ul class="money-list clearfix">
-          <li v-for="(item, index) in priceList" :key="index" :class="{'act':tabIndex == index}" @click="tabIndex = index">{{item}}元</li>
+          <li v-for="(item, index) in priceList" :key="index" :class="{'act':tabIndex == index}" @click="chooseMoney(index)">{{item}}元</li>
         </ul>
-        <input type="number" placeholder="支持其他金额（不低于1元）" v-model="money">
+        <input type="number" placeholder="支持其他金额（不低于1元）" v-model="money" @input="otherMoney">
       </div>
       <div class="support-tel">
         <input type="tel" placeholder="输入手机号，项目成功或失败时退款通知（选填）" v-model="Tel">
       </div>
       <div class="support-total">
         支持总额
-        <span>￥10</span>
+        <span>￥{{totalMoney}}</span>
       </div>
     </div>
     <div v-else class="order">
       <p class="title" v-html="info.title"></p>
       <router-link class="address" to="/orderAddress" tag="div">
         <div class="bg-local"></div>
-        <p>收货人：{{info.consignee}}
-          <span class="fr">{{info.phone}}</span>
-        </p>
-        <p>收货地址：{{info.areaName+info.address}}</p>
+        <div v-show="info.receiver">
+          <p>收货人：{{info.consignee}}
+            <span class="fr">{{info.phone}}</span>
+          </p>
+          <p>收货地址：{{info.areaName+info.address}}</p>
+        </div>
+        <div v-show="!info.receiver" class="no-address">请先添加收货地址</div>
         <div class="bg-right"></div>
       </router-link>
       <ul class="con-list">
@@ -36,7 +39,7 @@
           <div class="amount fr">
             <span v-show="num > 1" @click="subtract()">-</span>
             <input type="number" v-model="num" @blur="checkNum(item)">
-            <span v-show="num < info.lotNum" @click="add()">+</span>
+            <span v-show="!info.isLimit || (info.isLimit && num < info.lotNum)" @click="add()">+</span>
           </div>
         </li>
         <li>
@@ -157,8 +160,10 @@ export default {
       if (this.supportId && this.id) {
         this.$http.get(this.apiURL + 'supportRefer.jhtml?id=' + this.supportId + '&wxbdopenId=' + this.id).then((response) => {
           this.info = response.data
+          if (this.info.isLimit && this.info.lotNum === 0) {
+            this.num = 0
+          }
           this.show = true
-          if (response.data.lotNum === 0) this.num = 0
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
@@ -169,7 +174,7 @@ export default {
       }
     },
     add: function () {
-      if (this.num < this.info.lotNum) {
+      if (!this.info.isLimit || (this.info.isLimit && this.num < this.info.lotNum)) {
         this.num++
       }
     },
@@ -179,7 +184,7 @@ export default {
       }
     },
     checkNum: function () {
-      if (this.num > this.info.lotNum) {
+      if (!this.info.isLimit || (this.info.isLimit && this.num < this.info.lotNum)) {
         this.num = this.info.lotNum
         alert('超过了限定的数量')
       }
@@ -188,6 +193,19 @@ export default {
       this.userName = item.consignee
       this.Tel = item.phone
       this.address = item.areaName + item.address
+      this.info.receiver = true
+    },
+    chooseMoney: function (index) {
+      this.money = ''
+      this.tabIndex = index
+    },
+    otherMoney: function () {
+      if (Number(this.money) && Number(this.money) > 0) {
+        this.tabIndex = 99
+      } else {
+        this.money = ''
+        this.tabIndex = 0
+      }
     },
     confirm: function () {
       if (this.info.type === this.GRATIS) {
@@ -197,7 +215,9 @@ export default {
           this.pay(this.submitData)
         }
       } else {
-        if (this.invoice === 'VTA') {
+        if (!this.info.receiver) {
+          this.tip.text = '请先添加收货地址'
+        } else if (this.invoice === 'VTA') {
           if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.invoiceTitle)) {
             this.tip.text = '发票抬头不能为空'
           } else if (!/^[0-9]{15}$/.test(this.TaxpayerNum)) {
@@ -317,6 +337,10 @@ export default {
     background:#ffffff;
     position:relative;
     margin:0 0 0.8rem;
+    .no-address{
+      font-size: 0.7rem;
+      padding: 0.4rem 0 0.2rem;
+    }
     p{
       line-height:1rem;
       padding:0.2rem 0 0;
@@ -423,6 +447,8 @@ export default {
         border:0.05rem solid #cccccc;
         border-radius:0.15rem;
         margin:0 0.42rem;
+        text-align: center;
+        text-indent: 0;
       }
     }
     .money{

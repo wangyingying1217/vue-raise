@@ -9,13 +9,13 @@
         </p>
         <p class="info" v-html="item.comment"></p>
         <div class="Interaction">
-          <span class="time">{{item.time}}</span>
+          <span class="time">{{decodeURI(item.time)}}</span>
           <span class="commentBtn" @click.stop="comment(item,index)">评论</span>
           <span class="zan" :class="{'act':item.zan}" @click="zan(item)">赞({{item.zanNum | zanNum}})</span>
         </div>
         <ul class="commentList">
           <li class="clearfix" v-for="(list,indexDiscuss) in item.discuss" @click.stop="repaly(item,index,list,indexDiscuss)">
-            <span class="clBlue">{{list.proactive}}</span>
+            <span class="clBlue">{{decodeURI(list.proactive)}}</span>
             <span v-if="list.passive">回复</span>
             <span class="clBlue" v-if="list.passive">{{list.passive}}</span>：
             <span class="ml2" v-html="list.content"></span>
@@ -27,7 +27,7 @@
     </li>
   </ul>
   <div class="commentText">
-    <input class="text" type="text" :placeholder="commentInfo[commentType].placeholder" v-model="commentText">
+    <input class="text" ref="text" type="text" :placeholder="commentInfo[commentType].placeholder" v-model="commentText">
     <input class="sure" type="button" :value="commentInfo[commentType].buttonText" @click="submit">
   </div>
   <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
@@ -110,6 +110,7 @@ export default {
       this.commentType = COMMEENT_STATE
       this.commentItem = item
       this.commentIndex = index
+      this.$refs.text.focus()
     },
     repaly: function (item, index, list, indexDiscuss) {
       this.commentReset()
@@ -121,6 +122,7 @@ export default {
       if (list.proactive === this.userName) {
         this.confirmState = true
       }
+      this.$refs.text.focus()
     },
     delComment: function (item, index) {
       this.commentReset()
@@ -135,7 +137,7 @@ export default {
         return false
       }
       if (this.commentType === PUBLISH_STATE) {
-        this.$http.get(this.apiURL + 'pinglun.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&context=' + this.commentText).then((response) => {
+        this.$http.get(this.apiURL + 'pinglun.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&context=' + encodeURI(this.commentText)).then((response) => {
           if (!response.data.permission) {
             this.tipInfo.text = '请先支持一下吧~~'
           } else {
@@ -148,9 +150,9 @@ export default {
       } else {
         var url = ''
         if (this.commentType === COMMEENT_STATE) {
-          url = this.apiURL + 'replyComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&replyContext=' + this.commentText + '&commentId=' + this.commentItem.commentId
+          url = this.apiURL + 'replyComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&replyContext=' + encodeURI(this.commentText) + '&commentId=' + this.commentItem.commentId
         } else if (this.commentType === REPLAY_STATE) {
-          url = this.apiURL + 'replyComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&replyContext=' + this.commentText + '&commentId=' + this.commentItem.commentId + '&replyName=' + this.commentObject
+          url = this.apiURL + 'replyComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&replyContext=' + encodeURI(this.commentText) + '&commentId=' + this.commentItem.commentId + '&replyName=' + this.commentObject
         }
         this.$http.get(url).then((response) => {
           if (!response.data.permission) {

@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     upload: function () {
+      this.$indicator.open()
       let formData = new FormData()
       let file = this.$refs.file.files[0]
       let size = file.size / 1024 / 1024
@@ -39,8 +40,13 @@ export default {
       formData.append('file', file)
       this.$http.post(this.apiURL + 'upload_file.jhtml', formData).then((res) => {
         this.$emit('pic', res.data.filePath)
+        if (res.data.fileSrc) {
+          this.$emit('poster', res.data.fileSrc)
+        }
         this.$refs.file.value = ''
+        this.$indicator.close()
       }, (res) => {
+        this.$indicator.close()
         alert('上传失败')
       })
     }

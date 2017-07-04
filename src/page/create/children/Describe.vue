@@ -5,11 +5,11 @@
       <dl>
         <dt class="raise-title">描述你的项目</dt>
         <dd class="media raise-box" v-show="video">
-          <video width="100%" height="180px" controls="controls" :src="video"></video>
+          <video width="100%" height="100%" controls="controls" :src="video" :poster="poster"></video>
         </dd>
         <dd class="raise-box">
           <span class="box-input-title">宣传视频：</span>
-          <Upload class="video" :apiURL="apiURL" :id="id" @pic="(url) => {video = url}" type="video">
+          <Upload class="video" :apiURL="apiURL" :id="id" @pic="(url) => {video = url}" @poster="(url) => {poster = url}" type="video">
             请选择本地要上传的路径
             <span class="video_del" v-show="video" @click="video = ''">删除</span>
             <input type="hidden" name="video" :value="video"/>
@@ -87,6 +87,7 @@ export default {
     return {
       picItem: {},
       video: '',
+      poster: '',
       risk: '',
       titlePlaceholder: '为什么我需要你的资金支持',
       contentPlaceholder: '请在这里说明你的项目特色，以及详细的资 金用途，这会增加项目的可信度并由此提高筹资的成功率。',
@@ -126,6 +127,9 @@ export default {
         alert('最多只能上传' + num + '条')
       } else {
         parent.push(JSON.parse(JSON.stringify(children)))
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight)
+        }, 10)
       }
     },
     saveEdit: function (item) {
@@ -155,7 +159,7 @@ export default {
         }
       }
       if (!bOff) {
-        alert('您还有未完成的编辑项')
+        alert('您还有未保存的编辑项')
       } else if (!this.describeEmpty) {
         alert('请添加项目描述')
       } else {
@@ -217,6 +221,7 @@ export default {
 <style lang='less' scoped>
 .media{
 	width:16rem;
+  height: 6rem;
 	padding:0;
 	margin:0 auto 1rem;
 }
