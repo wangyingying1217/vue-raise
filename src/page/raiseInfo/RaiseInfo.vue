@@ -148,12 +148,12 @@ export default {
 	padding:1rem 1rem 0.7rem;
   .imgWrap{
     float:left;
-    width:4.2rem;
-    height:4.2rem;
+    width:3.4rem;
+    height:3.4rem;
     border-radius:50%;
     overflow:hidden;
     background:#ccc;
-    margin-right:1rem;
+    margin-right:0.8rem;
     img{
       width:100%;
       height:100%;
@@ -161,10 +161,10 @@ export default {
   }
   .text_info{
     float:left;
-    width:10.8rem;
+    width:11.8rem;
     p{
       font-size:0.84rem;
-      line-height:2.2rem;
+      line-height:1.6rem;
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;

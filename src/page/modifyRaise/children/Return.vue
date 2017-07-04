@@ -168,9 +168,13 @@
             </div>
             <div class="raise-box">
               <span class="box-input-title">商品编号：</span>
+              <input class="box-input" type="number" placeholder="若留空，则系统自动生成" :name="'productCode'+indexParent" v-model="item.upload.productCode.value">
+            </div>
+            <!-- <div class="raise-box">
+              <span class="box-input-title">商品编号：</span>
               <input class="box-input" type="number" placeholder="请输入商品编号" :name="'productCode'+indexParent" v-model="item.upload.productCode.value" @input="validate('unempty',item.upload.productCode)" @blur="validate('unempty',item.upload.productCode)">
               <p class="errors" v-if="item.upload.productCode.invalid">{{validateMsg.unempty}}</p>
-            </div>
+            </div> -->
             <div class="raise-box">
               <span class="box-input-title">商品价格：</span>
               <input class="box-input" type="number" placeholder="请输入商品价格" :name="'productPirce'+indexParent" v-model="item.upload.productPirce.value" @input="validate('unempty',item.upload.productPirce)" @blur="validate('unempty',item.upload.productPirce)">
@@ -278,7 +282,7 @@ export default {
             productAuthor: {invalid: '', value: ''},
             productCode: {invalid: '', value: ''},
             productPirce: {invalid: '', value: ''},
-            productNum: {invalid: '', value: ''},
+            productNum: {invalid: false, value: ''},
             productIntro: {invalid: '', value: ''}
           },
           public: {
@@ -327,7 +331,7 @@ export default {
           productAuthor: {invalid: '', value: ''},
           productCode: {invalid: '', value: ''},
           productPirce: {invalid: '', value: ''},
-          productNum: {invalid: '', value: ''},
+          productNum: {invalid: false, value: ''},
           productIntro: {invalid: '', value: ''}
         },
         public: {
@@ -456,7 +460,7 @@ export default {
           productAuthor: {invalid: '', value: ''},
           productCode: {invalid: '', value: ''},
           productPirce: {invalid: '', value: ''},
-          productNum: {invalid: '', value: ''},
+          productNum: {invalid: false, value: ''},
           productIntro: {invalid: '', value: ''}
         },
         public: {
