@@ -1,7 +1,7 @@
 <template>
   <ul class="raise-pre">
     <li v-for="(item, index) in info" :key="index">
-      <router-link :to="{path:'/productInfo/'+item.contentId}" tag="div">
+      <div @click="click(item)">
         <div class="con-wrapper" v-drag="type">
           <div class="con-img">
             <img :src="item.picsrc" alt="pic"/>
@@ -19,17 +19,23 @@
                 <span class="price" v-if="type !== 'inline'">￥{{item.unitPrice}}</span>
                 <span class="num" v-if="type === 'inline' || type === 'myOrder'">x{{item.num}}</span>
               </div>
+            </div>
+            <!-- <div class="con-price">
+              <div class="price-wrapper">
+                <span class="price" v-if="type !== 'inline'">￥{{item.unitPrice}}</span>
+                <span class="num" v-if="type === 'inline' || type === 'myOrder'">x{{item.num}}</span>
+              </div>
               <span class="tag-wrapper" v-if="type === 'inline'">
                 <span class="tag">赠送</span>
                 <span class="tag" v-if="item.type == 'book'">阅读</span>
                 <span class="tag" v-if="item.type == 'database'">使用</span>
                 <span class="tag" v-if="item.type == 'video'">播放</span>
               </span>
-            </div>
+            </div> -->
           </div>
         </div>
         <span class="delete" @click.stop="remove(item.concernId)" v-if="type === 'delete'">删除</span>
-      </router-link>
+      </div>
       <p class="total-money" v-if="type === 'myOrder'">共{{item.num}}件商品&nbsp;&nbsp;&nbsp;&nbsp;合计：￥{{item.money}}（含运费￥{{item.money}}）</p>
       <div class="interaction" v-if="type === 'myOrder'">
         <span v-if=" item.state == NODISPATCH">提醒发货</span>
@@ -63,6 +69,13 @@ export default {
   methods: {
     remove: function (id) {
       this.$emit('removeProduct', id)
+    },
+    click: function (item) {
+      if (this.type === 'myOrder') {
+        this.$router.push('/productInfo/' + item.contentId)
+      } else if (this.type === 'inline') {
+        alert('inline')
+      }
     }
   },
   directives: {

@@ -9,6 +9,7 @@ import wx from 'weixin-js-sdk'
 export default {
   data () {
     return {
+      // apiURL: 'http://124.205.131.133/raise/',
       apiURL: 'http://192.168.8.144:8081/raise/',
       // apiURL: 'http://192.168.8.183:8080/raise/',
       // apiURL: 'http://www.huizhi.com.cn/raise/',
