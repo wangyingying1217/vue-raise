@@ -104,7 +104,7 @@ export default {
     box-sizing:border-box;
     &.act{
       border-color: #cc0000;
-      background:url("../../../../static/image/right_top.png") no-repeat right top;
+      background:url("../../../image/right_top.png") no-repeat right top;
       background-size: 0.8rem;
     }
   }

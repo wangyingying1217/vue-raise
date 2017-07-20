@@ -3,11 +3,11 @@
     <table class="supportRecord">
       <thead>
       <tr>
-        <th>订单序号</th>
-        <th>支持者</th>
-        <th>支持项</th>
-        <th>数量</th>
-        <th>支持时间</th>
+        <th width="20%">订单序号</th>
+        <th width="22%">支持者</th>
+        <th width="22%">支持项</th>
+        <th width="14%">数量</th>
+        <th width="22%">支持时间</th>
       </tr>
       </thead>
       <tbody>
@@ -20,18 +20,20 @@
         </td>
         <td>{{item.anti}}</td>
         <td>
-          <p>{{item.jin}}</p>
-          <p>{{item.ti}}</p>
+          <p>{{item.date}}</p>
+          <p>{{item.time}}</p>
         </td>
       </tr>
       </tbody>
     </table>
+    <LoadMore :info="loadMore"></LoadMore>
     <Nodata :showSwitch="info.length" :type="'support'"></Nodata>
   </div>
 </template>
 
 <script>
 import Nodata from '@/components/Nodata'
+import LoadMore from '@/components/LoadMore'
 
 export default {
   props: ['apiURL', 'id'],
@@ -39,7 +41,11 @@ export default {
     return {
       show: false,
       info: {},
-      contentId: ''
+      contentId: '',
+      page: 1,
+      loadMore: {
+        state: ''
+      }
     }
   },
   methods: {
@@ -47,7 +53,7 @@ export default {
       document.title = '支持记录'
       this.contentId = this.$route.params.contentId
       if (this.contentId && this.id) {
-        this.$http.get(this.apiURL + 'supportRecord.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
+        this.$http.get(this.apiURL + 'supportRecord.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
           this.info = response.data
           this.show = true
           this.$indicator.close()
@@ -69,10 +75,29 @@ export default {
     },
     id: function () {
       this.getCustomers()
+    },
+    loadMore: {
+      handler: function (val, oldVal) {
+        if (val.state === 'loading') {
+          this.page ++
+          this.$http.get(this.apiURL + 'supportRecord.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
+            if (response.data.length) {
+              this.info.push(...response.data)
+              this.loadMore.state = ''
+            } else {
+              this.loadMore.state = 'loaded'
+            }
+          }, () => {
+            alert('请求失败')
+          })
+        }
+      },
+      deep: true
     }
   },
   components: {
-    Nodata
+    Nodata,
+    LoadMore
   }
 }
 </script>
@@ -83,9 +108,13 @@ export default {
 	color:#333333;
 	width:100%;
 	font-size:0.7rem;
+  table-layout: fixed;
   th,td{
   	text-align:center;
   	font-weight:normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   thead tr{
   	height:2rem;

@@ -6,15 +6,13 @@ import App from './App'
 import Resource from 'vue-resource'
 import router from './router'
 import Mint from 'mint-ui'
-// import VueWebsocket from 'vue-websocket'
-import '../static/js1/viewport_rem.js'
-import '../static/style/reset.css'
-import '../static/style/base.less'
+import './service/viewport_rem.js'
+import './style/reset.css'
+import './style/base.less'
 import 'mint-ui/lib/style.css'
 
 Vue.use(Resource)
 Vue.use(Mint)
-// Vue.use(VueWebsocket, 'ws://192.168.8.183:8080/MyMessageInbound.do')
 
 router.beforeEach((to, from, next) => {
   if (from.fullPath !== '/hot' && from.fullPath !== '/his' && from.fullPath !== '/pre' && from.fullPath !== '/create/search') {

@@ -49,7 +49,7 @@ export default {
   	float:left;
   	width:1.2rem;
   	height:1.2rem;
-  	background:url("../../static/image/Pointer.png") no-repeat;
+  	background:url("../image/Pointer.png") no-repeat;
   	background-size:contain;
     position: relative;
     z-index: 9

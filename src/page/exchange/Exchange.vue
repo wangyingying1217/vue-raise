@@ -72,7 +72,7 @@
       <input type="hidden" :value="redirectUrl" name="redirect">
     </form>
     <p class="nodata" v-else>{{info.msg}}</p>
-    <AddressList :info="state" @address="(val) => {info.areaName = val.replace(/\//g,'')}"></AddressList>
+    <AddressList :info="state" :apiURL="apiURL" @address="(val) => {info.areaName = val.replace(/\//g,'')}"></AddressList>
   </div>
 </template>
 
@@ -185,7 +185,7 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang='less' scoped>
-@import '../../../static/style/base.less';
+@import '../../style/base.less';
 .exchange{
   padding-bottom: 4rem;
   .product-list{
@@ -223,7 +223,7 @@ export default {
         border-radius: 0.1rem;
         &.act{
           border: 1px solid #cc0000;
-          background: url("../../../static/image/correct-only.png") no-repeat center center;
+          background: url("../../image/correct-only.png") no-repeat center center;
           background-size: 0.6rem;
           background-color: #cc0000;
         }
@@ -322,7 +322,7 @@ export default {
       .img;
       font-size: 0.7rem;
       text-align: center;
-      background: url("../../../static/image/camera.png") no-repeat center 0.8rem;
+      background: url("../../image/camera.png") no-repeat center 0.8rem;
       background-size: 1.6rem;
       margin-right: 0;
       color: #cdcdcd;
@@ -359,7 +359,7 @@ export default {
         font-size: 0.7rem;
       }
       &.region{
-        background:url("../../../static/image/orderRight.png") no-repeat 17rem center;
+        background:url("../../image/orderRight.png") no-repeat 17rem center;
         background-size: 0.4rem;
       }
     }

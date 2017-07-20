@@ -178,7 +178,7 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang='less' scoped>
-@import '../../../../static/style/base.less';
+@import '../../../style/base.less';
 .search-wrapper{
   background: #f5f5f5;
   position:relative;
@@ -208,7 +208,7 @@ export default {
         	width:0.6rem;
         	height:1rem;
         	float:right;
-        	background:url("../../../../static/image/select.png") no-repeat center center;
+        	background:url("../../../image/select.png") no-repeat center center;
           background-size: contain;
         }
       }
@@ -240,7 +240,7 @@ export default {
           height:1.5rem;
           float:right;
           margin-right:1rem;
-          background:url("../../../../static/image/rightRed.png") no-repeat center center;
+          background:url("../../../image/rightRed.png") no-repeat center center;
           background-size: contain;
         }
       }
@@ -354,7 +354,7 @@ export default {
         margin-right: 0.5rem;
         text-overflow: ellipsis;
         overflow: hidden;
-        white-space: normal;
+        white-space: nowrap;
       }
       .num-wrapper{
         float: right;

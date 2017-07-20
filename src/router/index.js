@@ -19,7 +19,6 @@ import Comment from '@/page/comment/Comment'
 import SupportRecord from '@/page/supportRecord/SupportRecord'
 import SupportType from '@/page/supportType/SupportType'
 import Evolve from '@/page/evolve/Evolve'
-import ProductInfo from '@/page/productInfo/ProductInfo'
 import Create from '@/page/create/Create'
 import CreateSearch from '@/page/create/children/CreateSearch'
 import User from '@/page/user/User'
@@ -133,10 +132,6 @@ export default new Router({
     // 众筹进展
     path: '/evolve/:contentId',
     component: Evolve
-  }, {
-    // 商品展示
-    path: '/productInfo/:contentId',
-    component: ProductInfo
   }, {
     // 订单
     path: '/order/:supportId',

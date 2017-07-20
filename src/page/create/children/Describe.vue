@@ -255,7 +255,7 @@ export default {
 .raise-title span{
 	font-size:0.7rem;
 	padding:0 0.3rem 0 1rem;
-	background:url("../../../../static/image/add.png") no-repeat 0 center;
+	background:url("../../../image/add.png") no-repeat 0 center;
   background-size: 0.8rem;
 	line-height:2rem;
 }
@@ -326,7 +326,7 @@ export default {
   .bg{
     width:100%;
     height:2.5rem;
-    background:url("../../../../static/image/addPic.png") no-repeat center 0.5rem;
+    background:url("../../../image/addPic.png") no-repeat center 0.5rem;
     background-size:2.5rem;
   }
   p{

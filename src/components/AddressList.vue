@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ['info'],
+  props: ['info', 'apiURL'],
   data () {
     return {
       state: '',
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     getCustomers: function () {
-      this.$http.get('../../static/js1/city.json').then((response) => {
+      this.$http.get(this.apiURL + 'city.json').then((response) => {
         this.positionData = response.data.citylist
       })
     },
@@ -92,7 +92,7 @@ export default {
         float:right;
         width:0.4rem;
         height:2rem;
-        background:url("../../static/image/orderRight.png") no-repeat right center;
+        background:url("../image/orderRight.png") no-repeat right center;
         background-size: 0.4rem;
       }
     }

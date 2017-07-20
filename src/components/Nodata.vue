@@ -19,7 +19,8 @@ export default{
         order: '您还没有相关的订单啊~~',
         message: '您还没有相关的消息啊~~',
         online: '您还没有在线商品啊~~',
-        returnProgress: '您还没有回报进展~~'
+        returnProgress: '您还没有回报进展~~',
+        index: '还没有相关的众筹~~'
       }
     }
   },

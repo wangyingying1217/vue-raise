@@ -261,7 +261,7 @@ export default {
       left:0;
       width:100%;
       height:0.2rem;
-      background:url("../../../static/image/orderLine.png") repeat-x 0 0;
+      background:url("../../image/orderLine.png") repeat-x 0 0;
       background-size: auto 0.2rem;
     }
     &:before{
@@ -277,7 +277,7 @@ export default {
       width:0.7rem;
       height:0.98rem;
       margin-top: -0.49rem;
-      background:url("../../../static/image/orderLocal.png") no-repeat 0 0;
+      background:url("../../image/orderLocal.png") no-repeat 0 0;
       background-size: contain;
     }
     .bg-right{
@@ -287,7 +287,7 @@ export default {
       width:0.34rem;
       height:0.58rem;
       margin-top: -0.29rem;
-      background:url("../../../static/image/orderRight.png") no-repeat 0 0;
+      background:url("../../image/orderRight.png") no-repeat 0 0;
       background-size: contain;
     }
   }
@@ -389,13 +389,13 @@ export default {
       }
       .msg{
         .btn;
-        background: url("../../../static/image/msg.png") no-repeat 0.8rem center;
+        background: url("../../image/msg.png") no-repeat 0.8rem center;
         background-size: 1.2rem;
         margin-right: 1.4rem;
       }
       .tel{
         .btn;
-        background: url("../../../static/image/tel.png") no-repeat 1rem center;
+        background: url("../../image/tel.png") no-repeat 1rem center;
         background-size: 1rem;
       }
     }

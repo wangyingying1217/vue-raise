@@ -105,7 +105,7 @@ export default {
 .panel{
   padding-top:6rem;
   margin-bottom:0.75rem;
-  background:url("../../../static/image/headBg.jpg") no-repeat center center;
+  background:url("../../image/headBg.jpg") no-repeat center center;
   background-size: cover;
   .person-info{
     padding:0.5rem;
@@ -135,7 +135,7 @@ export default {
       float:right;
       margin-top:1rem;
       position:relative;
-      background:url("../../../static/image/email.png") no-repeat center center;
+      background:url("../../image/email.png") no-repeat center center;
       background-size: contain;
       &.act{
         &:before{
@@ -181,7 +181,7 @@ export default {
       height:1.57rem;
       width:2rem;
       margin:1.1rem auto 0.37rem;
-      background:url("../../../static/image/personList.png") no-repeat 0 0;
+      background:url("../../image/personList.png") no-repeat 0 0;
       background-size: auto 1.57rem;
     }
     &:nth-of-type(4n){

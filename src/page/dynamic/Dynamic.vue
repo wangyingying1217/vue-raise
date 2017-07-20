@@ -108,7 +108,7 @@ export default {
     .img;
     font-size: 0.7rem;
     text-align: center;
-    background: url("../../../static/image/camera.png") no-repeat center 0.8rem;
+    background: url("../../image/camera.png") no-repeat center 0.8rem;
     background-size: 1.6rem;
     margin-right: 0;
     color: #cdcdcd;

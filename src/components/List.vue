@@ -35,7 +35,7 @@ export default {
   	   border-top:1px solid #ccc;
     }
     p{
-    	background:url("../../static/image/rightBlack.png") no-repeat right center;
+    	background:url("../image/rightBlack.png") no-repeat right center;
       background-size: 0.4rem;
     }
   }

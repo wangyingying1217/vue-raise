@@ -47,7 +47,7 @@
         <router-link :to="'/modifyRaise/return/' + item.contentId" v-if=" item.state == RAISEING || item.state == PASSED || item.state == PREHEATING">修改回报</router-link>
         <a @click="$emit('endRaise', item.contentId)" v-if=" item.state == RAISEING">终止众筹</a>
         <a @click="$emit('abolishRaise', item.contentId)" v-if=" item.state == PASSED || item.state == PREHEATING">废止众筹</a>
-        <a @click="$emit('supplement', {contentId: item.contentId, money: item.money})" v-if=" item.state == CLEARING && parseInt(item.progress) < 100 ">余款补齐</a>
+        <a @click="$emit('supplement', {contentId: item.contentId, cshId: item.cshId, money: item.money})" v-if=" item.state == CLEARING && parseInt(item.progress) < 100 ">余款补齐</a>
         <router-link :to="'/reason/' + item.contentId" v-if=" item.state == NOPASSED">查看原因</router-link>
         <router-link :to="'/modifyRaise/raise/' + item.contentId" v-if=" item.state == NOPASSED">修改众筹</router-link>
         <a @click="$emit('deleteRaise', item.contentId)" v-if=" item.state == NOPASSED || item.state == FINISHED  || item.state == ABOLISHED || item.state == FAILED">删除众筹</a>
@@ -174,7 +174,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='less' scoped>
-@import '../../static/style/base.less';
+@import '../style/base.less';
 
 .raise-pre{
   position: relative;
@@ -227,14 +227,14 @@ export default {
           margin-right: 0.5rem;
           text-overflow: ellipsis;
           overflow: hidden;
-          white-space: normal;
+          white-space: nowrap;
         }
         .num {
           display: inline-block;
           width: 2.5rem;
           text-overflow: ellipsis;
           overflow: hidden;
-          white-space: normal;
+          white-space: nowrap;
         }
       }
       .raise-state{
@@ -284,19 +284,19 @@ export default {
           }
         }
         .percent{
-          background: url("../../static/image/percentGrey.png") no-repeat;
+          background: url("../image/percentGrey.png") no-repeat;
           background-size: 0.8rem;
         }
         .money{
-          background: url("../../static/image/moneyGrey.png") no-repeat;
+          background: url("../image/moneyGrey.png") no-repeat;
           background-size: 0.8rem;
         }
         .support{
-          background: url("../../static/image/supportGrey.png") no-repeat;
+          background: url("../image/supportGrey.png") no-repeat;
           background-size: 0.8rem;
         }
         .date{
-          background: url("../../static/image/dateGrey.png") no-repeat;
+          background: url("../image/dateGrey.png") no-repeat;
           background-size: 0.8rem;
         }
       }

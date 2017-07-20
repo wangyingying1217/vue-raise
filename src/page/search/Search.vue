@@ -147,7 +147,7 @@ export default {
         	width:0.6rem;
         	height:1rem;
         	float:right;
-        	background:url("../../../static/image/select.png") no-repeat center center;
+        	background:url("../../image/select.png") no-repeat center center;
           background-size: contain;
         }
       }
@@ -179,7 +179,7 @@ export default {
           height:1.5rem;
           float:right;
           margin-right:1rem;
-          background:url("../../../static/image/rightRed.png") no-repeat center center;
+          background:url("../../image/rightRed.png") no-repeat center center;
           background-size: contain;
         }
       }

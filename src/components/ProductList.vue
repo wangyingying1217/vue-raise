@@ -129,7 +129,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='less' scoped>
-@import '../../static/style/base.less';
+@import '../style/base.less';
 
 .raise-pre{
   position: relative;
@@ -212,14 +212,14 @@ export default {
           margin-right: 0.5rem;
           text-overflow: ellipsis;
           overflow: hidden;
-          white-space: normal;
+          white-space: nowrap;
         }
         .num {
           display: inline-block;
           width: 2.5rem;
           text-overflow: ellipsis;
           overflow: hidden;
-          white-space: normal;
+          white-space: nowrap;
         }
         .tag{
           display: inline-block;

@@ -90,7 +90,7 @@
       </div>
     </form>
 
-    <AddressList :info="state" @address="address"></AddressList>
+    <AddressList :info="state" :apiURL="apiURL" @address="address"></AddressList>
     <Tip :info="tip"></Tip>
   </div>
 </template>

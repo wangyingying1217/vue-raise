@@ -18,7 +18,7 @@
         <div class="default fr" :class="{'act':defaultState}" @click="defaultState=!defaultState"></div>
       </li>
     </ul>
-    <AddressList :info="state" @address="address"></AddressList>
+    <AddressList :info="state" :apiURL="apiURL" @address="address"></AddressList>
     <Tip :info="tip"></Tip>
     <div class="submit-btn" @click="submit">
       <a :class="{'act': name && tel && place && detial.length}">保存地址</a>
@@ -161,7 +161,7 @@ export default {
   .local{
     text-align:right;
     padding-right:1.3rem;
-    background:url("../../../../static/image/orderRight.png") no-repeat right center;
+    background:url("../../../image/orderRight.png") no-repeat right center;
     background-size: 0.4rem;
     box-sizing:border-box;
   }

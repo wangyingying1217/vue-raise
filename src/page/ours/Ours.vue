@@ -91,7 +91,7 @@ export default {
       display:block;
       font-size:0.6rem;
       color:#666666;
-      background:url("../../../static/image/orderRight.png") no-repeat right center/0.5rem;
+      background:url("../../image/orderRight.png") no-repeat right center/0.5rem;
     }
   }
 }

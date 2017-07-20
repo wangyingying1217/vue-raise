@@ -49,7 +49,7 @@ export default {
       margin: 0.3rem auto;
       font-size: 1.6rem;
       color: #fff;
-      background: url("../../static/image/addWhite.png") no-repeat center center;
+      background: url("../image/addWhite.png") no-repeat center center;
       background-color: #cc0000;
       background-size: 0.9rem;
       border-radius: 50%;
@@ -61,21 +61,21 @@ export default {
     }
     .bg-raise{
       .bg;
-      background: url("../../static/image/raiseGrey.png") no-repeat;
+      background: url("../image/raiseGrey.png") no-repeat;
       background-size: contain;
     }
     .bg-user{
       .bg;
-      background: url("../../static/image/personGrey.png") no-repeat;
+      background: url("../image/personGrey.png") no-repeat;
       background-size: contain;
     }
     &.action{
       .bg-raise{
-        background: url("../../static/image/raiseRed.png") no-repeat;
+        background: url("../image/raiseRed.png") no-repeat;
         background-size: contain;
       }
       .bg-user{
-        background: url("../../static/image/personRed.png") no-repeat;
+        background: url("../image/personRed.png") no-repeat;
         background-size: contain;
       }
       color:#cc0000;

@@ -28,7 +28,7 @@ export default {
             ]
           })
         }, (res) => {
-          alert(JSON.stringify(res))
+          alert('获取配置失败')
         })
       }
     },

@@ -2,7 +2,7 @@
   <div v-if="show">
     <ul class="notice">
       <router-link to="/messageList/notice" tag="li" :class="{'act':info.itemInfo.message}">
-        <img src="../../../static/image/announcement.png" alt="pic">
+        <img src="../../image/announcement.png" alt="pic">
         <div class="info">
           <p>
             <span class="tit">项目通知</span>
@@ -13,7 +13,7 @@
         </div>
       </router-link>
       <router-link to="/messageList/return" tag="li" :class="{'act':info.supportInfo.message}">
-        <img src="../../../static/image/announcementPro.png" alt="pic">
+        <img src="../../image/announcementPro.png" alt="pic">
         <div class="info">
           <p>
             <span class="tit">支持消息</span>
@@ -24,7 +24,7 @@
         </div>
       </router-link>
       <router-link to="/messageList/logistics" tag="li" :class="{'act':info.logiService.message}">
-        <img src="../../../static/image/announcementTrans.png" alt="pic">
+        <img src="../../image/announcementTrans.png" alt="pic">
         <div class="info">
           <p>
             <span class="tit">物流服务</span>
@@ -133,7 +133,7 @@ export default {
     padding-right:1rem;
     font-size:0.6rem;
     color:#666666;
-    background:url("../../../static/image/orderRight.png") no-repeat right center;
+    background:url("../../image/orderRight.png") no-repeat right center;
     background-size: 0.5rem;
     p{
       height: 1.3rem;

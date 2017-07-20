@@ -265,7 +265,7 @@ input[readonly]{
   select.box-input{
     height:1.8rem;
     text-indent:0.7rem;
-    background: url("../../../static/image/select.png") no-repeat 90% center;
+    background: url("../../image/select.png") no-repeat 90% center;
     background-size: 0.6rem;
   }
 }
@@ -278,7 +278,7 @@ input[readonly]{
   text-indent: 0.4rem;
   border: 1px solid #666666;
   background-color: #ffffff;
-  background:url("../../../static/image/select.png") no-repeat 90% center;
+  background:url("../../image/select.png") no-repeat 90% center;
   background-size: 0.6rem;
 }
 

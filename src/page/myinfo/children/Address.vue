@@ -159,7 +159,7 @@ export default {
     color:#cc0000;
     &:before{
       border:none;
-      background:url("../../../../static/image/correct.png") no-repeat 0 0;
+      background:url("../../../image/correct.png") no-repeat 0 0;
       background-size: cover;
     }
   }
@@ -201,13 +201,13 @@ export default {
   }
   .delete{
     &:before{
-      background:url("../../../../static/image/deleteBlack.png") no-repeat 0 0;
+      background:url("../../../image/deleteBlack.png") no-repeat 0 0;
       background-size: cover;
     }
   }
   .edit{
     &:before{
-      background:url("../../../../static/image/editBlack.png") no-repeat 0 0;
+      background:url("../../../image/editBlack.png") no-repeat 0 0;
       background-size: cover;
     }
     a, a:hover{

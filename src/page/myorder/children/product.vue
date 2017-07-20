@@ -232,7 +232,7 @@ export default {
     top: 2.5rem;
     width: 1rem;
     height: 1rem;
-    background: url('../../../../static/image/arrowRight.png') no-repeat center center;
+    background: url('../../../image/arrowRight.png') no-repeat center center;
     background-size: 0.6rem;
   }
   .left-icon{
@@ -241,7 +241,7 @@ export default {
     top: 2.5rem;
     width: 1rem;
     height: 1rem;
-    background: url('../../../../static/image/arrowLeft.png') no-repeat center center;
+    background: url('../../../image/arrowLeft.png') no-repeat center center;
     background-size: 0.6rem;
   }
 }

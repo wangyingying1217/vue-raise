@@ -197,7 +197,7 @@
             <div class="raise-box" v-show="item.picSrc.length<3">
               <span class="box-input-title">上传图片：</span>
               <Upload class="filePic" :apiURL="apiURL" :id="id" :num="3" @pic="(url) => {picItem.picSrc.push(url)}" @click.native="picItem = item">
-                <img class="bg" src="../../../../static/image/addPic.png">
+                <img class="bg" src="../../../image/addPic.png">
                 <span>支持jpg、jpeg、png、gif格式，大小不超过500KB</span>
               </Upload>
             </div>
@@ -464,7 +464,7 @@ var _check = function (obj) {
     float:right;
     width:2rem;
     height:2rem;
-    background:url("../../../../static/image/delete.png") no-repeat center center;
+    background:url("../../../image/delete.png") no-repeat center center;
     background-size: 1rem;
   }
 }
@@ -499,7 +499,7 @@ var _check = function (obj) {
       position: absolute;
       left: -0.5rem;
       top: -0.5rem;
-      background: url('../../../../static/image/delProduct.png') no-repeat;
+      background: url('../../../image/delProduct.png') no-repeat;
       background-size: cover;
     }
     .add-bg{

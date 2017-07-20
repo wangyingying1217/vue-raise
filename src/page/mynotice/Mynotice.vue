@@ -2,7 +2,7 @@
   <div v-if="show">
     <ul class="notice">
       <router-link :to="'/notice/'+item.id" tag="li" v-for="item in info" :key="item.title">
-        <img src="../../../static/image/announcement.png" alt="pic">
+        <img src="../../image/announcement.png" alt="pic">
         <div class="info">
           <p>
             <span class="tit">{{item.title}}</span>
@@ -105,7 +105,7 @@ export default {
     padding-right:1rem;
     font-size:0.6rem;
     color:#666666;
-    background:url("../../../static/image/orderRight.png") no-repeat right center;
+    background:url("../../image/orderRight.png") no-repeat right center;
     background-size: 0.5rem;
     p{
       height: 1.3rem;

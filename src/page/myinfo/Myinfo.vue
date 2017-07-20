@@ -180,7 +180,7 @@ export default {
     font-size:0.7rem;
     color:#999999;
     padding-right:1.5rem;
-    background:url("../../../static/image/orderRight.png") no-repeat right center;
+    background:url("../../image/orderRight.png") no-repeat right center;
     background-size: 0.4rem;
   }
   .text{

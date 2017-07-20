@@ -139,7 +139,7 @@ export default {
       margin: 0.6rem auto 0.4rem;
       width: 1.2rem;
       height: 1.2rem;
-      background: url("../../../static/image/dui.png") no-repeat 0 0;
+      background: url("../../image/dui.png") no-repeat 0 0;
       background-size: cover;
       &:after{
         position: absolute;
@@ -164,7 +164,7 @@ export default {
     }
     &.act{
       .icon{
-        background: url("../../../static/image/duiRed.png") no-repeat 0 0;
+        background: url("../../image/duiRed.png") no-repeat 0 0;
         background-size: cover;
         &:after{
           background: #cc0000;

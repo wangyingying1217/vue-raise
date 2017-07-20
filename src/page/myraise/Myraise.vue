@@ -12,10 +12,12 @@
 import Confirm from '@/components/Confirm'
 import Tabmenu from '@/components/Tabmenu'
 import Nodata from '@/components/Nodata'
+import Pay from '@/components/Pay'
 import LoadMore from '@/components/LoadMore'
 
 export default {
   props: ['apiURL', 'id'],
+  mixins: [Pay],
   data () {
     return {
       tabInfo: [{
@@ -37,7 +39,8 @@ export default {
       },
       confirmState: false,
       type: '',
-      contentId: ''
+      contentId: '',
+      cshId: ''
     }
   },
   components: {
@@ -98,8 +101,15 @@ export default {
           this.$indicator.close()
           alert('废止失败')
         })
-      } else if (val && this.commentType === 'supplement') {
-        alert('supplement')
+      } else if (val && this.type === 'supplement') {
+        let data = {
+          wxbdopenId: this.id,
+          money: this.money,
+          cshId: this.cshId,
+          contentId: this.contentId,
+          state: localStorage.getItem('state')
+        }
+        this.pay(data)
       }
     },
     deleteRaise: function (id) {
@@ -123,8 +133,9 @@ export default {
     supplement: function (json) {
       this.confirmState = true
       this.type = 'supplement'
-      this.contentId = json.contentId
+      this.cshId = json.cshId
       this.money = json.money
+      this.contentId = json.contentId
       this.confirmInfo.name = '确认补齐余下的' + this.money + '元？'
     }
   },

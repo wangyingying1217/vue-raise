@@ -62,8 +62,8 @@ export default {
       if (this.text.trim()) {
         this.$http.post(this.apiURL + 'member/message/sendChat.jhtml', {prevChatId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId, content: encodeURI(this.text)}).then((response) => {
           this.text = ''
-        }, (err) => {
-          alert(JSON.stringify(err))
+        }, () => {
+          alert('请求失败')
         })
       }
     }

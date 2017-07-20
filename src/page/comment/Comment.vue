@@ -286,16 +286,16 @@ export default {
   	line-height:0.7rem;
   }
   .zan{
-  	background:url("../../../static/image/zan.png") no-repeat 0 0;
+  	background:url("../../image/zan.png") no-repeat 0 0;
   	background-size:0.7rem;
   	width:3rem;
   }
   .zan.act{
-  	background:url("../../../static/image/zan_hover.png") no-repeat 0 0;
+  	background:url("../../image/zan_hover.png") no-repeat 0 0;
   	background-size:0.7rem;
   }
   .commentBtn{
-    background:url("../../../static/image/commentBtn.png") no-repeat 0 0;
+    background:url("../../image/commentBtn.png") no-repeat 0 0;
     background-size:0.7rem;
   }
 }
@@ -344,7 +344,7 @@ export default {
   float:right;
   width:1rem;
   height:1.16rem;
-  background:url("../../../static/image/delred.png") no-repeat center center;
+  background:url("../../image/delred.png") no-repeat center center;
   background-size:contain;
 }
 </style>

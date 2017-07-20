@@ -67,7 +67,7 @@ export default {
 }
 .act{
   .money{
-    background:url("../../static/image/couponsAct.png") no-repeat 0 0;
+    background:url("../image/couponsAct.png") no-repeat 0 0;
     background-size: contain;
   }
   .text{
@@ -76,21 +76,21 @@ export default {
 }
 .used{
   .money{
-    background:url("../../static/image/couponsDis.png") no-repeat 0 0;
+    background:url("../image/couponsDis.png") no-repeat 0 0;
     background-size: contain;
   }
   .info{
-    background:url("../../static/image/used.png") no-repeat bottom right;
+    background:url("../image/used.png") no-repeat bottom right;
     background-size: 2.87rem;
   }
 }
 .exceed{
   .money{
-    background:url("../../static/image/couponsDis.png") no-repeat 0 0;
+    background:url("../image/couponsDis.png") no-repeat 0 0;
     background-size: contain;
   }
   .info{
-    background:url("../../static/image/exceed.png") no-repeat bottom right;
+    background:url("../image/exceed.png") no-repeat bottom right;
     background-size: 2.87rem;
   }
 }

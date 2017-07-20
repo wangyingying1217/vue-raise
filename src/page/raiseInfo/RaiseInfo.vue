@@ -178,10 +178,10 @@ export default {
     }
     .concern{
       padding:0 0.2rem 0 1rem;
-      background:url('../../../static/image/concern.png') no-repeat 0 center;
+      background:url('../../image/concern.png') no-repeat 0 center;
       background-size: 0.8rem;
       &.active{
-        background:url('../../../static/image/concerning.png') no-repeat 0 center;
+        background:url('../../image/concerning.png') no-repeat 0 center;
         background-size: 0.8rem;
       }
     }
@@ -278,15 +278,15 @@ export default {
     margin-right:0.2rem;
   }
   .tip_ico1{
-    background:url('../../../static/image/tip1.png') no-repeat center center;
+    background:url('../../image/tip1.png') no-repeat center center;
     background-size: contain;
   }
   .tip_ico2{
-    background:url('../../../static/image/tip2.png') no-repeat center center;
+    background:url('../../image/tip2.png') no-repeat center center;
     background-size: contain;
   }
   .tip_ico3{
-    background:url('../../../static/image/tip3.png') no-repeat center center;
+    background:url('../../image/tip3.png') no-repeat center center;
     background-size: contain;
   }
   .tip_info{

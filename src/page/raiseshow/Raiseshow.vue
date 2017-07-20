@@ -3,12 +3,14 @@
     <Tabmenu :tabInfo = "tabInfo"></Tabmenu>
     <router-view :info="raise[state]"></router-view>
     <router-link :to="{ path: '/search/'+state}" v-if="raise[state].length>9" class="loadMore">查看更多>></router-link>
+    <Nodata :showSwitch="raise[state].length" :type="'index'"></Nodata>
     <FooterBar type='raise'></FooterBar>
   </div>
 </template>
 
 <script>
 import Tabmenu from '@/components/Tabmenu'
+import Nodata from '@/components/Nodata'
 import FooterBar from '@/components/FooterBar'
 
 export default {
@@ -36,6 +38,7 @@ export default {
   },
   components: {
     Tabmenu,
+    Nodata,
     FooterBar
   },
   methods: {

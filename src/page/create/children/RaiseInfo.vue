@@ -6,7 +6,7 @@
         <span class="box-input-title">设置封面：</span>
         <Upload class="filePic" :apiURL="apiURL" :id="id" @pic="localPic">
           <div v-show="!valid.cover.value">
-            <img class="bg" src="../../../../static/image/addPic.png">
+            <img class="bg" src="../../../image/addPic.png">
             <span v-show="!valid.cover.value">建议尺寸640*480，图片大小不要超过5M</span>
           </div>
           <img class="coverPic" :src="valid.cover.value" v-show="valid.cover.value" alt="pic">
@@ -127,7 +127,7 @@ export default {
         province = this.info.province
         city = this.info.city
       }
-      this.$http.get('../../../static/js1/city.json').then((response) => {
+      this.$http.get(this.apiURL + 'city.json').then((response) => {
         this.positionData = response.data.citylist
         this.positionData.forEach((item) => {
           if (item.p === province) {

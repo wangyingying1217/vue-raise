@@ -60,7 +60,7 @@ export default {
     width: 6rem;
     height: 5rem;
     margin: 3rem auto 0;
-    background: url("../../../static/image/success.png") no-repeat center center;
+    background: url("../../image/success.jpg") no-repeat center center;
     background-size: contain;
   }
   .text{

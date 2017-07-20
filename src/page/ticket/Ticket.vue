@@ -98,7 +98,7 @@ export default {
 .public{
   height: 13.5rem;
   background: #e86563;
-  background: url('../../../static/image/ticket.jpg') no-repeat;
+  background: url('../../image/ticket.jpg') no-repeat;
   background-size: cover;
   font-size: 1.6rem;
   color: #cc0000;

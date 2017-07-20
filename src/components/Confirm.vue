@@ -69,7 +69,7 @@ export default {
 	float:right;
 	width:1.2em;
 	height:2rem;
-	background:url("../../static/image/close.png") no-repeat center center;
+	background:url("../image/close.png") no-repeat center center;
   background-size: contain;
 }
 .confirm-content{
