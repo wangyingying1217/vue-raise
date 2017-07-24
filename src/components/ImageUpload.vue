@@ -163,7 +163,8 @@ export default {
   .img{
     position: fixed;
     top: 0;
-    z-index: 2
+    z-index: 2;
+    -webkit-transform:translate3d(0,0,0);
   }
   .clip{
     position: fixed;
