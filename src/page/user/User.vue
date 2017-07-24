@@ -7,7 +7,7 @@
           <img :src="user.headPic" alt="pic">
         </router-link>
         <div class="text">
-          <p>{{user.userName}}</p>
+          <p>{{user.nickName}}</p>
           <p>积分：{{user.integral}}</p>
         </div>
         <router-link :to="'/letter'" class="letter" :class="{'act':user.messages}" tag="li"></router-link>

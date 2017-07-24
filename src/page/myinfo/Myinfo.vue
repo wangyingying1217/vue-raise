@@ -12,9 +12,14 @@
               </div>
             </Upload>
           </dt>
+          <dd>
+            <div class="box">用户名
+              <div class="text">{{userName}}</div>
+            </div>
+          </dd>
           <router-link :to="'/myinfo/userName'" tag="dd">
             <div class="box">昵称
-              <div class="text">{{nickname}}</div>
+              <div class="text">{{nickName}}</div>
             </div>
           </router-link>
           <dd>
@@ -22,6 +27,7 @@
               <div class="text">{{gender | sex}}</div>
             </div>
             <select class="hidden" v-model="gender" name="gender" @change="changSex">
+              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
               <option :checked="gender=='male'" value="male">男</option>
               <option :checked="gender=='female'" value="female">女</option>
             </select>
@@ -36,10 +42,42 @@
             </div>
           </router-link>
           <router-link :to="'/myinfo/tel'" tag="dd">
-            <div class="box">手机号
+            <div class="box">手机
               <div class="text">{{tel}}</div>
             </div>
           </router-link>
+        </dl>
+        <dl class="personalInfo">
+          <dd>
+            <div class="box">单位类别
+              <div class="text">{{gender | sex}}</div>
+            </div>
+            <!-- <select class="hidden" v-model="gender" name="gender" @change="changSex">
+              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
+              <option :checked="gender=='male'" value="male">男</option>
+              <option :checked="gender=='female'" value="female">女</option>
+            </select> -->
+          </dd>
+          <dd>
+            <div class="box">单位层级
+              <div class="text">{{gender | sex}}</div>
+            </div>
+            <!-- <select class="hidden" v-model="gender" name="gender" @change="changSex">
+              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
+              <option :checked="gender=='male'" value="male">男</option>
+              <option :checked="gender=='female'" value="female">女</option>
+            </select> -->
+          </dd>
+          <dd>
+            <div class="box">从事工作
+              <div class="text">{{gender | sex}}</div>
+            </div>
+            <!-- <select class="hidden" v-model="gender" name="gender" @change="changSex">
+              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
+              <option :checked="gender=='male'" value="male">男</option>
+              <option :checked="gender=='female'" value="female">女</option>
+            </select> -->
+          </dd>
         </dl>
         <dl class="personalInfo">
           <router-link :to="'/myinfo/signature'" tag="dd">
@@ -67,7 +105,7 @@
     </div>
     <transition name="slide-fade">
       <router-view :apiURL="apiURL" :id="id" :signature="signature" :emailPre="email" :isEmail="isEmail"
-      :username="nickname" :localPic="localPic" type="headPic"></router-view>
+      :username="nickName" :localPic="localPic" type="headPic"></router-view>
     </transition>
   </div>
 </template>
@@ -81,7 +119,8 @@ export default {
     return {
       show: '',
       avater: '',
-      nickname: '',
+      userName: '',
+      nickName: '',
       tel: '',
       email: '',
       isEmail: '',
@@ -100,7 +139,8 @@ export default {
         // 获取个人信息
         this.$http.get(this.apiURL + 'member/perInfo.jhtml?wxbdopenId=' + this.id).then((response) => {
           this.avater = response.data.headPic
-          this.nickname = response.data.userName
+          this.userName = response.data.userName
+          this.nickName = response.data.nickName
           this.tel = response.data.mobile
           this.email = response.data.email
           this.isEmail = response.data.isEmail
@@ -146,6 +186,8 @@ export default {
         return '女'
       } else if (value === 'male') {
         return '男'
+      } else {
+        return '保密'
       }
     }
   }

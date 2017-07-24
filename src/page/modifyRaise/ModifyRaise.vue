@@ -158,11 +158,10 @@ export default {
           this.state.name = 'return'
           this.formUrl = 'member/subReturn.jhtml'
           this.$http.get(this.apiURL + 'member/modifyReturn.jhtml?wxbdopenId=' + this.id + '&contentId=' + this.contentId).then((response) => {
-            this.returnData = response.data
-            if (response.data.msg) {
+            if (response.data.state) {
               this.returnData = response.data.data
             } else {
-              alert('您没有操作权限')
+              alert(response.data.msg)
               this.$router.go(-1)
             }
           }, () => {

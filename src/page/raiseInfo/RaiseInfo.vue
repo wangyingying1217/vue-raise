@@ -10,7 +10,7 @@
           <span class='fl'>发起人：
             <router-link :to="'/question/'+ contentId" tag="strong">{{info.userName}}</router-link>
           </span>
-          <span class='fr concern' v-bind:class='{"active":info.concern}' v-on:click='concern'>关注</span>
+          <span class='fr concern' v-bind:class='{"active":info.concern}' v-on:click='concern'>收藏</span>
         </div>
       </div>
     </div>

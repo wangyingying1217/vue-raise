@@ -2,7 +2,7 @@
   <div class="wrapper">
     <ul class="address-add" v-show="state.name === ''">
       <li>
-        <span class="title">收货人</span><input type="text" v-model="name">
+        <span class="title">收件人</span><input type="text" v-model="name">
       </li>
       <li>
         <span class="title">联系电话</span><input type="tel" v-model="tel">
@@ -67,8 +67,8 @@ export default {
       this.$indicator.close()
     },
     submit: function (item) {
-      if (!/^[\u4e00-\u9fa5]{2,5}$/.test(this.name)) {
-        this.tip.text = '姓名为2~5个字'
+      if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.name)) {
+        this.tip.text = '收件人不能为空'
       } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
         this.tip.text = '手机号输入错误'
       } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.place)) {
