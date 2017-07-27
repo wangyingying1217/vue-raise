@@ -1,6 +1,6 @@
 <template>
   <div v-if="show">
-    <div v-show="$route.path == '/myinfo'">
+    <div v-show="$route.path == '/myinfo/check' || $route.path == '/myinfo/nocheck' ">
       <div class="wrapper">
         <dl class="personalInfo mt1">
           <dt>
@@ -33,6 +33,7 @@
             </select>
           </dd>
           <router-link :to="'/myinfo/email'" tag="dd">
+            <span v-show="check && !isEmail" class="check-icon">*</span>
             <div class="box">邮箱
               <div class="text">
                 <span class="email">{{email}}</span><!--
@@ -42,6 +43,7 @@
             </div>
           </router-link>
           <router-link :to="'/myinfo/tel'" tag="dd">
+            <span v-show="check && !tel" class="check-icon">*</span>
             <div class="box">手机
               <div class="text">{{tel}}</div>
             </div>
@@ -49,6 +51,7 @@
         </dl>
         <dl class="personalInfo">
           <dd>
+            <span v-show="check && tel" class="check-icon">*</span>
             <div class="box">单位类别
               <div class="text">{{gender | sex}}</div>
             </div>
@@ -59,6 +62,7 @@
             </select> -->
           </dd>
           <dd>
+            <span v-show="check && tel" class="check-icon">*</span>
             <div class="box">单位层级
               <div class="text">{{gender | sex}}</div>
             </div>
@@ -69,6 +73,7 @@
             </select> -->
           </dd>
           <dd>
+            <span v-show="check && tel" class="check-icon">*</span>
             <div class="box">从事工作
               <div class="text">{{gender | sex}}</div>
             </div>
@@ -94,7 +99,8 @@
           </router-link>
         </dl>
         <dl class="personalInfo">
-          <router-link to="/myinfo/identification" tag="dd">
+          <router-link :to="'/myinfo/identification/' + $route.params.type" tag="dd">
+            <span v-show="check && !isAuthentication" class="check-icon">*</span>
             <div class="box">实名认证</div>
           </router-link>
           <router-link to="/findPassword" tag="dd">
@@ -126,7 +132,8 @@ export default {
       isEmail: '',
       signature: '',
       gender: '',
-      localPic: ''
+      localPic: '',
+      isAuthentication: false
     }
   },
   components: {
@@ -146,6 +153,7 @@ export default {
           this.isEmail = response.data.isEmail
           this.signature = response.data.idiograph
           this.gender = response.data.gender
+          this.isAuthentication = response.data.isAuthentication
           this.show = true
           this.$indicator.close()
         }, () => {
@@ -179,6 +187,15 @@ export default {
   created () {
     // 组件创建完后获取数据，
     this.getCustomers()
+  },
+  computed: {
+    check: function () {
+      let check = false
+      if (this.$route.params.type === 'check') {
+        check = true
+      }
+      return check
+    }
   },
   filters: {
     sex: function (value) {
@@ -216,6 +233,11 @@ export default {
     &:last-of-type{
       border-bottom:none;
     }
+  }
+  .check-icon{
+    position: absolute;
+    left: 0.5rem;
+    color: #cc0000;
   }
   .box{
     display:block;

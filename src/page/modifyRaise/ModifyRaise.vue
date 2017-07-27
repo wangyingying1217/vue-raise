@@ -153,20 +153,21 @@ export default {
             alert('请求失败')
           })
         } else if (this.type === 'return') {
-          document.title = '修改回报'
+          document.title = '添加回报'
           this.modifyType = 'return'
           this.state.name = 'return'
-          this.formUrl = 'member/subReturn.jhtml'
-          this.$http.get(this.apiURL + 'member/modifyReturn.jhtml?wxbdopenId=' + this.id + '&contentId=' + this.contentId).then((response) => {
-            if (response.data.state) {
-              this.returnData = response.data.data
-            } else {
-              alert(response.data.msg)
-              this.$router.go(-1)
-            }
-          }, () => {
-            alert('请求失败')
-          })
+          this.formUrl = 'member/add/return.jhtml'
+          // this.$http.get(this.apiURL + 'member/modifyReturn.jhtml?wxbdopenId=' + this.id + '&contentId=' + this.contentId).then((response) => {
+          //   this.returnData = response.data
+          //   if (response.data.msg) {
+          //     this.returnData = response.data.data
+          //   } else {
+          //     alert('您没有操作权限')
+          //     this.$router.go(-1)
+          //   }
+          // }, () => {
+          //   alert('请求失败')
+          // })
         }
       }
     },

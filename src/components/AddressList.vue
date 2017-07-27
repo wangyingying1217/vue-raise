@@ -19,12 +19,13 @@
 </template>
 
 <script>
+import cityData from '@/service/city.js'
 export default {
   props: ['info', 'apiURL'],
   data () {
     return {
       state: '',
-      positionData: [],
+      positionData: cityData,
       provinceData: {
         p: '',
         c: []
@@ -37,11 +38,6 @@ export default {
     }
   },
   methods: {
-    getCustomers: function () {
-      this.$http.get(this.apiURL + 'city.json').then((response) => {
-        this.positionData = response.data.citylist
-      })
-    },
     province: function (item) {
       this.provinceData = item
       this.state.name = 'city'
@@ -59,10 +55,6 @@ export default {
       this.state.name = ''
       this.$emit('address', this.provinceData.p + '/' + this.cityData.n + '/' + value)
     }
-  },
-  created () {
-    // 组件创建完后获取数据，
-    this.getCustomers()
   },
   watch: {
     info: {

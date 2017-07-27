@@ -62,6 +62,7 @@
 
 <script>
 import Upload from '@/components/Upload'
+import cityData from '@/service/city.js'
 
 export default {
   props: {
@@ -127,15 +128,13 @@ export default {
         province = this.info.province
         city = this.info.city
       }
-      this.$http.get(this.apiURL + 'city.json').then((response) => {
-        this.positionData = response.data.citylist
-        this.positionData.forEach((item) => {
-          if (item.p === province) {
-            this.cityDate = item.c
-            this.province = province
-            this.city = city
-          }
-        })
+      this.positionData = cityData
+      this.positionData.forEach((item) => {
+        if (item.p === province) {
+          this.cityDate = item.c
+          this.province = province
+          this.city = city
+        }
       })
       this.$indicator.close()
     },

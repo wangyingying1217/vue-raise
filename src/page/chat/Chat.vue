@@ -33,6 +33,7 @@ export default {
       page: 1,
       text: '',
       show: false,
+      requset: true,
       timer: null
     }
   },
@@ -43,6 +44,9 @@ export default {
           document.title = response.data.title
           this.info = response.data
           this.show = true
+          this.$nextTick(function () {
+            window.scrollTo(0, document.body.scrollHeight)
+          })
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
@@ -50,10 +54,14 @@ export default {
         })
       }
       this.timer = setInterval(() => {
-        this.sendMessage = []
-        if (this.id) {
+        if (this.id && this.requset) {
+          this.requset = false
           this.$http.post(this.apiURL + 'member/message/chat.jhtml', {prevContentId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId}).then((response) => {
             this.info.content.push(...response.data.content)
+            this.$nextTick(function () {
+              window.scrollTo(0, document.body.scrollHeight)
+            })
+            this.requset = true
           })
         }
       }, 500)
@@ -69,11 +77,6 @@ export default {
     }
   },
   watch: {
-    info: function () {
-      setTimeout(() => {
-        window.scrollTo(0, document.body.scrollHeight)
-      }, 10)
-    },
     id: function () {
       this.getCustomers()
     },
@@ -89,7 +92,6 @@ export default {
   computed: {
     receiverId: function () {
       return this.$route.params.id
-      // return 120
     },
     prevChatId: function () {
       return this.info.content.length ? this.info.content[this.info.content.length - 1].contentId : 0

@@ -131,7 +131,7 @@ export default {
             }
           } else {
             alert('请先进行认证')
-            this.$router.push('/myinfo/identification')
+            this.$router.push('/myinfo/check')
           }
           this.user = response.data.info
           this.itemtype = response.data.itemtype

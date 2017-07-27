@@ -44,7 +44,7 @@
         <router-link :to="'/returnProgress/' + item.contentId" v-if=" item.state == RETURNING">回报进展</router-link>
         <router-link :to="'/supportRecord/' + item.contentId" v-if=" item.state == SUCCEED || item.state == RAISEING || item.state == CLEARING">支持记录</router-link>
         <router-link :to="'/Dynamic/' + item.contentId" v-if=" item.state == RAISEING || item.state == PASSED || item.state == PREHEATING || item.state == CLEARING || item.state == SUCCEED || item.state == RETURNING">发表动态</router-link>
-        <router-link :to="'/modifyRaise/return/' + item.contentId" v-if=" item.state == RAISEING || item.state == PASSED || item.state == PREHEATING">修改回报</router-link>
+        <router-link :to="'/modifyRaise/return/' + item.contentId" v-if=" item.state == RAISEING || item.state == PASSED || item.state == PREHEATING">添加回报</router-link>
         <a @click="$emit('endRaise', item.contentId)" v-if=" item.state == RAISEING">终止众筹</a>
         <a @click="$emit('abolishRaise', item.contentId)" v-if=" item.state == PASSED || item.state == PREHEATING">废止众筹</a>
         <a @click="$emit('supplement', {contentId: item.contentId, cshId: item.cshId, money: item.money})" v-if=" item.state == CLEARING && parseInt(item.progress) < 100 ">余款补齐</a>

@@ -3,7 +3,7 @@
     <!-- <div class="panel" :style="'background:url('+info.headPic+') no-repeat center center/cover'"> -->
     <div class="panel">
       <div class="person-info clearfix">
-        <router-link to="/myinfo">
+        <router-link to="/myinfo/nocheck">
           <img :src="user.headPic" alt="pic">
         </router-link>
         <div class="text">
@@ -51,7 +51,7 @@ export default {
         path: '/mynotice',
         name: '活动公告'
       }, {
-        path: '/myinfo',
+        path: '/myinfo/nocheck',
         name: '个人资料'
       }, {
         path: '/ours',

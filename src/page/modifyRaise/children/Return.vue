@@ -427,98 +427,100 @@ export default {
     }
   },
   created() {
-    let arr = []
-    this.returnData.forEach((item) => {
-      let json = {
-        returnType: '',  // 抽奖回报：lottery，商品回报：product
-        productOrigin: item.productOrigin,  // 在线选择：online；自行上传：upload
-        productType: '',
-        productForm: '',
-        productFormOptions: ['全部'],
-        picSrc: [],
-        serverId: [],
-        online: {
-          returnProductA: {
-            value: '',
-            num: '',
-            id: ''
+    if (this.returnData.length) {
+      let arr = []
+      this.returnData.forEach((item) => {
+        let json = {
+          returnType: '',  // 抽奖回报：lottery，商品回报：product
+          productOrigin: item.productOrigin,  // 在线选择：online；自行上传：upload
+          productType: '',
+          productForm: '',
+          productFormOptions: ['全部'],
+          picSrc: [],
+          serverId: [],
+          online: {
+            returnProductA: {
+              value: '',
+              num: '',
+              id: ''
+            },
+            returnProductB: {
+              value: '',
+              num: '',
+              id: ''
+            },
+            returnProductC: {
+              value: '',
+              num: '',
+              id: ''
+            },
+            unempty: false
           },
-          returnProductB: {
-            value: '',
-            num: '',
-            id: ''
+          upload: {
+            productTitle: {invalid: '', value: ''},
+            productAuthor: {invalid: '', value: ''},
+            productCode: {invalid: '', value: ''},
+            productPirce: {invalid: '', value: ''},
+            productNum: {invalid: false, value: ''},
+            productIntro: {invalid: '', value: ''}
           },
-          returnProductC: {
-            value: '',
-            num: '',
-            id: ''
+          public: {
+            supportAmount: {invalid: false, value: item.supportAmount},
+            lotNum: {invalid: false, value: item.lotNum},
+            supportTitle: {invalid: false, value: item.supportTitle},
+            supportExplain: {invalid: false, value: item.supportExplain},
+            lotLimit: {invalid: false, value: item.lotLimit},
+            presentExp: {invalid: false, value: item.presentExp},
+            returnTime: {invalid: false, value: item.returnTime}
           },
-          unempty: false
-        },
-        upload: {
-          productTitle: {invalid: '', value: ''},
-          productAuthor: {invalid: '', value: ''},
-          productCode: {invalid: '', value: ''},
-          productPirce: {invalid: '', value: ''},
-          productNum: {invalid: false, value: ''},
-          productIntro: {invalid: '', value: ''}
-        },
-        public: {
-          supportAmount: {invalid: false, value: item.supportAmount},
-          lotNum: {invalid: false, value: item.lotNum},
-          supportTitle: {invalid: false, value: item.supportTitle},
-          supportExplain: {invalid: false, value: item.supportExplain},
-          lotLimit: {invalid: false, value: item.lotLimit},
-          presentExp: {invalid: false, value: item.presentExp},
-          returnTime: {invalid: false, value: item.returnTime}
-        },
-        lottery: {
-          lotteryUnit: {invalid: '', value: ''}
-        },
-        product: {
-          freight: {invalid: '', value: ''}
-        }
-      }
-      if (item.returnType === '商品回报') {
-        json.returnType = 'product'
-        json.product.freight = {invalid: false, value: item.freight}
-      } else if (item.returnType === '抽奖回报') {
-        json.returnType = 'lottery'
-        json.lottery.lotteryUnit = {invalid: false, value: item.lotteryUnit}
-      }
-      if (item.productOrigin === 'online') {
-        json.online.unempty = false
-        item.online.forEach((ele, index) => {
-          let returnProduct = {
-            value: ele.picsrc,
-            num: ele.num,
-            id: ele.contentId
+          lottery: {
+            lotteryUnit: {invalid: '', value: ''}
+          },
+          product: {
+            freight: {invalid: '', value: ''}
           }
-          if (index === 0) {
-            json.online.returnProductA = returnProduct
-          } else if (index === 1) {
-            json.online.returnProductB = returnProduct
-          } else if (index === 2) {
-            json.online.returnProductC = returnProduct
-          }
-        })
-      } else if (item.productOrigin === 'upload') {
-        json.upload = {
-          productTitle: {invalid: false, value: item.online[0].title},
-          productAuthor: {invalid: false, value: item.online[0].authors},
-          productCode: {invalid: false, value: item.online[0].productCode},
-          productPirce: {invalid: false, value: item.online[0].unitPrice},
-          productNum: {invalid: false, value: item.online[0].num},
-          productIntro: {invalid: false, value: item.online[0].productIntro}
         }
-        json.serverId = json.picSrc = item.online[0].picsrc
-        json.productType = item.online[0].classify
-        json.productForm = item.online[0].productForm
-        this.shapeData(item.online[0].classify, json)
-      }
-      arr.push(json)
-    })
-    this.returnInfo = arr
+        if (item.returnType === '商品回报') {
+          json.returnType = 'product'
+          json.product.freight = {invalid: false, value: item.freight}
+        } else if (item.returnType === '抽奖回报') {
+          json.returnType = 'lottery'
+          json.lottery.lotteryUnit = {invalid: false, value: item.lotteryUnit}
+        }
+        if (item.productOrigin === 'online') {
+          json.online.unempty = false
+          item.online.forEach((ele, index) => {
+            let returnProduct = {
+              value: ele.picsrc,
+              num: ele.num,
+              id: ele.contentId
+            }
+            if (index === 0) {
+              json.online.returnProductA = returnProduct
+            } else if (index === 1) {
+              json.online.returnProductB = returnProduct
+            } else if (index === 2) {
+              json.online.returnProductC = returnProduct
+            }
+          })
+        } else if (item.productOrigin === 'upload') {
+          json.upload = {
+            productTitle: {invalid: false, value: item.online[0].title},
+            productAuthor: {invalid: false, value: item.online[0].authors},
+            productCode: {invalid: false, value: item.online[0].productCode},
+            productPirce: {invalid: false, value: item.online[0].unitPrice},
+            productNum: {invalid: false, value: item.online[0].num},
+            productIntro: {invalid: false, value: item.online[0].productIntro}
+          }
+          json.serverId = json.picSrc = item.online[0].picsrc
+          json.productType = item.online[0].classify
+          json.productForm = item.online[0].productForm
+          this.shapeData(item.online[0].classify, json)
+        }
+        arr.push(json)
+      })
+      this.returnInfo = arr
+    }
   }
 }
 var _check = function (obj) {

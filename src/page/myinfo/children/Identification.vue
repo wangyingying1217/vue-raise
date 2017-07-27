@@ -83,13 +83,13 @@
         <input type="hidden" name="cardType" :value="tabIndex">
         <input type="hidden" :value="redirectUrl" name="redirect">
         <div class="cause" v-if="cause">未通过原因：{{cause}}</div>
-        <div v-if="identification === '已通过'" class="submit-btn"><a class="act" @click="logout()">注销</a></div>
+        <div v-if="identification === '已通过'" class="submit-btn"><a class="act" @click="confirmState = true">注销</a></div>
         <div v-else-if="identification === '未通过'" class="submit-btn"><a class="act" @click="logout()">重新认证</a></div>
         <div v-else-if="identification === '待审核'" class="submit-btn"><a>审核中……</a></div>
         <div v-else class="submit-btn"><a class="act" @click="submit()">确认</a></div>
       </div>
     </form>
-
+    <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <AddressList :info="state" :apiURL="apiURL" @address="address"></AddressList>
     <Tip :info="tip"></Tip>
   </div>
@@ -98,6 +98,7 @@
 <script>
 import AddressList from '@/components/AddressList'
 import Upload from '@/components/Upload'
+import Confirm from '@/components/Confirm'
 import Tip from '@/components/Tip'
 
 export default {
@@ -127,7 +128,12 @@ export default {
       },
       state: {
         name: ''
-      }
+      },
+      confirmInfo: {
+        title: '提示',
+        name: '您确定要注销？'
+      },
+      confirmState: false
     }
   },
   methods: {
@@ -139,6 +145,7 @@ export default {
           this.identification = response.data.state
           if (response.data.state !== '未认证') {
             this.tabIndex = response.data.cardType
+            this.telReadonly = true
             if (response.data.state === '未通过') {
               this.cause = response.data.cause
             }
@@ -175,7 +182,6 @@ export default {
         this.tabIndex = 'person'
         this.userName = ''
         this.IDcard = ''
-        this.tel = ''
         this.prov = ''
         this.city = ''
         this.tradeName = ''
@@ -186,11 +192,11 @@ export default {
         this.inversePic = ''
         this.licensePic = ''
         this.place = ''
+        this.cause = ''
         this.identification = '未认证'
-        alert('注销成功')
       }, () => {
         this.$indicator.close()
-        alert('注销失败')
+        alert('操作失败')
       })
     },
     submit: function () {
@@ -209,7 +215,6 @@ export default {
           this.tip.text = '请上传身份证反面图片'
         } else {
           this.$refs.form.submit()
-          this.$router.push('/myinfo')
         }
       } else if (this.tabIndex === 'company') {
         if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.tradeName)) {
@@ -228,7 +233,6 @@ export default {
           this.tip.text = '请上传营业执照图片'
         } else {
           this.$refs.form.submit()
-          this.$router.push('/myinfo')
         }
       }
       return false
@@ -237,6 +241,12 @@ export default {
       this.place = value
       this.prov = value.split('/')[0]
       this.city = value.split('/')[1]
+    },
+    confirm: function (val) {
+      this.confirmState = false
+      if (val) {
+        this.logout()
+      }
     }
   },
   watch: {
@@ -253,19 +263,13 @@ export default {
   },
   components: {
     AddressList,
+    Confirm,
     Tip,
     Upload
   },
   computed: {
     redirectUrl: function () {
-      return location.href.split('#')[0] + '#/myinfo'
-    }
-  },
-  beforeRouteLeave (to, from, next) {
-    if (to.fullPath === '/create') {
-      this.$router.go(-1)
-    } else {
-      next()
+      return location.href.split('#')[0] + '#/myinfo/' + this.$route.params.type
     }
   }
 }

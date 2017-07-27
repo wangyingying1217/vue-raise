@@ -273,7 +273,7 @@ export default new Router({
     component: Mynotice
   }, {
     // 个人资料
-    path: '/myinfo',
+    path: '/myinfo/:type',
     component: Myinfo,
     children: [{
       path: '/ImageUpload', // 修改头像
@@ -298,7 +298,7 @@ export default new Router({
         component: Newaddress
       }]
     }, {
-      path: '/myinfo/identification', // 认证
+      path: '/myinfo/identification/:type', // 认证
       component: Identification
     }, {
       path: '/myinfo/password', // 修改密码
@@ -317,7 +317,7 @@ export default new Router({
     path: '/notice/:id',
     component: Notice
   }, {
-    // 修改众筹、修改回报页面
+    // 修改众筹、添加回报页面
     path: '/modifyRaise/:type/:contentId',
     component: ModifyRaise,
     children: [{
