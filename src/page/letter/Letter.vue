@@ -1,42 +1,7 @@
 <template>
   <div v-if="show">
     <ul class="notice">
-      <router-link to="/messageList/notice" tag="li" :class="{'act':info.itemInfo.message}">
-        <img src="../../image/announcement.png" alt="pic">
-        <div class="info">
-          <p>
-            <span class="tit">项目通知</span>
-            <span class="fr">{{info.itemInfo.acceptTime}}</span>
-          </p>
-          <p v-if="info.itemInfo.content">{{info.itemInfo.content}}</p>
-          <p v-else>暂无项目通知</p>
-        </div>
-      </router-link>
-      <router-link to="/messageList/return" tag="li" :class="{'act':info.supportInfo.message}">
-        <img src="../../image/announcementPro.png" alt="pic">
-        <div class="info">
-          <p>
-            <span class="tit">支持消息</span>
-            <span class="fr">{{info.supportInfo.acceptTime}}</span>
-          </p>
-          <p v-if="info.supportInfo.userName">【{{info.supportInfo.userName}}】支持了您的项目“{{info.supportInfo.title}}”{{info.supportInfo.money}}元</p>
-          <p v-else>暂无项目通知</p>
-        </div>
-      </router-link>
-      <router-link to="/messageList/logistics" tag="li" :class="{'act':info.logiService.message}">
-        <img src="../../image/announcementTrans.png" alt="pic">
-        <div class="info">
-          <p>
-            <span class="tit">物流服务</span>
-            <span class="fr">{{info.logiService.acceptTime}}</span>
-          </p>
-          <p v-if="info.logiService.logisticCode">您的订单：{{info.logiService.logisticCode}} {{info.logiService.state}}</p>
-          <p v-else>暂无物流信息</p>
-        </div>
-      </router-link>
-    </ul>
-    <ul class="notice">
-      <router-link :to="{ path: '/chat/'+item.userId}" tag="li" v-for="(item, index) in info.message" :key="index">
+      <router-link :to="{ path: '/chat/'+item.userId}" tag="li" v-for="(item, index) in info" :key="index">
         <img :src="item.headPic" alt="pic">
         <div class="info">
           <p>
@@ -50,11 +15,12 @@
         </div>
       </router-link>
     </ul>
+    <Nodata :showSwitch="info.length" type="letter"></Nodata>
   </div>
 </template>
 
 <script>
-
+import Nodata from '@/components/Nodata'
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -70,7 +36,7 @@ export default {
     getCustomers: function () {
       document.title = '私信'
       if (this.id) {
-        this.$http.get(this.apiURL + 'member/message/list.jhtml?wxbdopenId=' + this.id).then((response) => {
+        this.$http.get(this.apiURL + 'member/message/letter/list.jhtml?wxbdopenId=' + this.id).then((response) => {
           this.info = response.data
           this.show = true
           this.$indicator.close()
@@ -88,6 +54,9 @@ export default {
     $route: function () {
       this.getCustomers()
     }
+  },
+  components: {
+    Nodata
   },
   created () {
     // 组件创建完后获取数据，

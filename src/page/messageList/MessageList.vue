@@ -38,7 +38,8 @@ export default {
       },
       RETURN: 'return',
       NOTICE: 'notice',
-      LOGISTICS: 'logistics'
+      LOGISTICS: 'logistics',
+      DYNAMIC: 'dynamic'
     }
   },
   methods: {
@@ -65,7 +66,11 @@ export default {
             response.data.forEach((item) => {
               item.href = '/supportRecord/' + item.id
             })
-          } else {
+          } else if (this.type === this.DYNAMIC) {
+            response.data.forEach((item) => {
+              item.href = '/supportRecord/' + item.id
+            })
+          } else if (this.type === this.NOTICE) {
             response.data.forEach((item) => {
               item.href = '/myraise/effective'
             })
@@ -87,15 +92,15 @@ export default {
           this.page ++
           this.$http.get(this.apiURL + this.url + '?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
             if (response.data.length) {
-              if (this.type === this.LOGISTICS) {
-                response.data.forEach((item) => {
-                  item.href = '/logistics/' + item.id
-                })
-              } else if (this.type === this.RETURN) {
+              if (this.type === this.RETURN) {
                 response.data.forEach((item) => {
                   item.href = '/supportRecord/' + item.id
                 })
-              } else {
+              } else if (this.type === this.DYNAMIC) {
+                response.data.forEach((item) => {
+                  item.href = '/supportRecord/' + item.id
+                })
+              } else if (this.type === this.NOTICE) {
                 response.data.forEach((item) => {
                   item.href = '/myraise/effective'
                 })
@@ -139,6 +144,8 @@ export default {
         url = 'member/message/logistics/list.jhtml'
       } else if (this.type === this.RETURN) {
         url = 'member/message/support/list.jhtml'
+      } else if (this.type === this.DYNAMIC) {
+        url = 'member/message/dynamic/list.jhtml'
       } else {
         url = 'member/message/item/list.jhtml'
       }

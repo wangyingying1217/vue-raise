@@ -4,7 +4,7 @@
       <input type="url" v-model="email" placeholder="输入新绑定的邮箱">
     </div>
     <div class="submit-btn">
-      <a :class="{'act':email}" @click="confirm">绑定邮箱</a>
+      <a :class="{'act':email}" @click="confirm">{{btnText}}</a>
     </div>
     <Tip :info="tip"></Tip>
   </div>
@@ -55,6 +55,15 @@ export default {
     document.title = '绑定邮箱'
     if (this.emailPre && !this.isEmail) {
       this.email = this.emailPre
+    }
+  },
+  computed: {
+    btnText: function () {
+      let text = '绑定邮箱'
+      if (this.emailPre && this.email === this.emailPre) {
+        text = '激活邮箱'
+      }
+      return text
     }
   }
 }

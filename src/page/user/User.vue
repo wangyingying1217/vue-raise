@@ -10,7 +10,7 @@
           <p>{{user.nickName}}</p>
           <p>积分：{{user.integral}}</p>
         </div>
-        <router-link :to="'/letter'" class="letter" :class="{'act':user.messages}" tag="li"></router-link>
+        <router-link :to="'/informList'" class="letter" :class="{'act':user.messages}" tag="li"></router-link>
       </div>
       <p class="welcome">{{user.companyName}}欢迎您！</p>
     </div>

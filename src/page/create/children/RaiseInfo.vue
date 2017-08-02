@@ -114,6 +114,7 @@ export default {
   },
   methods: {
     getCustomers: function () {
+      this.positionData = cityData
       let raiseInfo = JSON.parse(localStorage.getItem('raiseInfo'))
       let timestamp = new Date().getTime()
       let province = ''
@@ -124,18 +125,14 @@ export default {
         this.selfdomValid = raiseInfo.selfdomValid
         province = raiseInfo.province
         city = raiseInfo.city
-      } else {
-        province = this.info.province
-        city = this.info.city
+        this.positionData.forEach((item) => {
+          if (item.p === province) {
+            this.cityDate = item.c
+            this.province = province
+            this.city = city
+          }
+        })
       }
-      this.positionData = cityData
-      this.positionData.forEach((item) => {
-        if (item.p === province) {
-          this.cityDate = item.c
-          this.province = province
-          this.city = city
-        }
-      })
       this.$indicator.close()
     },
     townData: function () {

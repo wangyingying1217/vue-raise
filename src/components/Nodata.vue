@@ -18,8 +18,10 @@ export default{
         coupon: '您还没有优惠券啊~~',
         order: '您还没有相关的订单啊~~',
         message: '您还没有相关的消息啊~~',
+        activity: '您还没有活动公告啊~~',
         online: '您还没有在线商品啊~~',
         returnProgress: '您还没有回报进展~~',
+        letter: '您还没有私信啊~~',
         index: '还没有相关的众筹~~'
       }
     }

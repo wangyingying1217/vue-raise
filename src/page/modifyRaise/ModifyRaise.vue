@@ -3,7 +3,7 @@
     <PresonInfo v-if="modifyType !== 'return'" v-show="state.name=='presonInfo'" :state="state" :info="user" :type="itemtype" :presonInfo="presonInfo"></PresonInfo>
     <RaiseInfo v-if="modifyType !== 'return'" v-show="state.name=='raiseInfo'" :apiURL="apiURL" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate" :raiseInfo="raiseInfo"></RaiseInfo>
     <Describe v-if="modifyType !== 'return'" v-show="state.name=='describe'" :apiURL="apiURL" :id="id" :state="state" :describe="describe"></Describe>
-    <Return :modifyType='modifyType' v-show="state.name=='return'" :apiURL="apiURL" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate" :productTypeList="productType" :returnData="returnData"></Return>
+    <Return :modifyType='modifyType' v-show="state.name=='return'" :apiURL="apiURL" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate" :productTypeList="productType" :returnData="returnData" :isLottoReturn="isLottoReturn"></Return>
     <input type="hidden" :value="contentId" name="contentId">
     <input type="hidden" :value="user.userName" name="userName">
     <input type="hidden" :value="user.wxbdopenId" name="wxbdopenId">
@@ -110,6 +110,7 @@ export default {
       raiseInfo: {},
       describe: {},
       returnData: [],
+      isLottoReturn: true,
       formUrl: '',
       modifyType: ''
     }
@@ -157,17 +158,16 @@ export default {
           this.modifyType = 'return'
           this.state.name = 'return'
           this.formUrl = 'member/add/return.jhtml'
-          // this.$http.get(this.apiURL + 'member/modifyReturn.jhtml?wxbdopenId=' + this.id + '&contentId=' + this.contentId).then((response) => {
-          //   this.returnData = response.data
-          //   if (response.data.msg) {
-          //     this.returnData = response.data.data
-          //   } else {
-          //     alert('您没有操作权限')
-          //     this.$router.go(-1)
-          //   }
-          // }, () => {
-          //   alert('请求失败')
-          // })
+          this.$http.get(this.apiURL + 'member/report.jhtml?wxbdopenId=' + this.id + '&contentId=' + this.contentId).then((response) => {
+            if (response.data.state) {
+              this.isLottoReturn = response.data.isLottoReturn
+            } else {
+              alert(response.data.msg)
+              this.$router.go(-1)
+            }
+          }, () => {
+            alert('请求失败')
+          })
         }
       }
     },
@@ -177,7 +177,6 @@ export default {
   },
   created() {
     this.getCustomers()
-    console.log(this.$route)
   },
   watch: {
     id: function () {

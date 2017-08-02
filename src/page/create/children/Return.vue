@@ -31,7 +31,7 @@
           </div>
           <div class="raise-box">
             <span class="box-input-title">总份额数：</span>
-            <input class="box-input" type="number" placeholder="每个人最多支持份数（“0”为不限制）" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
+            <input class="box-input" type="number" placeholder="该回报的最大支持份数" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
             <p class="errors" v-if="item.public.lotNum.invalid">{{validateMsg.nonegative}}</p>
           </div>
           <div class="raise-box">

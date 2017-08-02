@@ -10,7 +10,8 @@
         <dd class="raise-box">
           <span class="box-input-title">宣传视频：</span>
           <Upload class="video" :apiURL="apiURL" :id="id" @pic="(url) => {video = url}" @poster="(url) => {poster = url}" type="video">
-            请选择本地要上传的路径
+            <div v-show="!video" class="video-src">请选择本地要上传的路径</div>
+            <div v-show="video" class="video-src">{{video}}</div>
             <span class="video_del" v-show="video" @click="video = ''">删除</span>
             <input type="hidden" name="video" :value="video"/>
           </Upload>
@@ -234,6 +235,15 @@ export default {
 	width:13rem;
 	background:#ffffff;
 	border-radius:0.1rem;
+  .video-src{
+    width: 10rem;
+    font-size: 0.7rem;
+    line-height: 1.8rem;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .video_del{
     font-size:0.7rem;
     color:#cc0000;

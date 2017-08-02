@@ -1,7 +1,6 @@
 <template>
   <div class="wrapper">
-    <form :action="apiURL+'member/approve.jhtml'" method="post" ref="form">
-      <div class="wrapper" v-show="state.name === ''">
+    <div class="wrapper">
         <div class="tab-menu">
           <a v-if="!(identification !== '未认证' && tabIndex == 'company')" :class="{'act': tabIndex == 'person'}" @click="tabIndex = 'person'">个人认证</a>
           <a v-if="!(identification !== '未认证' && tabIndex == 'person')" :class="{'act': tabIndex == 'company'}" @click="tabIndex = 'company'">企业认证</a>
@@ -14,16 +13,6 @@
           <li>
             <span class="title">身份证号</span>：
             <input class="text" type="input" placeholder="输入证件号码" name="cardNo" v-bind="{'readonly':identification !== '未认证'}" v-model="IDcard">
-          </li>
-          <li>
-            <span class="title">联系方式</span>：
-            <input class="text" v-bind:readonly="telReadonly" type="tel" placeholder="输入手机号码" name="mobile" v-bind="{'readonly':identification !== '未认证'}" v-model="tel">
-          </li>
-          <li>
-            <span class="title">联系地点</span>：
-            <input class="text" type="text" placeholder="请选择个人地点" name="phone" readonly :value="place" @click="identification !== '未认证'?state.name='':state.name='province'">
-            <input type="hidden" name="loProvince" :value="prov">
-            <input type="hidden" name="loCity" :value="city">
           </li>
           <li v-if="identification === '未认证'">
             <span class="title">身份证正面</span>：
@@ -51,7 +40,7 @@
           </li>
           <li>
             <span class="title">营业执照号</span>：
-            <input class="text" type="number" placeholder="请填写营业执照号或组织机构代码" name="license" v-bind="{'readonly':identification !== '未认证'}" v-model="license">
+            <input class="text" type="text" placeholder="请填写营业执照号或组织机构代码" name="license" v-bind="{'readonly':identification !== '未认证'}" v-model="license">
           </li>
           <li>
             <span class="title">法人姓名</span>：
@@ -60,14 +49,6 @@
           <li>
             <span class="title">公司地址</span>：
             <input class="text" type="text" placeholder="企业/机构注册地址" name="inRegister" v-bind="{'readonly':identification !== '未认证'}" v-model="inRegister">
-          </li>
-          <li>
-            <span class="title">发起人</span>：
-            <input class="text" type="text" placeholder="发起联系人姓名" name="busContact" v-bind="{'readonly':identification !== '未认证'}" v-model="userName">
-          </li>
-          <li>
-            <span class="title">联系方式</span>：
-            <input class="text" v-bind:readonly="telReadonly" type="tel" placeholder="发起联系人手机号" name="mobile" v-bind="{'readonly':identification !== '未认证'}" v-model="tel">
           </li>
           <li v-if="identification === '未认证'">
             <span class="title">营业执照图</span>：
@@ -88,15 +69,12 @@
         <div v-else-if="identification === '待审核'" class="submit-btn"><a>审核中……</a></div>
         <div v-else class="submit-btn"><a class="act" @click="submit()">确认</a></div>
       </div>
-    </form>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <AddressList :info="state" :apiURL="apiURL" @address="address"></AddressList>
     <Tip :info="tip"></Tip>
   </div>
 </template>
 
 <script>
-import AddressList from '@/components/AddressList'
 import Upload from '@/components/Upload'
 import Confirm from '@/components/Confirm'
 import Tip from '@/components/Tip'
@@ -110,10 +88,6 @@ export default {
       tabIndex: 'person',
       userName: '',
       IDcard: '',
-      tel: '',
-      telReadonly: false,
-      prov: '',
-      city: '',
       tradeName: '',
       license: '',
       lawPerson: '',
@@ -121,13 +95,9 @@ export default {
       positivePic: '',
       inversePic: '',
       licensePic: '',
-      place: '',
       cause: '',
       tip: {
         text: ''
-      },
-      state: {
-        name: ''
       },
       confirmInfo: {
         title: '提示',
@@ -152,21 +122,12 @@ export default {
             if (response.data.cardType === 'person') {
               this.userName = response.data.name
               this.IDcard = response.data.cardNo
-              this.tel = response.data.phone
-              this.prov = response.data.province
-              this.city = response.data.city
-              this.place = response.data.province + '/' + response.data.city
             } else if (response.data.cardType === 'company') {
               this.tradeName = response.data.tradeName
               this.license = response.data.license
               this.lawPerson = response.data.lawPerson
               this.inRegister = response.data.inRegister
-              this.userName = response.data.busContact
-              this.tel = response.data.busPhone
             }
-          } else if (response.data.phone) {
-            this.tel = response.data.phone
-            this.telReadonly = true
           }
           this.$indicator.close()
         }, () => {
@@ -182,8 +143,6 @@ export default {
         this.tabIndex = 'person'
         this.userName = ''
         this.IDcard = ''
-        this.prov = ''
-        this.city = ''
         this.tradeName = ''
         this.license = ''
         this.lawPerson = ''
@@ -191,7 +150,6 @@ export default {
         this.positivePic = ''
         this.inversePic = ''
         this.licensePic = ''
-        this.place = ''
         this.cause = ''
         this.identification = '未认证'
       }, () => {
@@ -205,42 +163,47 @@ export default {
           this.tip.text = '请输入正确的中文名字(2~5个汉字之间)'
         } else if (!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/.test(this.IDcard)) {
           this.tip.text = '请填写有效的18位身份证号码'
-        } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-          this.tip.text = '请填写正确有效的11位手机号'
-        } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.place)) {
-          this.tip.text = '项目地点不能为空'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.positivePic)) {
           this.tip.text = '请上传身份证正面图片'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.inversePic)) {
           this.tip.text = '请上传身份证反面图片'
         } else {
-          this.$refs.form.submit()
+          this.$http.post(this.apiURL + 'member/approve.jhtml', this.formData).then((response) => {
+            if (response.data.state) {
+              alert('正在审核  请稍后')
+              this.$router.go(-1)
+            } else {
+              alert(response.data.msg)
+            }
+          }, () => {
+            alert('信息修改失败')
+          })
         }
       } else if (this.tabIndex === 'company') {
         if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.tradeName)) {
           this.tip.text = '企业名称不能为空'
-        } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.license)) {
-          this.tip.text = '营业执照号不能为空'
+        } else if (!/^[a-zA-Z0-9]{15,18}$/.test(this.license)) {
+          this.tip.text = '请填写正确的营业执照号'
         } else if (!/^[\u4e00-\u9fa5]{2,5}$/.test(this.lawPerson)) {
           this.tip.text = '请输入正确的法人姓名'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.inRegister)) {
           this.tip.text = '公司地址不能为空'
-        } else if (!/^[\u4e00-\u9fa5]{2,5}$/.test(this.userName)) {
-          this.tip.text = '请输入正确的联系人姓名'
-        } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-          this.tip.text = '请填写正确有效的11位手机号'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.licensePic)) {
           this.tip.text = '请上传营业执照图片'
         } else {
-          this.$refs.form.submit()
+          this.$http.post(this.apiURL + 'member/approve.jhtml', this.formData).then((response) => {
+            if (response.data.state) {
+              alert('正在审核  请稍后')
+              this.$router.go(-1)
+            } else {
+              alert(response.data.msg)
+            }
+          }, () => {
+            alert('信息修改失败')
+          })
         }
       }
       return false
-    },
-    address: function (value) {
-      this.place = value
-      this.prov = value.split('/')[0]
-      this.city = value.split('/')[1]
     },
     confirm: function (val) {
       this.confirmState = false
@@ -262,14 +225,28 @@ export default {
     this.getCustomers()
   },
   components: {
-    AddressList,
     Confirm,
     Tip,
     Upload
   },
   computed: {
-    redirectUrl: function () {
-      return location.href.split('#')[0] + '#/myinfo/' + this.$route.params.type
+    formData: function () {
+      let formData = {}
+      formData.wxbdopenId = this.id
+      formData.cardType = this.tabIndex
+      if (this.tabIndex === 'person') {
+        formData.perContact = this.userName
+        formData.cardNo = this.IDcard
+        formData.positivePic = this.positivePic
+        formData.inversePic = this.inversePic
+      } else if (this.tabIndex === 'company') {
+        formData.tradeName = this.tradeName
+        formData.license = this.license
+        formData.lawPerson = this.lawPerson
+        formData.inRegister = this.inRegister
+        formData.licensePic = this.licensePic
+      }
+      return formData
     }
   }
 }

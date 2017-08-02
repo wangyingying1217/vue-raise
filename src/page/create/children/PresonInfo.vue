@@ -16,11 +16,6 @@
           <span class="box-input-title">联系方式：</span>
           <input type="text" class="box-input" :value="info.phone" readonly>
         </dd>
-        <dd class="raise-box">
-          <span class="box-input-title">个人地点：</span>
-          <input class="location mr1" type="text" readonly :value="info.province">
-          <input class="location" type="text" readonly :value="info.city">
-        </dd>
       </dl>
 
       <dl v-if="info.cardType=='company'">
@@ -41,12 +36,8 @@
           <input type="text" class="box-input" :value="info.inRegister" readonly>
         </dd>
         <dd class="raise-box">
-          <span class="box-input-title">发&nbsp;起&nbsp;人：</span>
-          <input type="text" class="box-input" :value="info.name" readonly>
-        </dd>
-        <dd class="raise-box">
           <span class="box-input-title">联系方式：</span>
-          <input type="text" class="box-input" :value="info.lawPerson" readonly>
+          <input type="text" class="box-input" :value="info.phone" readonly>
         </dd>
       </dl>
 

@@ -51,37 +51,31 @@
         </dl>
         <dl class="personalInfo">
           <dd>
-            <span v-show="check && tel" class="check-icon">*</span>
+            <span v-show="check && !unitType" class="check-icon">*</span>
             <div class="box">单位类别
-              <div class="text">{{gender | sex}}</div>
+              <div class="text">{{unitType}}</div>
             </div>
-            <!-- <select class="hidden" v-model="gender" name="gender" @change="changSex">
-              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
-              <option :checked="gender=='male'" value="male">男</option>
-              <option :checked="gender=='female'" value="female">女</option>
-            </select> -->
+            <select class="hidden" v-model="unitType" @change="changType">
+              <option v-for="(item, index) in unitData" :key="index" :checked="item.unitCategory == unitType" :value="item.unitCategory">{{item.unitCategory}}</option>
+            </select>
           </dd>
           <dd>
-            <span v-show="check && tel" class="check-icon">*</span>
+            <span v-show="check && !unitLevel" class="check-icon">*</span>
             <div class="box">单位层级
-              <div class="text">{{gender | sex}}</div>
+              <div class="text">{{unitLevel}}</div>
             </div>
-            <!-- <select class="hidden" v-model="gender" name="gender" @change="changSex">
-              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
-              <option :checked="gender=='male'" value="male">男</option>
-              <option :checked="gender=='female'" value="female">女</option>
-            </select> -->
+            <select class="hidden" v-model="unitLevel" @change="changLevel">
+              <option v-for="(item, index) in levelData" :key="index" :checked="item.unitHierarchy == unitLevel" :value="item.unitHierarchy">{{item.unitHierarchy}}</option>
+            </select>
           </dd>
           <dd>
-            <span v-show="check && tel" class="check-icon">*</span>
+            <span v-show="check && !work" class="check-icon">*</span>
             <div class="box">从事工作
-              <div class="text">{{gender | sex}}</div>
+              <div class="text">{{work}}</div>
             </div>
-            <!-- <select class="hidden" v-model="gender" name="gender" @change="changSex">
-              <option :checked="gender=='secrecy'" value="secrecy">保密</option>
-              <option :checked="gender=='male'" value="male">男</option>
-              <option :checked="gender=='female'" value="female">女</option>
-            </select> -->
+            <select class="hidden" v-model="work" @change="changWork">
+              <option v-for="(item, index) in workData" :key="index" :checked="item == work" :value="item">{{item}}</option>
+            </select>
           </dd>
         </dl>
         <dl class="personalInfo">
@@ -99,10 +93,10 @@
           </router-link>
         </dl>
         <dl class="personalInfo">
-          <router-link :to="'/myinfo/identification/' + $route.params.type" tag="dd">
+          <dd @click="identification">
             <span v-show="check && !isAuthentication" class="check-icon">*</span>
             <div class="box">实名认证</div>
-          </router-link>
+          </dd>
           <router-link to="/findPassword" tag="dd">
             <div class="box">修改密码</div>
           </router-link>
@@ -133,7 +127,11 @@ export default {
       signature: '',
       gender: '',
       localPic: '',
-      isAuthentication: false
+      isAuthentication: false,
+      unitData: [],
+      unitType: '',
+      unitLevel: '',
+      work: ''
     }
   },
   components: {
@@ -154,6 +152,10 @@ export default {
           this.signature = response.data.idiograph
           this.gender = response.data.gender
           this.isAuthentication = response.data.isAuthentication
+          this.unitData = response.data.causeUnit
+          this.unitType = response.data.unitCategory
+          this.unitLevel = response.data.unitHierarchy
+          this.work = response.data.performWork
           this.show = true
           this.$indicator.close()
         }, () => {
@@ -164,7 +166,7 @@ export default {
     },
     getLocalPic: function (url) {
       this.localPic = url
-      this.$router.push({ path: 'ImageUpload' })
+      this.$router.push('/ImageUpload')
     },
     changSex: function () {
       this.$http.post(this.apiURL + 'member/modify/gender.jhtml', {'wxbdopenId': this.id, 'gender': this.gender}).then((response) => {
@@ -174,6 +176,38 @@ export default {
       }, () => {
         alert('性别修改失败')
       })
+    },
+    changWorkInfo: function () {
+      this.$http.post(this.apiURL + 'member/cause/unit.jhtml', {'wxbdopenId': this.id, 'unitCategory': this.unitType, 'unitHierarchy': this.unitLevel, 'performWork': this.work}).then((response) => {
+        if (!response.data.state) {
+          alert('信息修改失败')
+        }
+      }, () => {
+        alert('信息修改失败')
+      })
+    },
+    changType: function () {
+      this.unitLevel = ''
+      this.work = ''
+      this.changWorkInfo()
+    },
+    changLevel: function () {
+      if (this.unitLevel) {
+        this.work = ''
+        this.changWorkInfo()
+      }
+    },
+    changWork: function () {
+      if (this.work) {
+        this.changWorkInfo()
+      }
+    },
+    identification: function () {
+      if (this.work && this.tel && this.isEmail) {
+        this.$router.push('/myinfo/identification/' + this.$route.params.type)
+      } else {
+        alert('请先认证邮箱、电话以及工作信息')
+      }
     }
   },
   watch: {
@@ -195,6 +229,28 @@ export default {
         check = true
       }
       return check
+    },
+    levelData: function () {
+      if (this.unitType) {
+        let data = []
+        this.unitData.forEach((item) => {
+          if (item.unitCategory === this.unitType) {
+            data = item.hierarchy
+          }
+        })
+        return data
+      }
+    },
+    workData: function () {
+      if (this.unitLevel) {
+        let data = []
+        this.levelData.forEach((item) => {
+          if (item.unitHierarchy === this.unitLevel) {
+            data = item.performWork
+          }
+        })
+        return data
+      }
     }
   },
   filters: {

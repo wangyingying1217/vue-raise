@@ -13,11 +13,13 @@
       </router-link>
     </ul>
     <LoadMore :info="loadMore" :type="'no'"></LoadMore>
+    <Nodata :showSwitch="info.length" type="activity"></Nodata>
   </div>
 </template>
 
 <script>
 import LoadMore from '@/components/LoadMore'
+import Nodata from '@/components/Nodata'
 
 export default {
   props: ['apiURL', 'id'],
@@ -72,6 +74,7 @@ export default {
     }
   },
   components: {
+    Nodata,
     LoadMore
   },
   created () {

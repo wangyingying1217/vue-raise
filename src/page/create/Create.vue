@@ -119,18 +119,13 @@ export default {
       if (this.id) {
         this.$http.get(this.apiURL + 'launch.jhtml?wxbdopenId=' + this.id).then((response) => {
           if (response.data.info.state) {
-            if (response.data.info.type) {
-              this.user = response.data.info
-              this.itemtype = response.data.itemtype
-              this.productType = response.data.productType
-              this.show = true
-              this.$indicator.close()
-            } else {
-              alert('认证正在审核中')
-              this.$router.push('/')
-            }
+            this.user = response.data.info
+            this.itemtype = response.data.itemtype
+            this.productType = response.data.productType
+            this.show = true
+            this.$indicator.close()
           } else {
-            alert('请先进行认证')
+            alert(response.data.info.msg)
             this.$router.push('/myinfo/check')
           }
           this.user = response.data.info

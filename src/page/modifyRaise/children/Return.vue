@@ -17,7 +17,7 @@
                 <span class="outCircle"><span class="innerCircle"></span></span>
                 <span class="text">商品回报 </span>
               </label>
-              <label v-show="!lotteryIndex || lotteryIndex == indexParent + 1">
+              <label v-show="isLottoReturn && (!lotteryIndex || lotteryIndex == indexParent + 1)">
                 <input type="radio" :name="'returnType'+indexParent" value="lottery" v-model="item.returnType">
                 <span class="outCircle"><span class="innerCircle"></span></span>
                 <span class="text">抽奖回报 </span>
@@ -31,7 +31,7 @@
           </div>
           <div class="raise-box">
             <span class="box-input-title">总份额数：</span>
-            <input class="box-input" type="number" placeholder="每个人最多支持份数（“0”为不限制）" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
+            <input class="box-input" type="number" placeholder="该回报的最大支持份数" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
             <p class="errors" v-if="item.public.lotNum.invalid">{{validateMsg.nonegative}}</p>
           </div>
           <div class="raise-box">
@@ -242,6 +242,9 @@ export default {
     },
     returnData: {
       type: Array
+    },
+    isLottoReturn: {
+      type: Boolean
     },
     modifyType: {
       type: String

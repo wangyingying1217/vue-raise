@@ -42,6 +42,7 @@ import Newaddress from '@/page/myinfo/children/Newaddress'
 import Identification from '@/page/myinfo/children/Identification'
 import Password from '@/page/myinfo/children/Password'
 import Ours from '@/page/ours/Ours'
+import InformList from '@/page/informList/informList'
 import Letter from '@/page/letter/Letter'
 import Question from '@/page/question/Question'
 import Chat from '@/page/chat/Chat'
@@ -166,11 +167,15 @@ export default new Router({
     path: '/person',
     component: User
   }, {
+    // 通知列表
+    path: '/informList',
+    component: InformList
+  }, {
     // 私信列表
     path: '/letter',
     component: Letter
   }, {
-    // 私信列表
+    // 消息列表
     path: '/messageList/:type',
     component: MessageList
   }, {
