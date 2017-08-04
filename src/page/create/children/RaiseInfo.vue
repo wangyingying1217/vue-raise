@@ -27,11 +27,14 @@
       <dd class="raise-box">
         <span class="box-input-title">项目地点：</span>
         <select class="location mr1" name="itemProvince" v-model="province" @change="townData()">
+          <option value="">请选择</option>
           <option v-for="item in positionData" :value="item.p">{{item.p}}</option>
         </select>
-        <select class="location" name="itemCity" v-model="city">
+        <select class="location" name="itemCity" v-model="valid.city.value" @change="validate('unempty',valid.city)">
+          <option value="">请选择</option>
           <option v-for="item in cityDate" :value="item.n">{{item.n}}</option>
         </select>
+        <p class="errors" v-show="valid.city.invalid">{{validateMsg.location}}</p>
       </dd>
       <dd class="raise-box">
         <span class="box-input-title">筹资金额：</span>
@@ -95,6 +98,7 @@ export default {
         cfName: {invalid: '', value: ''},
         purpose: {invalid: '', value: ''},
         totaltarget: {invalid: '', value: ''},
+        city: {invalid: '', value: ''},
         timelimit: {invalid: '', value: ''}
       },
       selfdomValid: {
@@ -105,7 +109,6 @@ export default {
       positionData: [],
       cityDate: [],
       province: '',
-      city: '',
       pic: ''
     }
   },
@@ -118,18 +121,15 @@ export default {
       let raiseInfo = JSON.parse(localStorage.getItem('raiseInfo'))
       let timestamp = new Date().getTime()
       let province = ''
-      let city = ''
       const THREE = 2 * 24 * 60 * 60 * 1000
       if (raiseInfo && timestamp - raiseInfo.timestamp < THREE) {
         this.valid = raiseInfo.valid
         this.selfdomValid = raiseInfo.selfdomValid
         province = raiseInfo.province
-        city = raiseInfo.city
         this.positionData.forEach((item) => {
           if (item.p === province) {
             this.cityDate = item.c
             this.province = province
-            this.city = city
           }
         })
       }
@@ -140,10 +140,10 @@ export default {
         this.positionData.forEach((item) => {
           if (item.p === this.province) {
             this.cityDate = item.c
-            this.city = item.c[0].n
           }
         })
       }
+      this.valid.city.value = ''
     },
     selfdomValidate: function () {
       this.selfdomValid.selfdomlength.invalid = !this.validators.selfdomlength(this.selfdomValid.value)
@@ -182,19 +182,19 @@ export default {
     },
     valid: {
       handler: function (val, oldVal) {
-        localStorage.setItem('raiseInfo', JSON.stringify({valid: this.valid, selfdomValid: this.selfdomValid, province: this.province, city: this.city, timestamp: new Date().getTime()}))
+        localStorage.setItem('raiseInfo', JSON.stringify({valid: this.valid, selfdomValid: this.selfdomValid, province: this.province, timestamp: new Date().getTime()}))
       },
       deep: true
     },
     selfdomValid: {
       handler: function (val, oldVal) {
-        localStorage.setItem('raiseInfo', JSON.stringify({valid: this.valid, selfdomValid: this.selfdomValid, province: this.province, city: this.city, timestamp: new Date().getTime()}))
+        localStorage.setItem('raiseInfo', JSON.stringify({valid: this.valid, selfdomValid: this.selfdomValid, province: this.province, timestamp: new Date().getTime()}))
       },
       deep: true
     },
     cityDate: {
       handler: function (val, oldVal) {
-        localStorage.setItem('raiseInfo', JSON.stringify({valid: this.valid, selfdomValid: this.selfdomValid, province: this.province, city: this.city, timestamp: new Date().getTime()}))
+        localStorage.setItem('raiseInfo', JSON.stringify({valid: this.valid, selfdomValid: this.selfdomValid, province: this.province, timestamp: new Date().getTime()}))
       },
       deep: true
     }

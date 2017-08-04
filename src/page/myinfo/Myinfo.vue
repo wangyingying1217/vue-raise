@@ -53,16 +53,16 @@
           <dd>
             <span v-show="check && !unitType" class="check-icon">*</span>
             <div class="box">单位类别
-              <div class="text">{{unitType}}</div>
+              <div class="text">{{unitType | placeholder('请选择')}}</div>
             </div>
             <select class="hidden" v-model="unitType" @change="changType">
               <option v-for="(item, index) in unitData" :key="index" :checked="item.unitCategory == unitType" :value="item.unitCategory">{{item.unitCategory}}</option>
             </select>
           </dd>
-          <dd>
+          <dd v-show="unitType !== '其它类'">
             <span v-show="check && !unitLevel" class="check-icon">*</span>
             <div class="box">单位层级
-              <div class="text">{{unitLevel}}</div>
+              <div class="text">{{unitLevel | placeholder('请选择')}}</div>
             </div>
             <select class="hidden" v-model="unitLevel" @change="changLevel">
               <option v-for="(item, index) in levelData" :key="index" :checked="item.unitHierarchy == unitLevel" :value="item.unitHierarchy">{{item.unitHierarchy}}</option>
@@ -71,7 +71,7 @@
           <dd>
             <span v-show="check && !work" class="check-icon">*</span>
             <div class="box">从事工作
-              <div class="text">{{work}}</div>
+              <div class="text">{{work | placeholder('请选择')}}</div>
             </div>
             <select class="hidden" v-model="work" @change="changWork">
               <option v-for="(item, index) in workData" :key="index" :checked="item == work" :value="item">{{item}}</option>
@@ -187,7 +187,11 @@ export default {
       })
     },
     changType: function () {
-      this.unitLevel = ''
+      if (this.unitType === '其它类') {
+        this.unitLevel = '其它单位'
+      } else {
+        this.unitLevel = ''
+      }
       this.work = ''
       this.changWorkInfo()
     },
@@ -261,6 +265,13 @@ export default {
         return '男'
       } else {
         return '保密'
+      }
+    },
+    placeholder: function (value, text) {
+      if (value) {
+        return value
+      } else {
+        return text
       }
     }
   }

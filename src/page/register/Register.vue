@@ -54,7 +54,7 @@ export default {
         }
       } else if (!this.telErr && this.verifyText === '获取验证码') {
         this.$http.get(this.apiURL + 'registerSendCode.jhtml?mobile=' + this.tel).then((response) => {
-          if (response.data.error) {
+          if (response.data.state) {
             this.tip.text = response.data.msg
           } else {
             this.verifyText = 60

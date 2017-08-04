@@ -10,7 +10,7 @@
     </div>
     <a class="submit" :class="{'act':account && password}" @click="submit">登录</a>
     <p class="other-link">
-      <a @click="register">微信直接登录</a>
+      <a @click="register">微信登录</a>
       <!-- <router-link to="/register">手机快速注册</router-link> -->
       <router-link class="fr" to="/findPassword">忘记密码</router-link>
     </p>
@@ -100,7 +100,7 @@ export default {
         ]
       })
     })
-    if (this.login) {
+    if (this.login || to.path === '/findPassword') {
       next()
     } else {
       this.$router.go(1)

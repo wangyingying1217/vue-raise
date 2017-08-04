@@ -44,8 +44,8 @@ export default {
       } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
         this.tip.text = '手机号输入错误'
       } else if (this.verifyText === '获取验证码') {
-        this.$http.get(this.apiURL + 'member/password/sendCode.jhtml?mobile=' + this.tel).then((response) => {
-          if (response.data.error) {
+        this.$http.get(this.apiURL + 'member/password/sendCode.jhtml?mobile=' + this.tel + '&wxbdopenId=' + this.id).then((response) => {
+          if (response.data.state) {
             this.verifyText = 60
             var timer = setInterval(() => {
               this.verifyText--
@@ -72,7 +72,7 @@ export default {
           if (response.data.state) {
             this.codeState = true
           } else {
-            this.tip.text = '验证码错误'
+            this.tip.text = response.data.msg
           }
         }, () => {
           alert('请求失败')

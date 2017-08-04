@@ -1,7 +1,9 @@
 <template>
   <div class="bg" v-if="show" :style="{'min-height': height}">
     <div class="detial-wrapper">
-      <video v-if="video" controls='controls' :src='video' :poster="poster"></video>
+      <div class="media">
+        <video v-if="video" controls='controls' :src='video' :poster="poster"></video>
+      </div>
       <div v-for="(item, index) in info" :key="index">
         <h1 v-if="item.titleEdit">{{item.title}}</h1>
         <div v-if="item.contentEdit" v-html="item.content"></div>
@@ -86,6 +88,11 @@ export default {
 .detial-wrapper{
 	width:16.5rem;
 	margin:0.4rem auto 1rem;
+  .media{
+    width: 100%;
+    height: 6rem;
+    margin: 0.4rem 0;
+  }
   h1{
     font-size:1rem;
     color:#333333;
@@ -99,9 +106,12 @@ export default {
     color:#666666;
     text-indent: 2em;
   }
-  img,video{
+  video{
     width:100%;
-    // margin: 0.2rem 0;
+    height: 100%;
+  }
+  img{
+    width:100%;
     margin: 0.4rem 0;
   }
 }

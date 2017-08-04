@@ -184,7 +184,7 @@ export default {
       }
     },
     checkNum: function () {
-      if (!this.info.isLimit || (this.info.isLimit && this.num < this.info.lotNum)) {
+      if (!this.info.isLimit || (this.info.isLimit && this.num > this.info.lotNum)) {
         this.num = this.info.lotNum
         alert('超过了限定的数量')
       }

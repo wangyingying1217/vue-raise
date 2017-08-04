@@ -3,7 +3,7 @@
     <Tabmenu :tabInfo = "tabInfo"></Tabmenu>
     <router-view :info="info" :type="'myRaise'" @deleteRaise="deleteRaise" @endRaise="endRaise" @abolishRaise="abolishRaise" @supplement="supplement"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Nodata :showSwitch="info.length" :type="state"></Nodata>
+    <Nodata :showSwitch="info.length" type="index"></Nodata>
     <LoadMore :info="loadMore"></LoadMore>
   </div>
 </template>

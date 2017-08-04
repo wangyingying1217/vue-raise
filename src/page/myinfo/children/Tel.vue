@@ -39,7 +39,7 @@ export default {
         this.tip.text = '手机号输入错误'
       } else if (this.verifyText === '获取验证码') {
         this.$http.get(this.apiURL + 'member/sendCode.jhtml?mobile=' + this.telpre).then((response) => {
-          if (response.data.error) {
+          if (response.data.state) {
             this.verifyText = 60
             var timer = setInterval(() => {
               this.verifyText--
@@ -65,7 +65,7 @@ export default {
       } else {
         this.$http.post(this.apiURL + 'member/verifysendCode.jhtml', {'wxbdopenId': this.id, 'mobile': this.telpre, 'code': this.verifyCode}).then((response) => {
           if (response.data.state) {
-            this.tip.text = '修改成功'
+            this.tip.text = '绑定成功'
             setTimeout(function () {
               window.history.go(-1)
             }, 1000)

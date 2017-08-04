@@ -189,6 +189,7 @@ export default {
     if (describe && timestamp - describe.timestamp < THREE) {
       this.risk = describe.risk
       this.video = describe.video
+      this.poster = describe.poster
       this.details = describe.details
     }
   },
@@ -198,13 +199,13 @@ export default {
   watch: {
     risk: {
       handler: function (val, oldVal) {
-        localStorage.setItem('describe', JSON.stringify({risk: this.risk, video: this.video, details: this.details, timestamp: new Date().getTime()}))
+        localStorage.setItem('describe', JSON.stringify({risk: this.risk, video: this.video, poster: this.poster, details: this.details, timestamp: new Date().getTime()}))
       },
       deep: true
     },
     video: {
       handler: function (val, oldVal) {
-        localStorage.setItem('describe', JSON.stringify({risk: this.risk, video: this.video, details: this.details, timestamp: new Date().getTime()}))
+        localStorage.setItem('describe', JSON.stringify({risk: this.risk, video: this.video, poster: this.poster, details: this.details, timestamp: new Date().getTime()}))
       },
       deep: true
     },

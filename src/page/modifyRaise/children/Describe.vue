@@ -189,6 +189,7 @@ export default {
     this.details = Object.values(this.describe.intro)
     this.risk = this.describe.risk
     this.video = this.describe.video
+    this.poster = this.describe.poster
   }
 }
 </script>
