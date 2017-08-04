@@ -8,13 +8,11 @@
     <div class="submit-btn">
       <a @click="confirm">确认修改</a>
     </div>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
-
 const SUCCESS_NUM = 6
 
 export default {
@@ -33,22 +31,20 @@ export default {
         '新密码不可以与旧密码相同',
         '修改成功'
       ],
-      tip: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
     checkPassWord: function () {
       this.passwordErr = true
       if (!this.oldPassword) {
-        this.tip.text = '旧密码不能为空'
+        this.tip = '旧密码不能为空'
       } else {
         this.$http.get(this.apiURL + 'member/checkPassword.jhtml?wxbdopenId=' + this.id + '&password=' + this.oldPassword).then((response) => {
           if (response.data.state) {
             this.telErr = false
           } else {
-            this.tip.text = '旧密码输入错误'
+            this.tip = '旧密码输入错误'
           }
         }, () => {
           this.$indicator.close()
@@ -58,14 +54,14 @@ export default {
     },
     confirm: function (event) {
       if (!this.oldPassword || !this.newPassword || !this.confirmPassword) {
-        this.tip.text = '密码不能为空'
+        this.tip = '密码不能为空'
       } else if (this.newPassword !== this.confirmPassword) {
-        this.tip.text = '两次密码输入不一致'
+        this.tip = '两次密码输入不一致'
       } else if (this.passwordErr) {
-        this.tip.text = '旧密码输入错误'
+        this.tip = '旧密码输入错误'
       } else {
         this.$http.post(this.apiURL + 'member/password/update.jhtml', {wxbdopenId: this.id, currentPassword: this.oldPassword, newPassword: this.newPassword}).then((response) => {
-          this.tip.text = this.errMsg[response.data.state]
+          this.tip = this.errMsg[response.data.state]
           if (response.data.state === SUCCESS_NUM) {
             setTimeout(function () {
               window.history.go(-1)
@@ -77,9 +73,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    Tip
   },
   created () {
     document.title = '修改地址'

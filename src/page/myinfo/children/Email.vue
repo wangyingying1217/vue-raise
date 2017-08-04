@@ -6,13 +6,11 @@
     <div class="submit-btn">
       <a :class="{'act':email}" @click="confirm">{{btnText}}</a>
     </div>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
-
 export default {
   props: ['apiURL', 'id', 'emailPre', 'isEmail'],
   data () {
@@ -22,20 +20,18 @@ export default {
         '验证码错误',
         '成功修改'
       ],
-      tip: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
     confirm: function () {
       if (this.email === '') {
-        this.tip.text = '请输入邮箱'
+        this.tip = '请输入邮箱'
       } else if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.email)) {
-        this.tip.text = '邮箱输入错误'
+        this.tip = '邮箱输入错误'
       } else {
         this.$http.get(this.apiURL + 'member/access/email.jhtml?wxbdopenId=' + this.id + '&email=' + this.email).then((response) => {
-          this.tip.text = response.data.msg
+          this.tip = response.data.msg
           if (response.data.isEmail) {
             setTimeout(function () {
               window.history.go(-1)
@@ -47,9 +43,6 @@ export default {
         })
       }
     }
-  },
-  components: {
-    Tip
   },
   created () {
     document.title = '绑定邮箱'

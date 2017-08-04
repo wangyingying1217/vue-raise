@@ -114,7 +114,7 @@
       </ul>
     </div>
     <div class="submit-btn" @click="confirm"><a class="act">立即支持</a></div>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
     <transition name="slide-fade">
       <router-view :apiURL="apiURL" :id="id" :type="'order'" @info="getAddress"></router-view>
     </transition>
@@ -122,7 +122,6 @@
 </template>
 
 <script>
-import Tip from '@/components/Tip'
 import Pay from '@/components/Pay'
 
 export default {
@@ -132,9 +131,7 @@ export default {
     return {
       show: false,
       info: {},
-      tip: {
-        text: ''
-      },
+      tip: '',
       priceList: [10, 20, 30],
       tabIndex: 0,
       money: '',
@@ -210,32 +207,32 @@ export default {
     confirm: function () {
       if (this.info.type === this.GRATIS) {
         if (this.registeredTel && !/^1[3|4|5|7|8][0-9]{9}$/.test(this.Tel)) {
-          this.tip.text = '电话号码错误'
+          this.tip = '电话号码错误'
         } else {
           this.pay(this.submitData)
         }
       } else {
         if (!this.info.receiver) {
-          this.tip.text = '请先添加收货地址'
+          this.tip = '请先添加收货地址'
         } else if (this.invoice === 'VTA') {
           if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.invoiceTitle)) {
-            this.tip.text = '发票抬头不能为空'
+            this.tip = '发票抬头不能为空'
           } else if (!/^[0-9]{15}$/.test(this.TaxpayerNum)) {
-            this.tip.text = '纳税人识别码错误'
+            this.tip = '纳税人识别码错误'
           } else if (!/[u4e00-u9fa5]/.test(this.registeredAddress)) {
-            this.tip.text = '注册地址必须包含汉字'
+            this.tip = '注册地址必须包含汉字'
           } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.registeredTel)) {
-            this.tip.text = '注册电话错误'
+            this.tip = '注册电话错误'
           } else if (!/[u4e00-u9fa5]/.test(this.OpeningBank)) {
-            this.tip.text = '开户银行必须包含汉字'
+            this.tip = '开户银行必须包含汉字'
           } else if (!/^(\d{16}|\d{19})$/.test(this.bankAccount)) {
-            this.tip.text = '银行账户错误'
+            this.tip = '银行账户错误'
           } else {
             this.pay(this.submitData)
           }
         } else if (this.invoice === 'normal') {
           if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.invoiceTitle)) {
-            this.tip.text = '发票抬头不能为空'
+            this.tip = '发票抬头不能为空'
           } else {
             this.pay(this.submitData)
           }
@@ -257,9 +254,6 @@ export default {
     id: function () {
       this.getCustomers()
     }
-  },
-  components: {
-    Tip
   },
   computed: {
     supportId: function () {

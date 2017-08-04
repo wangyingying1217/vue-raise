@@ -10,9 +10,11 @@ import './service/viewport_rem.js'
 import './style/reset.css'
 import './style/base.less'
 import 'mint-ui/lib/style.css'
+import Tip from '@/components/tip123'
 
 Vue.use(Resource)
 Vue.use(Mint)
+Vue.use(Tip)
 
 router.beforeEach((to, from, next) => {
   if (from.fullPath !== '/hot' && from.fullPath !== '/his' && from.fullPath !== '/pre' && from.fullPath !== '/create/search') {

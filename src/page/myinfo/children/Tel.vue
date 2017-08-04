@@ -6,13 +6,11 @@
     <div class="submit-btn">
       <a :class="{'act':telpre && verifyCode}" @click="confirm">确认修改</a>
     </div>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -26,17 +24,15 @@ export default {
         '验证码错误',
         '成功修改'
       ],
-      tip: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
     sendVerify: function () {
       if (this.telpre === '') {
-        this.tip.text = '请输入手机号码'
+        this.tip = '请输入手机号码'
       } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.telpre)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else if (this.verifyText === '获取验证码') {
         this.$http.get(this.apiURL + 'member/sendCode.jhtml?mobile=' + this.telpre).then((response) => {
           if (response.data.state) {
@@ -49,7 +45,7 @@ export default {
               }
             }, 1000)
           } else {
-            this.tip.text = response.data.msg
+            this.tip = response.data.msg
           }
         }, () => {
           this.$indicator.close()
@@ -59,18 +55,18 @@ export default {
     },
     confirm: function () {
       if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.telpre)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else if (!/^[0-9]{6}$/.test(this.verifyCode)) {
-        this.tip.text = '验证码格式错误'
+        this.tip = '验证码格式错误'
       } else {
         this.$http.post(this.apiURL + 'member/verifysendCode.jhtml', {'wxbdopenId': this.id, 'mobile': this.telpre, 'code': this.verifyCode}).then((response) => {
           if (response.data.state) {
-            this.tip.text = '绑定成功'
+            this.tip = '绑定成功'
             setTimeout(function () {
               window.history.go(-1)
             }, 1000)
           } else {
-            this.tip.text = response.data.msg
+            this.tip = response.data.msg
           }
         }, () => {
           this.$indicator.close()
@@ -87,9 +83,6 @@ export default {
         return val
       }
     }
-  },
-  components: {
-    Tip
   },
   created () {
     document.title = '绑定手机'

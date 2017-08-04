@@ -32,14 +32,13 @@
   </div>
   <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
   <Nodata :showSwitch="info.length" :type="'comment'"></Nodata>
-  <Tip :info="tipInfo"></Tip>
+  <Tip :info.sync="tip"></Tip>
 </div>
 </template>
 
 <script>
 import Nodata from '@/components/Nodata'
 import Confirm from '@/components/Confirm'
-import Tip from '@/components/Tip'
 
 const PUBLISH_STATE = 0
 const COMMEENT_STATE = 1
@@ -64,9 +63,7 @@ export default {
       commentIndex: '',
       discussItem: {},
       discussIndex: '',
-      tipInfo: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
@@ -133,13 +130,13 @@ export default {
     },
     submit: function () {
       if (!this.commentText) {
-        this.tipInfo.text = this.commentInfo[this.commentType].tip
+        this.tip = this.commentInfo[this.commentType].tip
         return false
       }
       if (this.commentType === PUBLISH_STATE) {
         this.$http.get(this.apiURL + 'pinglun.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&context=' + encodeURI(this.commentText)).then((response) => {
           if (!response.data.permission) {
-            this.tipInfo.text = '请先支持一下吧~~'
+            this.tip = '请先支持一下吧~~'
           } else {
             this.info.unshift(response.data)
           }
@@ -156,7 +153,7 @@ export default {
         }
         this.$http.get(url).then((response) => {
           if (!response.data.permission) {
-            this.tipInfo.text = '请先支持一下吧~~'
+            this.tip = '请先支持一下吧~~'
           } else {
             this.commentItem.discuss.push(response.data)
           }
@@ -180,7 +177,7 @@ export default {
           if (response.data.success) {
             this.commentItem.discuss.splice(this.discussIndex, 1)
           } else {
-            this.tipInfo.text = '操作失败'
+            this.tip = '操作失败'
           }
           this.commentReset()
         }, () => {
@@ -204,8 +201,7 @@ export default {
   },
   components: {
     Nodata,
-    Confirm,
-    Tip
+    Confirm
   },
   computed: {
     commentInfo: function () {

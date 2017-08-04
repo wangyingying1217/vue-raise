@@ -13,13 +13,11 @@
       </div>
       <a class="submit" :class="{'act':tel && verifyCode}" @click="checkCode">确定</a>
     </div>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -32,17 +30,15 @@ export default {
       password: '',
       confirmPassword: '',
       errMsg: [],
-      tip: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
     sendVerify: function () {
       if (this.tel === '') {
-        this.tip.text = '请输入手机号码'
+        this.tip = '请输入手机号码'
       } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else if (this.verifyText === '获取验证码') {
         this.$http.get(this.apiURL + 'member/password/sendCode.jhtml?mobile=' + this.tel + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -55,7 +51,7 @@ export default {
               }
             }, 1000)
           } else {
-            this.tip.text = response.data.msg
+            this.tip = response.data.msg
           }
         }, () => {
           alert('获取失败')
@@ -64,15 +60,15 @@ export default {
     },
     checkCode: function () {
       if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else if (!/^[0-9]{6}$/.test(this.verifyCode)) {
-        this.tip.text = '验证码格式错误'
+        this.tip = '验证码格式错误'
       } else {
         this.$http.post(this.apiURL + 'member/password/verifysendCode.jhtml', {wxbdopenId: this.id, mobile: this.tel, code: this.verifyCode}).then((response) => {
           if (response.data.state) {
             this.codeState = true
           } else {
-            this.tip.text = response.data.msg
+            this.tip = response.data.msg
           }
         }, () => {
           alert('请求失败')
@@ -81,16 +77,16 @@ export default {
     },
     setPassword: function () {
       if (!this.password || !this.confirmPassword) {
-        this.tip.text = '密码不能为空'
+        this.tip = '密码不能为空'
       } else if (this.password !== this.confirmPassword) {
-        this.tip.text = '两次密码输入不一致'
+        this.tip = '两次密码输入不一致'
       } else {
         this.$http.post(this.apiURL + 'member/password/update.jhtml', {wxbdopenId: this.id, newPassword: this.password}).then((response) => {
           if (response.data.state) {
             this.$router.push('/hot')
           } else {
             this.password = this.confirmPassword = ''
-            this.tip.text = response.data.msg
+            this.tip = response.data.msg
           }
         })
       }
@@ -104,9 +100,6 @@ export default {
         return val
       }
     }
-  },
-  components: {
-    Tip
   },
   created () {
     document.title = '找回密码'

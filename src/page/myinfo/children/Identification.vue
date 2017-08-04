@@ -70,14 +70,13 @@
         <div v-else class="submit-btn"><a class="act" @click="submit()">确认</a></div>
       </div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
 import Upload from '@/components/Upload'
 import Confirm from '@/components/Confirm'
-import Tip from '@/components/Tip'
 
 export default {
   props: ['apiURL', 'id'],
@@ -96,9 +95,7 @@ export default {
       inversePic: '',
       licensePic: '',
       cause: '',
-      tip: {
-        text: ''
-      },
+      tip: '',
       confirmInfo: {
         title: '提示',
         name: '您确定要注销？'
@@ -160,13 +157,13 @@ export default {
     submit: function () {
       if (this.tabIndex === 'person') {
         if (!/^[\u4e00-\u9fa5]{2,5}$/.test(this.userName)) {
-          this.tip.text = '请输入正确的中文名字(2~5个汉字之间)'
+          this.tip = '请输入正确的中文名字(2~5个汉字之间)'
         } else if (!/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/.test(this.IDcard)) {
-          this.tip.text = '请填写有效的18位身份证号码'
+          this.tip = '请填写有效的18位身份证号码'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.positivePic)) {
-          this.tip.text = '请上传身份证正面图片'
+          this.tip = '请上传身份证正面图片'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.inversePic)) {
-          this.tip.text = '请上传身份证反面图片'
+          this.tip = '请上传身份证反面图片'
         } else {
           this.$http.post(this.apiURL + 'member/approve.jhtml', this.formData).then((response) => {
             if (response.data.state) {
@@ -181,15 +178,15 @@ export default {
         }
       } else if (this.tabIndex === 'company') {
         if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.tradeName)) {
-          this.tip.text = '企业名称不能为空'
+          this.tip = '企业名称不能为空'
         } else if (!/^[a-zA-Z0-9]{15,18}$/.test(this.license)) {
-          this.tip.text = '请填写正确的营业执照号'
+          this.tip = '请填写正确的营业执照号'
         } else if (!/^[\u4e00-\u9fa5]{2,5}$/.test(this.lawPerson)) {
-          this.tip.text = '请输入正确的法人姓名'
+          this.tip = '请输入正确的法人姓名'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.inRegister)) {
-          this.tip.text = '公司地址不能为空'
+          this.tip = '公司地址不能为空'
         } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.licensePic)) {
-          this.tip.text = '请上传营业执照图片'
+          this.tip = '请上传营业执照图片'
         } else {
           this.$http.post(this.apiURL + 'member/approve.jhtml', this.formData).then((response) => {
             if (response.data.state) {
@@ -226,7 +223,6 @@ export default {
   },
   components: {
     Confirm,
-    Tip,
     Upload
   },
   computed: {

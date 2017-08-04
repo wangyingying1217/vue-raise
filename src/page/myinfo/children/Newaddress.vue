@@ -19,7 +19,7 @@
       </li>
     </ul>
     <AddressList :info="state" :apiURL="apiURL" @address="address"></AddressList>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
     <div class="submit-btn" @click="submit">
       <a :class="{'act': name && tel && place && detial.length}">保存地址</a>
     </div>
@@ -28,7 +28,6 @@
 
 <script>
 import AddressList from '@/components/AddressList'
-import Tip from '@/components/Tip'
 
 export default {
   props: ['apiURL', 'id', 'info'],
@@ -43,9 +42,7 @@ export default {
       place: '',
       detial: '',
       defaultState: false,
-      tip: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
@@ -68,13 +65,13 @@ export default {
     },
     submit: function (item) {
       if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.name)) {
-        this.tip.text = '收件人不能为空'
+        this.tip = '收件人不能为空'
       } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.place)) {
-        this.tip.text = '所在地区不能为空'
+        this.tip = '所在地区不能为空'
       } else if (this.detial.length < 5) {
-        this.tip.text = '详细地址至少5个字'
+        this.tip = '详细地址至少5个字'
       } else {
         var parameter = '?wxbdopenId=' + this.id + '&consignee=' + this.name + '&phone=' + this.tel + '&areaName=' + this.place + '&address=' + this.detial + '&isDefault=' + this.defaultState
         var url = ''
@@ -88,10 +85,10 @@ export default {
             this.$emit('addState', true)
             window.history.go(-1)
           } else {
-            this.tip.text = '最多只能添加8条'
+            this.tip = '最多只能添加8条'
           }
         }, (response) => {
-          this.tip.text = '操作失败'
+          this.tip = '操作失败'
         })
       }
     },
@@ -112,8 +109,7 @@ export default {
     }
   },
   components: {
-    AddressList,
-    Tip
+    AddressList
   },
   created () {
     this.getCustomers()

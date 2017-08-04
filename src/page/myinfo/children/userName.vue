@@ -4,21 +4,17 @@
     <div class="submit-btn">
       <a :class="{'act':nickname}" @click="confirm">确认修改</a>
     </div>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
-
 export default {
   props: ['apiURL', 'id', 'username'],
   data () {
     return {
       nickname: '',
-      tip: {
-        text: ''
-      }
+      tip: ''
     }
   },
   methods: {
@@ -29,21 +25,18 @@ export default {
             if (response.data.state) {
               window.history.go(-1)
             } else {
-              this.tip.text = response.data.msg
+              this.tip = response.data.msg
             }
           }, () => {
             alert('请求失败')
           })
         } else {
-          this.tip.text = '支持中文、英文、数字、下划线的组合，<br/>1-12个字符'
+          this.tip = '支持中文、英文、数字、下划线的组合，<br/>1-12个字符'
         }
       } else {
-        this.tip.text = '用户名不能为空'
+        this.tip = '用户名不能为空'
       }
     }
-  },
-  components: {
-    Tip
   },
   watch: {
     username: function () {

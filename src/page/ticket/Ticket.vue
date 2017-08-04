@@ -15,13 +15,12 @@
     </dl>
     <div class="submit-btn"><a class="act" @click="confirmState = true">兑换</a></div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Tip :info="tipInfo"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
 import Confirm from '@/components/Confirm'
-import Tip from '@/components/Tip'
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -32,15 +31,12 @@ export default {
         name: '您确定要兑换此优惠券？'
       },
       confirmState: false,
-      tipInfo: {
-        text: ''
-      },
+      tip: '',
       show: false
     }
   },
   components: {
-    Confirm,
-    Tip
+    Confirm
   },
   methods: {
     getCustomers: function () {
@@ -61,15 +57,15 @@ export default {
       if (val) {
         this.$http.get(this.apiURL + 'member/conCoupon.jhtml?wxbdopenId=' + this.id + '&id=' + this.$route.params.id).then((response) => {
           if (response.data.state) {
-            this.tipInfo.text = '兑换成功'
+            this.tip = '兑换成功'
             setTimeout(() => {
               this.$router.push('/mycoupons/discount')
             }, 1000)
           } else {
-            this.tipInfo.text = response.data.msg
+            this.tip = response.data.msg
           }
         }, () => {
-          this.tipInfo.text = '兑换失败'
+          this.tip = '兑换失败'
         })
       }
     }

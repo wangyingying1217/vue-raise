@@ -85,12 +85,11 @@
       </div>
     </div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
 import Pay from '@/components/Pay'
 import Confirm from '@/components/Confirm'
 
@@ -99,9 +98,7 @@ export default {
   mixins: [Pay],
   data () {
     return {
-      tip: {
-        text: ''
-      },
+      tip: '',
       show: false,
       info: {},
       type: '',
@@ -218,8 +215,7 @@ export default {
     }
   },
   components: {
-    Confirm,
-    Tip
+    Confirm
   },
   computed: {
     orderCode: function () {

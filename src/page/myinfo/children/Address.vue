@@ -23,7 +23,7 @@
     </div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <Nodata :showSwitch="info.length" :type="'address'"></Nodata>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
     <transition name="slide-fade">
       <router-view :apiURL="apiURL" :id="id" :info="editItem" @addState="getCustomers"></router-view>
     </transition>
@@ -33,7 +33,6 @@
 <script>
 import Nodata from '@/components/Nodata'
 import Confirm from '@/components/Confirm'
-import Tip from '@/components/Tip'
 
 export default {
   props: ['apiURL', 'id', 'type'],
@@ -50,9 +49,7 @@ export default {
         id: '',
         phone: ''
       },
-      tip: {
-        text: ''
-      },
+      tip: '',
       confirmInfo: {
         title: '删除确认',
         name: '您确定要删除此条地址？'
@@ -98,7 +95,7 @@ export default {
     },
     addAddress: function () {
       if (this.info.length > 7) {
-        this.tip.text = '最多只能添加8条'
+        this.tip = '最多只能添加8条'
       } else {
         this.$router.push('/newaddress/add')
       }
@@ -131,8 +128,7 @@ export default {
   },
   components: {
     Nodata,
-    Confirm,
-    Tip
+    Confirm
   },
   created () {
     // 组件创建完后获取数据，

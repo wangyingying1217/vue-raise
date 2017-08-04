@@ -7,12 +7,11 @@
      </div>
     <a class="submit" :class="{'act':tel && verifyCode}" @click="register">注册</a>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Tip :info="tip"></Tip>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import Tip from '@/components/Tip'
 import Confirm from '@/components/Confirm'
 
 export default {
@@ -24,9 +23,7 @@ export default {
       verifyCode: '',
       verifyText: '获取验证码',
       errMsg: [],
-      tip: {
-        text: ''
-      },
+      tip: '',
       confirmInfo: {
         title: '提示',
         name: '此号码已经被注册，您确定要重新注册此号码？'
@@ -38,9 +35,9 @@ export default {
     checkTel: function () {
       this.telErr = true
       if (this.tel === '') {
-        this.tip.text = '请输入手机号码'
+        this.tip = '请输入手机号码'
       } else if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else {
         this.telErr = false
       }
@@ -48,14 +45,14 @@ export default {
     sendVerify: function () {
       if (this.telErr) {
         if (this.tel === '') {
-          this.tip.text = '请输入手机号码'
+          this.tip = '请输入手机号码'
         } else {
-          this.tip.text = '手机号输入错误'
+          this.tip = '手机号输入错误'
         }
       } else if (!this.telErr && this.verifyText === '获取验证码') {
         this.$http.get(this.apiURL + 'registerSendCode.jhtml?mobile=' + this.tel).then((response) => {
           if (response.data.state) {
-            this.tip.text = response.data.msg
+            this.tip = response.data.msg
           } else {
             this.verifyText = 60
             var timer = setInterval(() => {
@@ -78,9 +75,9 @@ export default {
     },
     register: function () {
       if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
-        this.tip.text = '手机号输入错误'
+        this.tip = '手机号输入错误'
       } else if (!/^[0-9]{6}$/.test(this.verifyCode)) {
-        this.tip.text = '验证码格式错误'
+        this.tip = '验证码格式错误'
       } else {
         this.$http.post(this.apiURL + 'registerVerifysendCode.jhtml', {wxbdopenId: this.id, mobile: this.tel, code: this.verifyCode, openId: this.openId, state: this.state}).then((response) => {
           if (response.data.msg) {
@@ -102,7 +99,6 @@ export default {
     }
   },
   components: {
-    Tip,
     Confirm
   },
   created () {
