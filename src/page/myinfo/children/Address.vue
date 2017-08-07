@@ -66,7 +66,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -85,7 +85,7 @@ export default {
           item.defAddress = true
         }
       }, () => {
-        alert('修改失败失败')
+        this.tip = '修改失败失败'
       })
     },
     remove: function (item, index) {
@@ -112,7 +112,7 @@ export default {
           }
         }, () => {
           this.$indicator.close()
-          alert('删除失败')
+          this.tip = '删除失败'
         })
       }
     }

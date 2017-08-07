@@ -15,6 +15,7 @@
         </div>
       </li>
     </ul>
+    <Tip :info.sync="tip"></Tip>
     <Nodata :showSwitch="info.length" :type="'update'"></Nodata>
   </div>
 </template>
@@ -27,6 +28,7 @@ export default {
   data () {
     return {
       info: [],
+      tip: [],
       show: false
     }
   },
@@ -40,7 +42,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

@@ -3,6 +3,7 @@
     <h2 v-html="info.title"></h2>
     <p class="time" v-html="info.time"></p>
     <div v-html="info.content"></div>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ export default {
   data () {
     return {
       info: {},
+      tip: '',
       show: false
     }
   },
@@ -24,7 +26,7 @@ export default {
         this.$indicator.close()
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     }
   },

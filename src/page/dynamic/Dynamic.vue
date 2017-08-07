@@ -17,6 +17,7 @@
       <input type="hidden" :value="codeState" name="state">
       <input type="hidden" :value="redirectUrl" name="redirect">
     </form>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -27,6 +28,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       textarea: '',
       imgArr: []
     }
@@ -40,7 +42,7 @@ export default {
       if (this.textarea || this.imgArr) {
         this.$refs.dynamic.submit()
       } else {
-        alert('没有可以发表的内容')
+        this.tip = '没有可以发表的内容'
       }
     }
   },

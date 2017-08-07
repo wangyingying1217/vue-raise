@@ -5,6 +5,7 @@
     <input class="file" v-if="isIphone && isImage" type="file" :accept="imageAccept" @change="upload" ref="file">
     <input class="file" v-if="isAndroid && !isImage" type="file" :accept="videoAccept" capture="camcorder" @change="upload" ref="file">
     <input class="file" v-if="isIphone && !isImage" type="file" :accept="videoAccept" @change="upload" ref="file">
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -24,7 +25,8 @@ export default {
       videoAccept: 'video/*',
       file: '',
       isAndroid: false,
-      isIphone: false
+      isIphone: false,
+      tip: ''
     }
   },
   methods: {
@@ -34,7 +36,7 @@ export default {
       let file = this.$refs.file.files[0]
       let size = file.size / 1024 / 1024
       if (size > 100) {
-        alert('请上传大小在100M以内的文件')
+        this.tip = '请上传大小在100M以内的文件'
         return
       }
       formData.append('file', file)
@@ -47,7 +49,7 @@ export default {
         this.$indicator.close()
       }, (res) => {
         this.$indicator.close()
-        alert('上传失败')
+        this.tip = '上传失败'
       })
     }
   },

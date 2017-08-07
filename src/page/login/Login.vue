@@ -14,6 +14,7 @@
       <!-- <router-link to="/register">手机快速注册</router-link> -->
       <router-link class="fr" to="/findPassword">忘记密码</router-link>
     </p>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -24,6 +25,7 @@ export default {
   data () {
     return {
       info: [],
+      tip: '',
       account: '',
       password: '',
       login: false
@@ -37,11 +39,11 @@ export default {
             this.login = true
             this.$router.push('/')
           } else {
-            alert(response.data.msg)
+            this.tip = response.data.msg
           }
         }, () => {
           this.$indicator.close()
-          alert('提交失败')
+          this.tip = '提交失败'
         })
       }
     },
@@ -52,7 +54,7 @@ export default {
           this.$router.push('/')
         }
       }, () => {
-        alert('注册失败')
+        this.tip = '注册失败'
       })
     }
   },

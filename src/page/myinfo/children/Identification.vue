@@ -129,7 +129,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -151,7 +151,7 @@ export default {
         this.identification = '未认证'
       }, () => {
         this.$indicator.close()
-        alert('操作失败')
+        this.tip = '操作失败'
       })
     },
     submit: function () {
@@ -167,13 +167,13 @@ export default {
         } else {
           this.$http.post(this.apiURL + 'member/approve.jhtml', this.formData).then((response) => {
             if (response.data.state) {
-              alert('正在审核  请稍后')
+              this.tip = '正在审核  请稍后'
               this.$router.go(-1)
             } else {
-              alert(response.data.msg)
+              this.tip = response.data.msg
             }
           }, () => {
-            alert('信息修改失败')
+            this.tip = '信息修改失败'
           })
         }
       } else if (this.tabIndex === 'company') {
@@ -190,13 +190,13 @@ export default {
         } else {
           this.$http.post(this.apiURL + 'member/approve.jhtml', this.formData).then((response) => {
             if (response.data.state) {
-              alert('正在审核  请稍后')
+              this.tip = '正在审核  请稍后'
               this.$router.go(-1)
             } else {
-              alert(response.data.msg)
+              this.tip = response.data.msg
             }
           }, () => {
-            alert('信息修改失败')
+            this.tip = '信息修改失败'
           })
         }
       }

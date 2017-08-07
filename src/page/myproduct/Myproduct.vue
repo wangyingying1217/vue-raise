@@ -2,30 +2,26 @@
   <div>
     <ProductList :info="info" :type="'inline'"></ProductList>
     <Nodata :showSwitch="info.length" :type="'online'"></Nodata>
-    <LoadMore :info="loadMore"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>
 
 <script>
 import ProductList from '@/components/ProductList'
 import Nodata from '@/components/Nodata'
-import LoadMore from '@/components/LoadMore'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
     return {
       info: [],
       page: 1,
-      loadMore: {
-        state: ''
-      }
+      loadState: false,
+      loadBoff: true
     }
   },
   components: {
     ProductList,
-    Nodata,
-    LoadMore
+    Nodata
   },
   methods: {
     getCustomers: function () {
@@ -42,23 +38,20 @@ export default {
     }
   },
   watch: {
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page++
-          this.$http.get(this.apiURL + 'member/online/list.jhtml?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
-            if (response.data.length) {
-              this.info.push(...response.data)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            alert('请求失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page++
+        this.$http.get(this.apiURL + 'member/online/list.jhtml?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
+          if (response.data.length) {
+            this.info.push(...response.data)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          alert('请求失败')
+        })
+      }
     },
     id: function () {
       this.getCustomers()

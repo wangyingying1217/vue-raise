@@ -17,25 +17,24 @@
         </router-link>
       </li>
     </ul>
-    <LoadMore :info="loadMore"></LoadMore>
+    <Tip :info.sync="tip"></Tip>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
     <Nodata :showSwitch="info.length" type="message"></Nodata>
   </div>
 </template>
 
 <script>
-import LoadMore from '@/components/LoadMore'
 import Nodata from '@/components/Nodata'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
     return {
       info: [],
+      tip: '',
       page: 1,
       show: false,
-      loadMore: {
-        state: ''
-      },
+      loadState: false,
+      loadBoff: true,
       RETURN: 'return',
       NOTICE: 'notice',
       LOGISTICS: 'logistics',
@@ -80,44 +79,41 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }
   },
   watch: {
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading' && this.type !== this.LOGISTICS) {
-          this.page ++
-          this.$http.get(this.apiURL + this.url + '?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
-            if (response.data.length) {
-              if (this.type === this.RETURN) {
-                response.data.forEach((item) => {
-                  item.href = '/supportRecord/' + item.id
-                })
-              } else if (this.type === this.DYNAMIC) {
-                response.data.forEach((item) => {
-                  item.href = '/supportRecord/' + item.id
-                })
-              } else if (this.type === this.NOTICE) {
-                response.data.forEach((item) => {
-                  item.href = '/myraise/effective'
-                })
-              }
-              this.info.push(...response.data)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
+    loadState: function (val, oldVal) {
+      if (val && this.type !== this.LOGISTICS) {
+        this.page ++
+        this.$http.get(this.apiURL + this.url + '?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
+          if (response.data.length) {
+            if (this.type === this.RETURN) {
+              response.data.forEach((item) => {
+                item.href = '/supportRecord/' + item.id
+              })
+            } else if (this.type === this.DYNAMIC) {
+              response.data.forEach((item) => {
+                item.href = '/supportRecord/' + item.id
+              })
+            } else if (this.type === this.NOTICE) {
+              response.data.forEach((item) => {
+                item.href = '/myraise/effective'
+              })
             }
-          }, () => {
-            alert('请求失败')
-          })
-        } else if (this.type === this.LOGISTICS) {
-          this.loadMore.state = 'loaded'
-        }
-      },
-      deep: true
+            this.info.push(...response.data)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          this.tip = '请求失败'
+        })
+      } else if (this.type === this.LOGISTICS) {
+        this.loadBoff = false
+      }
     },
     id: function () {
       this.getCustomers()
@@ -131,7 +127,6 @@ export default {
     this.getCustomers()
   },
   components: {
-    LoadMore,
     Nodata
   },
   computed: {

@@ -4,7 +4,8 @@
     <router-view :info="info" :type="'myRaise'" @deleteRaise="deleteRaise" @endRaise="endRaise" @abolishRaise="abolishRaise" @supplement="supplement"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <Nodata :showSwitch="info.length" type="index"></Nodata>
-    <LoadMore :info="loadMore"></LoadMore>
+    <Tip :info.sync="tip"></Tip>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>
 
@@ -13,7 +14,6 @@ import Confirm from '@/components/Confirm'
 import Tabmenu from '@/components/Tabmenu'
 import Nodata from '@/components/Nodata'
 import Pay from '@/components/Pay'
-import LoadMore from '@/components/LoadMore'
 
 export default {
   props: ['apiURL', 'id'],
@@ -30,14 +30,14 @@ export default {
       info: [],
       page: 1,
       money: 0,
-      loadMore: {
-        state: ''
-      },
+      loadState: false,
+      loadBoff: true,
       confirmInfo: {
         title: '提示',
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
+      tip: '',
       type: '',
       contentId: '',
       cshId: ''
@@ -46,7 +46,6 @@ export default {
   components: {
     Tabmenu,
     Nodata,
-    LoadMore,
     Confirm
   },
   methods: {
@@ -59,7 +58,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -73,7 +72,7 @@ export default {
             })
           }
         }, () => {
-          alert('删除失败')
+          this.tip = '删除失败'
         })
       } else if (val && this.type === 'endRaise') {
         this.$http.get(this.apiURL + 'member/stop_raise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
@@ -86,7 +85,7 @@ export default {
           }
         }, () => {
           this.$indicator.close()
-          alert('终止失败')
+          this.tip = '终止失败'
         })
       } else if (val && this.type === 'abolishRaise') {
         this.$http.get(this.apiURL + 'member/abolish.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
@@ -99,7 +98,7 @@ export default {
           }
         }, () => {
           this.$indicator.close()
-          alert('废止失败')
+          this.tip = '废止失败'
         })
       } else if (val && this.type === 'supplement') {
         let data = {
@@ -140,21 +139,18 @@ export default {
     }
   },
   watch: {
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.post(this.url).then((response) => {
-            if (response.data.length) {
-              this.info.push(...response.data[this.state])
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.post(this.url).then((response) => {
+          if (response.data.length) {
+            this.info.push(...response.data[this.state])
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        })
+      }
     },
     id: function () {
       this.getCustomers()

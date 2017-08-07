@@ -7,6 +7,7 @@
       <a class="fl" @click="cancel">取消</a>
       <a class="fr" @click="ensure">确定</a>
     </div>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -15,6 +16,7 @@ export default {
   props: ['apiURL', 'id', 'localPic', 'type'],
   data () {
     return {
+      tip: '',
       xAxle: '',
       yAxle: '',
       width: '',
@@ -39,7 +41,7 @@ export default {
         this.$emit('pic', response.data.srcPic)
         window.history.go(-1)
       }, (response) => {
-        alert('上传失败')
+        this.tip = '上传失败'
       })
     }
   },

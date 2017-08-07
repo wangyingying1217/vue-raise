@@ -54,15 +54,14 @@
         </div>
       </li>
     </ul>
+    <Tip :info.sync="tip"></Tip>
     <Nodata :showSwitch="info.length" :type="'content'"></Nodata>
-    <LoadMore :info="loadMore"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>
 
 <script>
 import Nodata from '@/components/Nodata'
-import LoadMore from '@/components/LoadMore'
-
 export default {
   props: ['apiURL', 'id', 'productType', 'onlineIndex'],
   data () {
@@ -77,22 +76,19 @@ export default {
       shape: '',
       floorPrice: '',
       ceilingPrice: '',
-      loadMore: {
-        state: ''
-      }
+      loadState: false,
+      loadBoff: true,
+      tip: ''
     }
   },
   methods: {
     getCustomers: function () {
-      // if (!this.onlineIndex) {
-      //   this.$router.push('/create')
-      // }
       this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
         this.info = response.data
         this.$indicator.close()
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     },
     search: function (attr, item) {
@@ -106,9 +102,9 @@ export default {
       }
       this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
         this.info = response.data
-        this.loadMore.state = ''
+        this.loadBoff = true
       }, () => {
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     },
     confirm: function (item) {
@@ -136,28 +132,24 @@ export default {
     $route () {
       this.getCustomers()
     },
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
-            if (response.data.length) {
-              this.info = this.info.concat(response.data)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            alert('请求失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.post(this.apiURL + 'proSearch.jhtml', this.searchInfo).then((response) => {
+          if (response.data.length) {
+            this.info = this.info.concat(response.data)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          this.tip = '请求失败'
+        })
+      }
     }
   },
   components: {
-    Nodata,
-    LoadMore
+    Nodata
   },
   computed: {
     searchInfo: function () {

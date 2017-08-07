@@ -5,6 +5,7 @@
         <mt-swipe-item v-for="(item, index) in url" :key="index" :style="{'background': 'url('+item+') no-repeat center center/contain'}"></mt-swipe-item>
       </mt-swipe>
     </div>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -13,6 +14,7 @@ export default{
   data () {
     return {
       show: false,
+      tip: '',
       url: []
     }
   },
@@ -27,7 +29,7 @@ export default{
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('图片获取失败')
+          this.tip = '图片获取失败'
         })
       }
     },

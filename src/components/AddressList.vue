@@ -40,28 +40,20 @@ export default {
   methods: {
     province: function (item) {
       this.provinceData = item
-      this.state.name = 'city'
+      this.$emit('update:state', 'city')
     },
     city: function (item) {
       this.cityData = item
       if (item.a) {
-        this.state.name = 'county'
+        this.$emit('update:state', 'county')
       } else {
-        this.state.name = ''
+        this.$emit('update:state', '')
         this.$emit('address', this.provinceData.p + '/' + this.cityData.n)
       }
     },
     county: function (value) {
-      this.state.name = ''
+      this.$emit('update:state', '')
       this.$emit('address', this.provinceData.p + '/' + this.cityData.n + '/' + value)
-    }
-  },
-  watch: {
-    info: {
-      handler: function (val, oldVal) {
-        this.state = this.info
-      },
-      deep: true
     }
   }
 }

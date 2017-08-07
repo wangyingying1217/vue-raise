@@ -3,6 +3,7 @@
     <dt class="title">可用积分：<span class="red">{{point}}</span></dt>
     <Coupon :info="couponList" :type="'integral'"></Coupon>
     <Nodata :showSwitch="couponList.length" :type="'integral'"></Nodata>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ export default {
     return {
       couponList: [],
       point: '',
+      tip: '',
       show: false
     }
   },
@@ -33,7 +35,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

@@ -1,49 +1,36 @@
 <template>
-  <div v-if="info.state !== 'loaded'">
-    <div class="update" v-if="info.state === 'loading'">加载更多
+  <div>
+    <div class="update" v-if="Boff && load">加载更多
       <div data-loader="circle"></div>
     </div>
+    <div class="update" v-if="!Boff">已经到底了~~</div>
   </div>
 </template>
 
 <script>
 export default {
   data () {
-    return {
-      mask: false,
-      state: ''
-    }
+    return {}
   },
-  props: ['info'],
-  watch: {
-    $route: function () {
-      this.state = ''
-    }
-  },
+  props: ['load', 'Boff'],
   created () {
     // 组件创建完后执行，
+    let scroll = () => {
+      if (this.Boff) {
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+        var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+        if (scrollHeight - scrollTop - windowHeight < 20 && scrollTop !== 0) {
+          this.$emit('update:load', true)
+        }
+      }
+    }
     if (window.addEventListener) {
-      window.addEventListener('scroll', () => {
-        if (this.info.state !== 'loaded') {
-          var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-          var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-          var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-          if (scrollTop + windowHeight === scrollHeight && scrollTop !== 0) {
-            this.info.state = 'loading'
-          }
-        }
-      }, false)
+      window.removeEventListener('scroll', scroll, false)
+      window.addEventListener('scroll', scroll, false)
     } else {
-      window.attachEvent('scroll', () => {
-        if (this.info.state !== 'loaded') {
-          var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-          var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-          var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-          if (scrollTop + windowHeight === scrollHeight && scrollTop !== 0) {
-            this.info.state = 'loading'
-          }
-        }
-      }, false)
+      window.detachEvent('scroll', scroll, false)
+      window.attachEvent('scroll', scroll, false)
     }
   }
 }
@@ -57,6 +44,7 @@ export default {
 	font-size:0.8rem;
 	text-align:center;
 	color:#999;
+  margin-bottom: 0.5rem;
 }
 [data-loader=circle] {
 	width: 0.8rem;

@@ -25,6 +25,7 @@
         <span class="itemCon">{{info.time}}</span>
       </li>
     </ul>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -35,6 +36,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       info: {},
       stateList: [
         // {
@@ -67,7 +69,7 @@ export default {
           this.info = response.data
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

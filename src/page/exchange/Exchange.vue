@@ -1,7 +1,7 @@
 <template>
   <div class="exchange" v-if="show">
     <form :action="apiURL+'member/order/exchange.jhtml'" method="post" ref="exchange" v-if="info.state">
-      <div v-show="state.name === ''">
+      <div v-show="state === ''">
         <div class="product-list">
           <div class="product-tit">
             <span class="tit-info">商品信息</span>
@@ -53,7 +53,7 @@
             <span class="list-span">手机号码：</span>
             <input class="list-text" type="tel" name="phone" :value="info.phone">
           </div>
-          <div class="list-item region" @click="state.name='province'">
+          <div class="list-item region" @click="state='province'">
             <span class="list-span">所在地区：</span>{{info.areaName}}
             <input class="list-text" type="hidden" name="areaName" :value="info.areaName">
           </div>
@@ -72,7 +72,8 @@
       <input type="hidden" :value="redirectUrl" name="redirect">
     </form>
     <p class="nodata" v-else>{{info.msg}}</p>
-    <AddressList :info="state" :apiURL="apiURL" @address="(val) => {info.areaName = val.replace(/\//g,'')}"></AddressList>
+    <Tip :info.sync="tip"></Tip>
+    <AddressList :state.sync="state" :apiURL="apiURL" @address="(val) => {info.areaName = val.replace(/\//g,'')}"></AddressList>
   </div>
 </template>
 
@@ -85,10 +86,9 @@ export default {
   data () {
     return {
       info: {product: []},
+      tip: '',
       show: false,
-      state: {
-        name: ''
-      },
+      state: '',
       textarea: '',
       imgArr: [],
       region: ''
@@ -110,7 +110,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -127,14 +127,14 @@ export default {
     checkNum: function (item) {
       if (item.exNum > item.num) {
         item.exNum = item.num
-        alert('超过了您购买的数量')
+        this.tip = '超过了您购买的数量'
       }
     },
     confirm: function () {
       if (!this.exchangeInfo.exchangeInfo.length) {
-        alert('请选择将要换货的商品')
+        this.tip = '请选择将要换货的商品'
       } else if (!this.textarea) {
-        alert('换货说明不能为空呦~~')
+        this.tip = '换货说明不能为空呦~~'
       } else {
         this.$refs.exchange.submit()
       }

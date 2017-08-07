@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <ul class="address-add" v-show="state.name === ''">
+    <ul class="address-add" v-show="state === ''">
       <li>
         <span class="title">收件人</span><input type="text" v-model="name">
       </li>
@@ -8,7 +8,7 @@
         <span class="title">联系电话</span><input type="tel" v-model="tel">
       </li>
       <li>
-        <span class="title">所在地区</span><input type="text" class="local" readonly placeholder="请选择" v-model="place" @click="state.name='province'">
+        <span class="title">所在地区</span><input type="text" class="local" readonly placeholder="请选择" v-model="place" @click="state='province'">
       </li>
       <li class="textarea-wrap">
         <textarea placeholder="请写详细地址，不少于5个字" v-model="detial"></textarea>
@@ -18,7 +18,7 @@
         <div class="default fr" :class="{'act':defaultState}" @click="defaultState=!defaultState"></div>
       </li>
     </ul>
-    <AddressList :info="state" :apiURL="apiURL" @address="address"></AddressList>
+    <AddressList :state.sync="state" :apiURL="apiURL" @address="address"></AddressList>
     <Tip :info.sync="tip"></Tip>
     <div class="submit-btn" @click="submit">
       <a :class="{'act': name && tel && place && detial.length}">保存地址</a>
@@ -33,9 +33,7 @@ export default {
   props: ['apiURL', 'id', 'info'],
   data () {
     return {
-      state: {
-        name: ''
-      },
+      state: '',
       editId: '',
       name: '',
       tel: '',

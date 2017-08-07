@@ -12,6 +12,7 @@
       </div>
     </div>
     <TimeEvolve :info="info.logistics"></TimeEvolve>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -23,6 +24,7 @@ export default {
   data () {
     return {
       info: [],
+      tip: '',
       show: false
     }
   },
@@ -36,7 +38,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

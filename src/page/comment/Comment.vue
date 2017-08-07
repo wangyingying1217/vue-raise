@@ -78,7 +78,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -91,7 +91,7 @@ export default {
           item.zanNum--
         }
       }, () => {
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     },
     commentReset: function () {
@@ -142,7 +142,7 @@ export default {
           }
           this.commentReset()
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       } else {
         var url = ''
@@ -159,7 +159,7 @@ export default {
           }
           this.commentReset()
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -170,7 +170,7 @@ export default {
           this.info.splice(this.commentIndex, 1)
           this.commentReset()
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       } else if (val && this.commentType === REPLAY_STATE) {
         this.$http.get(this.apiURL + 'delReplyComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&commentId=' + this.commentItem.commentId + '&discussId=' + this.discussItem.discussId).then(function (response) {
@@ -181,7 +181,7 @@ export default {
           }
           this.commentReset()
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

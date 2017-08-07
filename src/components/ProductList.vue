@@ -1,7 +1,8 @@
 <template>
   <ul class="raise-pre">
     <li v-for="(item, index) in info" :key="index">
-      <div @click="click(item)">
+      <!-- 商品链接 -->
+      <div @click="turnTo">
         <div class="con-wrapper" v-drag="type">
           <div class="con-img">
             <img :src="item.picsrc" alt="pic"/>
@@ -20,7 +21,7 @@
                 <span class="num" v-if="type === 'inline' || type === 'myOrder'">x{{item.num}}</span>
               </div>
             </div>
-            <!-- <div class="con-price">
+            <div class="con-price">
               <div class="price-wrapper">
                 <span class="price" v-if="type !== 'inline'">￥{{item.unitPrice}}</span>
                 <span class="num" v-if="type === 'inline' || type === 'myOrder'">x{{item.num}}</span>
@@ -31,7 +32,7 @@
                 <span class="tag" v-if="item.type == 'database'">使用</span>
                 <span class="tag" v-if="item.type == 'video'">播放</span>
               </span>
-            </div> -->
+            </div>
           </div>
         </div>
         <span class="delete" @click.stop="remove(item.concernId)" v-if="type === 'delete'">删除</span>
@@ -70,9 +71,10 @@ export default {
     remove: function (id) {
       this.$emit('removeProduct', id)
     },
-    click: function (item) {
+    turnTo: function (item) {
       if (this.type === 'myOrder') {
-        this.$router.push('/productInfo/' + item.contentId)
+        // localtion.href = ''
+        alert('myOrder')
       } else if (this.type === 'inline') {
         alert('inline')
       }

@@ -54,7 +54,7 @@ export default {
             this.tip = response.data.msg
           }
         }, () => {
-          alert('获取失败')
+          this.tip = '获取失败'
         })
       }
     },
@@ -71,7 +71,7 @@ export default {
             this.tip = response.data.msg
           }
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },

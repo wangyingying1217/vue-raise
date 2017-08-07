@@ -48,7 +48,7 @@ export default {
           this.show = true
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },

@@ -1,6 +1,7 @@
 <template>
-  <div class="">
+  <div>
     <router-view :apiURL="apiURL" :id="wxbdopenId" :qrCode="qrCode" :username="username" :headimgurl="headimgurl" v-if="show"></router-view>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -9,10 +10,11 @@ import wx from 'weixin-js-sdk'
 export default {
   data () {
     return {
-      // apiURL: 'http://124.205.131.133/raise/',
+      // apiURL: 'http://124.205.131.133:8088/raise/',
       apiURL: 'http://192.168.8.144:8081/raise/',
       // apiURL: 'http://192.168.8.183:8080/raise/',
       // apiURL: 'http://www.huizhi.com.cn/raise/',
+      tip: '',
       qrCode: '',
       show: false,
       username: '',
@@ -70,7 +72,7 @@ export default {
       })
     }, () => {
       this.$indicator.close()
-      alert('请求失败')
+      this.tip = '请求失败'
     })
   },
   computed: {

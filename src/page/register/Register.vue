@@ -65,7 +65,7 @@ export default {
           }
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -84,7 +84,7 @@ export default {
             this.$router.push('/hot')
           }
         }, () => {
-          alert('注册失败')
+          this.tip = '注册失败'
         })
       }
     }

@@ -8,6 +8,7 @@
     <input type="hidden" :value="user.wxbdopenId" name="userId">
     <input type="hidden" :value="codeState" name="state">
     <input type="hidden" :value="redirectUrl" name="redirect">
+    <Tip :info.sync="tip"></Tip>
   </form>
 </template>
 
@@ -21,6 +22,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       user: {},
       itemtype: [],
       productType: [
@@ -125,14 +127,14 @@ export default {
             this.show = true
             this.$indicator.close()
           } else {
-            alert(response.data.info.msg)
+            this.tip = response.data.info.msg
             this.$router.push('/myinfo/check')
           }
           this.user = response.data.info
           this.itemtype = response.data.itemtype
           this.productType = response.data.productType
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },

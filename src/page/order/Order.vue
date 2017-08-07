@@ -164,7 +164,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       } else {
         this.$indicator.close()
@@ -183,7 +183,7 @@ export default {
     checkNum: function () {
       if (!this.info.isLimit || (this.info.isLimit && this.num > this.info.lotNum)) {
         this.num = this.info.lotNum
-        alert('超过了限定的数量')
+        this.tip = '超过了限定的数量'
       }
     },
     getAddress: function (item) {

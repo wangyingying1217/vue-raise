@@ -211,6 +211,7 @@
       </div>
       <input type="hidden" name="count" :value="returnInfo.length">
     </div>
+    <Tip :info.sync="tip"></Tip>
     <router-view :apiURL="apiURL" :id="id" :productType="productTypeList" @product="productReceive" :onlineIndex="onlineIndex"></router-view>
   </div>
 </template>
@@ -243,6 +244,7 @@ export default {
   },
   data () {
     return {
+      tip: '',
       productChoosed: {},
       onlineIndex: '',
       picItem: '',
@@ -374,7 +376,7 @@ export default {
     },
     addDescription: function (parent, children, num) {
       if (num && (parent.length > num - 1)) {
-        alert('最多只能上传' + num + '条')
+        this.tip = '最多只能上传' + num + '条'
       } else {
         parent.push(JSON.parse(JSON.stringify(children)))
       }

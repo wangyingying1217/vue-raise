@@ -7,6 +7,7 @@
       <p>当前版本：{{info.version}}</p>
     </dt>
     <router-link :to="item.path" v-for="item in routerDate" :key="item.name" tag="dd"><a>{{item.name}}</a></router-link>
+    <Tip :info.sync="tip"></Tip>
   </dl>
 </template>
 
@@ -16,6 +17,7 @@ export default {
   data () {
     return {
       show: false,
+      tip: '',
       info: [],
       routerDate: [{
         path: '/introduce',
@@ -38,7 +40,7 @@ export default {
         this.$indicator.close()
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     }
   },

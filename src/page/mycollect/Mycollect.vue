@@ -4,7 +4,8 @@
     <router-view :info="info" :type="'delete'" @removeRaise="removeRaise" @removeProduct="removeProduct"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <Nodata :showSwitch="info.length" :type="state"></Nodata>
-    <LoadMore :info="loadMore"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -12,8 +13,6 @@
 import Confirm from '@/components/Confirm'
 import Tabmenu from '@/components/Tabmenu'
 import Nodata from '@/components/Nodata'
-import LoadMore from '@/components/LoadMore'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -25,6 +24,7 @@ export default {
         href: '/mycollect/product',
         name: '商品'
       }],
+      tip: '',
       info: [],
       page: 1,
       type: '',
@@ -35,16 +35,14 @@ export default {
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
-      loadMore: {
-        state: ''
-      }
+      loadState: false,
+      loadBoff: true
     }
   },
   components: {
     Confirm,
     Tabmenu,
-    Nodata,
-    LoadMore
+    Nodata
   },
   methods: {
     getCustomers: function () {
@@ -57,7 +55,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -96,24 +94,21 @@ export default {
     this.getCustomers()
   },
   watch: {
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.post(this.url).then((response) => {
-            if (response.data.length) {
-              this.info.push(...response.data[this.state])
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            this.$indicator.close()
-            alert('获取失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.post(this.url).then((response) => {
+          if (response.data.length) {
+            this.info.push(...response.data[this.state])
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          this.$indicator.close()
+          this.tip = '获取失败'
+        })
+      }
     },
     id: function () {
       this.getCustomers()

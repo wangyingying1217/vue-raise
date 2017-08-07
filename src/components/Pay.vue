@@ -28,7 +28,7 @@ export default {
             ]
           })
         }, (res) => {
-          alert('获取配置失败')
+          this.tip = '获取配置失败'
         })
       }
     },
@@ -45,7 +45,7 @@ export default {
             this.$router.push('/success/pay')
           },
           err: (res) => {
-            alert('支付失败')
+            this.tip = '支付失败'
           }
         })
       })

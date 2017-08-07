@@ -130,7 +130,7 @@ export default {
           this.show = true
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       } else {
         this.$indicator.close()
@@ -142,7 +142,7 @@ export default {
         this.$http.get(this.apiURL + 'member/order/confirm_receipt.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           this.info.state = 'RAISED'
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       } else if (val && this.type === 'deleteOrder') {
         this.$http.get(this.apiURL + 'member/order/delete.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
@@ -151,21 +151,21 @@ export default {
           }
         }, () => {
           this.$indicator.close()
-          alert('删除失败')
+          this.tip = '删除失败'
         })
       } else if (val && this.type === 'abolishOrder') {
         this.$http.get(this.apiURL + 'member/order/cancel.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           this.$router.go(-1)
         }, () => {
           this.$indicator.close()
-          alert('取消失败')
+          this.tip = '取消失败'
         })
       } else if (val && this.type === 'abolishExchange') {
         this.$http.get(this.apiURL + 'member/order/stopExchange.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           this.info.state = '待收货'
         }, () => {
           this.$indicator.close()
-          alert('取消换货失败')
+          this.tip = '取消换货失败'
         })
       }
     },
@@ -191,10 +191,10 @@ export default {
     },
     remind: function (item) {
       this.$http.get(this.apiURL + 'member/order/shipWarn.jhtml?orderCode=' + this.item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
-        alert('提醒成功')
+        this.tip = '提醒成功'
       }, () => {
         this.$indicator.close()
-        alert('提醒失败')
+        this.tip = '提醒失败'
       })
     },
     payment: function (item) {

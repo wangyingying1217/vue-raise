@@ -10,13 +10,13 @@
     </ul>
     <RaiseList :info="info" :apiURL="apiURL" :id="id"></RaiseList>
     <Nodata :showSwitch="info.length" :type="'content'"></Nodata>
-    <LoadMore :info="loadMore"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
 import Nodata from '@/components/Nodata'
-import LoadMore from '@/components/LoadMore'
 import RaiseList from '@/components/RaiseList'
 
 export default {
@@ -29,9 +29,9 @@ export default {
       searchType: [],
       tabIndex: 999,
       page: 1,
-      loadMore: {
-        state: ''
-      }
+      tip: '',
+      loadState: false,
+      loadBoff: true
     }
   },
   methods: {
@@ -50,7 +50,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -60,10 +60,10 @@ export default {
       this.tabIndex = 999
       this.$http.post(this.apiURL + 'advancedLucene.jhtml', this.searchInfo).then((response) => {
         this.info = response.data
-        this.loadMore.state = ''
+        this.loadBoff = true
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     }
   },
@@ -79,29 +79,25 @@ export default {
     $route () {
       this.getCustomers()
     },
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.post(this.apiURL + 'advancedLucene.jhtml', this.searchInfo).then((response) => {
-            if (response.data.length) {
-              this.info = this.info.concat(response.data)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            this.$indicator.close()
-            alert('请求失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.post(this.apiURL + 'advancedLucene.jhtml', this.searchInfo).then((response) => {
+          if (response.data.length) {
+            this.info = this.info.concat(response.data)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          this.$indicator.close()
+          this.tip = '请求失败'
+        })
+      }
     }
   },
   components: {
     Nodata,
-    LoadMore,
     RaiseList
   },
   computed: {

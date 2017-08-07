@@ -6,6 +6,7 @@
     <p class="userName">{{info.userName}}</p>
     <p class="idiograph">{{info.idiograph}}</p>
     <router-link v-if="!info.isMe" :to="'/chat/'+info.userId" class="button">向他提问</router-link>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -15,6 +16,7 @@ export default {
   data () {
     return {
       show: false,
+      tip: '',
       info: {}
     }
   },
@@ -27,7 +29,7 @@ export default {
         this.$indicator.close()
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     }
   },

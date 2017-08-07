@@ -10,6 +10,7 @@
         <img v-if="item.picSrc" :src="item.picSrc" @click="preview(index)" alt="pic">
       </div>
     </div>
+    <Tip :info.sync="tip"></Tip>
     <Nodata :showSwitch="info" :type="'detials'"></Nodata>
   </div>
 </template>
@@ -21,6 +22,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       show: false,
       video: '',
       poster: '',
@@ -41,7 +43,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },

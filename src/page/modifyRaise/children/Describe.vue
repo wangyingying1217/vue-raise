@@ -67,6 +67,7 @@
       <input class="submit act w6 mr2" type="button" value="上一步" @click="state.name = 'raiseInfo'">
       <input class="submit act w6" type="button" value="下一步" @click="submit">
     </div>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -89,6 +90,7 @@ export default {
   },
   data () {
     return {
+      tip: '',
       picItem: {},
       video: '',
       poster: '',
@@ -128,7 +130,7 @@ export default {
   methods: {
     addDescription: function (parent, children, num) {
       if (num && (parent.length > num - 1)) {
-        alert('最多只能上传' + num + '条')
+        this.tip = '最多只能上传' + num + '条'
       } else {
         parent.push(JSON.parse(JSON.stringify(children)))
       }
@@ -160,9 +162,9 @@ export default {
         }
       }
       if (!bOff) {
-        alert('您还有未完成的编辑项')
+        this.tip = '您还有未完成的编辑项'
       } else if (!this.describeEmpty) {
-        alert('请添加项目描述')
+        this.tip = '请添加项目描述'
       } else {
         this.state.name = 'return'
       }

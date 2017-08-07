@@ -15,6 +15,7 @@
       <input class="text" type="text" v-model="text">
       <input class="sure" type="button" value="发送" @click="send">
     </div>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -34,7 +35,8 @@ export default {
       text: '',
       show: false,
       requset: true,
-      timer: null
+      timer: null,
+      tip: ''
     }
   },
   methods: {
@@ -50,7 +52,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
       this.timer = setInterval(() => {
@@ -71,7 +73,7 @@ export default {
         this.$http.post(this.apiURL + 'member/message/sendChat.jhtml', {prevChatId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId, content: encodeURI(this.text)}).then((response) => {
           this.text = ''
         }, () => {
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

@@ -5,6 +5,7 @@
     <dt class="title" v-if="invalid.length">历史优惠券</dt>
     <Coupon :info="invalid"></Coupon>
     <Nodata :showSwitch="valid.length || invalid.length" :type="'coupon'"></Nodata>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       valid: [],
       invalid: [],
       show: false
@@ -46,7 +48,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

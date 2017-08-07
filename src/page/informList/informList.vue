@@ -57,6 +57,7 @@
         </div>
       </router-link>
     </ul>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -66,6 +67,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       info: [],
       page: 1,
       show: false,
@@ -83,7 +85,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

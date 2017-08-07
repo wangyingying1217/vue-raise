@@ -1,34 +1,37 @@
 <template>
-  <ul class="support-list" v-if="show">
-    <li class="support-item" v-for="(item, index) in info" :key="index">
-      <div v-if="item.type !== '无偿支持'" class="describe">
-        <p class="price">￥{{item.money}}
-          <span class="lottery" v-if="item.type === '抽奖回报'">奖</span>
-          <span class="limit" v-if="item.copies != 0 ">限制{{item.copies}}份</span>
-        </p>
-        <p class="info">{{item.title}}</p>
-        <div class="detials">
-          <p>{{item.content}}</p>
+  <div class="">
+    <ul class="support-list" v-if="show">
+      <li class="support-item" v-for="(item, index) in info" :key="index">
+        <div v-if="item.type !== '无偿支持'" class="describe">
+          <p class="price">￥{{item.money}}
+            <span class="lottery" v-if="item.type === '抽奖回报'">奖</span>
+            <span class="limit" v-if="item.copies != 0 ">限制{{item.copies}}份</span>
+          </p>
+          <p class="info">{{item.title}}</p>
+          <div class="detials">
+            <p>{{item.content}}</p>
+          </div>
+          <div class="img-box">
+            <router-link class="img-wrapper" :to="'/imagePreview/'+contentId+'/crowdShare/'+key+'/'+item.id" v-for="(ele,key) in item.pic" :key="key" v-bind:style="'background: url('+ele+') no-repeat;background-size: cover;'">
+          </router-link>
+          </div>
+          <div class="tip">
+            <p>回报时间：项目成功结束后{{item.reTime}}天内</p>
+            <p v-if="item.type !== '抽奖回报'">运费：{{item.freight | tofix}}元</p>
+          </div>
         </div>
-        <div class="img-box">
-          <router-link class="img-wrapper" :to="'/imagePreview/'+contentId+'/crowdShare/'+key+'/'+item.id" v-for="(ele,key) in item.pic" :key="key" v-bind:style="'background: url('+ele+') no-repeat;background-size: cover;'">
-        </router-link>
+        <div v-else class="describe">
+          <p class="price">无私支持</p>
+          <p class="info">感谢您的无私奉献，这份支持将祝我们的梦想飞得更高更远。</p>
         </div>
-        <div class="tip">
-          <p>回报时间：项目成功结束后{{item.reTime}}天内</p>
-          <p v-if="item.type !== '抽奖回报'">运费：{{item.freight | tofix}}元</p>
+        <div class="support">
+          已支持数：<span class="clRed">{{item.num}}</span>
+          <router-link class="btn" :to="'/order/'+item.id">立即付款</router-link>
         </div>
-      </div>
-      <div v-else class="describe">
-        <p class="price">无私支持</p>
-        <p class="info">感谢您的无私奉献，这份支持将祝我们的梦想飞得更高更远。</p>
-      </div>
-      <div class="support">
-        已支持数：<span class="clRed">{{item.num}}</span>
-        <router-link class="btn" :to="'/order/'+item.id">立即付款</router-link>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+    <Tip :info.sync="tip"></Tip>
+  </div>
 </template>
 
 <script>
@@ -38,6 +41,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       info: {},
       show: false,
       mapHref: {
@@ -57,7 +61,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

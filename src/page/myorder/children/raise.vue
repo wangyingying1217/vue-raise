@@ -8,14 +8,13 @@
     <router-view :info="info" :type="'myOrder'" @confirmReceipt="confirmReceipt" @deleteOrder="deleteOrder" @abolishOrder="abolishOrder" @payment="payment" @remind="remind"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <Nodata :showSwitch="info.length" :type="'order'"></Nodata>
-    <LoadMore :info="loadMore"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>
 
 <script>
 import Confirm from '@/components/Confirm'
 import Nodata from '@/components/Nodata'
-import LoadMore from '@/components/LoadMore'
 import Pay from '@/components/Pay'
 
 export default {
@@ -34,18 +33,17 @@ export default {
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
-      loadMore: {
-        state: ''
-      }
+      loadState: false,
+      loadBoff: true
     }
   },
   components: {
     Confirm,
-    Nodata,
-    LoadMore
+    Nodata
   },
   methods: {
     getCustomers: function () {
+      this.page = 1
       if (this.id) {
         this.$http.get(this.apiURL + 'member/order/list.jhtml?type=raise&wxbdopenId=' + this.id + '&page=' + this.page + '&state=' + this.state).then((response) => {
           this.info = response.data.raise
@@ -128,29 +126,25 @@ export default {
     }
   },
   watch: {
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.get(this.apiURL + 'member/order/list.jhtml?type=raise&wxbdopenId=' + this.id + '&page=' + this.page + '&state=' + this.state).then((response) => {
-            if (response.data.raise.length) {
-              this.info.push(...response.data.raise)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            alert('请求失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.get(this.apiURL + 'member/order/list.jhtml?type=raise&wxbdopenId=' + this.id + '&page=' + this.page + '&state=' + this.state).then((response) => {
+          if (response.data.raise.length) {
+            this.info.push(...response.data.raise)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          alert('请求失败')
+        })
+      }
     },
     id: function () {
       this.getCustomers()
     },
     $route: function () {
-      this.page = 1
       this.getCustomers()
     }
   },

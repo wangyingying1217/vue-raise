@@ -12,15 +12,13 @@
         </div>
       </router-link>
     </ul>
-    <LoadMore :info="loadMore" :type="'no'"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
     <Nodata :showSwitch="info.length" type="activity"></Nodata>
   </div>
 </template>
 
 <script>
-import LoadMore from '@/components/LoadMore'
 import Nodata from '@/components/Nodata'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -28,9 +26,8 @@ export default {
       show: false,
       info: [],
       page: 1,
-      loadMore: {
-        state: ''
-      }
+      loadState: false,
+      loadBoff: true
     }
   },
   methods: {
@@ -47,24 +44,21 @@ export default {
     }
   },
   watch: {
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.get(this.apiURL + 'article/list.jhtml?pageNumber=' + this.page).then((response) => {
-            if (response.data.length) {
-              this.info = this.info.concat(response.data.article)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            this.$indicator.close()
-            alert('请求失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.get(this.apiURL + 'article/list.jhtml?pageNumber=' + this.page).then((response) => {
+          if (response.data.length) {
+            this.info = this.info.concat(response.data.article)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          this.$indicator.close()
+          alert('请求失败')
+        })
+      }
     },
     id: function () {
       this.getCustomers()
@@ -74,8 +68,7 @@ export default {
     }
   },
   components: {
-    Nodata,
-    LoadMore
+    Nodata
   },
   created () {
     // 组件创建完后获取数据，

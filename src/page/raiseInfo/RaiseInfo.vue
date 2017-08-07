@@ -51,6 +51,7 @@
       </ul>
     </div>
     <List :info='detialInfo'></List>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -62,6 +63,7 @@ export default {
   data () {
     return {
       info: {},
+      tip: '',
       contentId: '',
       show: false
     }
@@ -78,7 +80,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     },
@@ -87,7 +89,7 @@ export default {
         this.info.concern = !this.info.concern
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     },
     support: function () {

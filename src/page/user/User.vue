@@ -20,6 +20,7 @@
       </router-link>
     </ul>
     <FooterBar type='person'></FooterBar>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -32,6 +33,7 @@ export default {
     return {
       user: {},
       show: false,
+      tip: '',
       routerDate: [{
         path: '/mycollect',
         name: '我的收藏'
@@ -69,7 +71,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }

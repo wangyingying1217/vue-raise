@@ -4,6 +4,7 @@
     <p>电子邮箱：{{info.email}}</p>
     <p>邮政编码：{{info.zipCode}}</p>
     <p>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：{{info.address}}</p>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   data () {
     return {
       info: [],
-      show: false
+      show: false,
+      tip: ''
     }
   },
   methods: {
@@ -25,7 +27,7 @@ export default {
         this.$indicator.close()
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     }
   },

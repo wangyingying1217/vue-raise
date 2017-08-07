@@ -5,6 +5,7 @@
     <router-link :to="{ path: '/search/'+state}" v-if="raise[state].length>9" class="loadMore">查看更多>></router-link>
     <Nodata :showSwitch="raise[state].length" :type="'index'"></Nodata>
     <FooterBar type='raise'></FooterBar>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
@@ -17,6 +18,7 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
+      tip: '',
       raise: {
         his: [],
         hot: [],
@@ -49,7 +51,7 @@ export default {
         this.$indicator.close()
       }, () => {
         this.$indicator.close()
-        alert('请求失败')
+        this.tip = '请求失败'
       })
     }
   },

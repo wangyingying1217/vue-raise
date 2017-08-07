@@ -26,15 +26,14 @@
       </tr>
       </tbody>
     </table>
-    <LoadMore :info="loadMore"></LoadMore>
+    <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
     <Nodata :showSwitch="info.length" :type="'support'"></Nodata>
+    <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
 import Nodata from '@/components/Nodata'
-import LoadMore from '@/components/LoadMore'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -43,9 +42,9 @@ export default {
       info: {},
       contentId: '',
       page: 1,
-      loadMore: {
-        state: ''
-      }
+      tip: '',
+      loadState: false,
+      loadBoff: true
     }
   },
   methods: {
@@ -59,7 +58,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }
@@ -76,28 +75,24 @@ export default {
     id: function () {
       this.getCustomers()
     },
-    loadMore: {
-      handler: function (val, oldVal) {
-        if (val.state === 'loading') {
-          this.page ++
-          this.$http.get(this.apiURL + 'supportRecord.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
-            if (response.data.length) {
-              this.info.push(...response.data)
-              this.loadMore.state = ''
-            } else {
-              this.loadMore.state = 'loaded'
-            }
-          }, () => {
-            alert('请求失败')
-          })
-        }
-      },
-      deep: true
+    loadState: function (val, oldVal) {
+      if (val) {
+        this.page ++
+        this.$http.get(this.apiURL + 'supportRecord.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
+          if (response.data.length) {
+            this.info.push(...response.data)
+            this.loadState = false
+          } else {
+            this.loadBoff = false
+          }
+        }, () => {
+          this.tip = '请求失败'
+        })
+      }
     }
   },
   components: {
-    Nodata,
-    LoadMore
+    Nodata
   }
 }
 </script>

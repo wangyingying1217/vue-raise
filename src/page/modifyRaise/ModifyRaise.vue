@@ -9,6 +9,7 @@
     <input type="hidden" :value="user.wxbdopenId" name="wxbdopenId">
     <input type="hidden" :value="codeState" name="state">
     <input type="hidden" :value="redirectUrl" name="redirect">
+    <Tip :info.sync="tip"></Tip>
   </form>
 </template>
 
@@ -29,6 +30,7 @@ export default {
           productForm: []
         }
       ],
+      tip: '',
       show: false,
       state: {
         name: 'presonInfo'
@@ -133,7 +135,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
         if (this.type === 'raise') {
           document.title = '修改众筹'
@@ -147,11 +149,11 @@ export default {
               this.describe = response.data.Describe
               this.returnData = response.data.Return
             } else {
-              alert('您没有操作权限')
+              this.tip = '您没有操作权限'
               this.$router.go(-1)
             }
           }, () => {
-            alert('请求失败')
+            this.tip = '请求失败'
           })
         } else if (this.type === 'return') {
           document.title = '添加回报'
@@ -162,11 +164,11 @@ export default {
             if (response.data.state) {
               this.isLottoReturn = response.data.isLottoReturn
             } else {
-              alert(response.data.msg)
+              this.tip = response.data.msg
               this.$router.go(-1)
             }
           }, () => {
-            alert('请求失败')
+            this.tip = '请求失败'
           })
         }
       }

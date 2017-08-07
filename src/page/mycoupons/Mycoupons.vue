@@ -18,10 +18,7 @@ export default {
       {
         href: '/mycoupons/discount',
         name: '优惠券'
-      }],
-      loadMore: {
-        state: ''
-      }
+      }]
     }
   },
   components: {

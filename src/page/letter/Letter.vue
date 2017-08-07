@@ -15,6 +15,7 @@
         </div>
       </router-link>
     </ul>
+    <Tip :info.sync="tip"></Tip>
     <Nodata :showSwitch="info.length" type="letter"></Nodata>
   </div>
 </template>
@@ -26,6 +27,7 @@ export default {
   data () {
     return {
       info: [],
+      tip: '',
       page: 1,
       show: false,
       SEND: '发布',
@@ -42,7 +44,7 @@ export default {
           this.$indicator.close()
         }, () => {
           this.$indicator.close()
-          alert('请求失败')
+          this.tip = '请求失败'
         })
       }
     }
