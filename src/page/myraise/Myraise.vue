@@ -3,6 +3,7 @@
     <Tabmenu :tabInfo = "tabInfo"></Tabmenu>
     <router-view :info="info" :type="'myRaise'" @deleteRaise="deleteRaise" @endRaise="endRaise" @abolishRaise="abolishRaise" @supplement="supplement"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
+    <Prompt :info="promptInfo" @confirm="prompt" v-show="promptState"></Prompt>
     <Nodata :showSwitch="info.length" type="index"></Nodata>
     <Tip :info.sync="tip"></Tip>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
@@ -11,6 +12,7 @@
 
 <script>
 import Confirm from '@/components/Confirm'
+import Prompt from '@/components/Prompt'
 import Tabmenu from '@/components/Tabmenu'
 import Nodata from '@/components/Nodata'
 import Pay from '@/components/Pay'
@@ -37,6 +39,11 @@ export default {
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
+      promptInfo: {
+        title: '提示',
+        name: '您确定要删除此条回复？'
+      },
+      promptState: false,
       tip: '',
       type: '',
       contentId: '',
@@ -46,6 +53,7 @@ export default {
   components: {
     Tabmenu,
     Nodata,
+    Prompt,
     Confirm
   },
   methods: {
@@ -74,32 +82,6 @@ export default {
         }, () => {
           this.tip = '删除失败'
         })
-      } else if (val && this.type === 'endRaise') {
-        this.$http.get(this.apiURL + 'member/stop_raise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
-          if (response.data.state) {
-            this.info.forEach((item, index) => {
-              if (item.contentId === this.contentId) {
-                this.info[index].state = '终止中'
-              }
-            })
-          }
-        }, () => {
-          this.$indicator.close()
-          this.tip = '终止失败'
-        })
-      } else if (val && this.type === 'abolishRaise') {
-        this.$http.get(this.apiURL + 'member/abolish.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
-          if (response.data.state) {
-            this.info.forEach((item, index) => {
-              if (item.contentId === this.contentId) {
-                this.info[index].state = '废止中'
-              }
-            })
-          }
-        }, () => {
-          this.$indicator.close()
-          this.tip = '废止失败'
-        })
       } else if (val && this.type === 'supplement') {
         let data = {
           wxbdopenId: this.id,
@@ -111,6 +93,36 @@ export default {
         this.pay(data)
       }
     },
+    prompt: function (val) {
+      this.promptState = false
+      if (val.state && this.type === 'endRaise') {
+        this.$http.get(this.apiURL + 'member/stop_raise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id + '&acceptOption=' + val.text).then((response) => {
+          if (response.data.state) {
+            this.info.forEach((item, index) => {
+              if (item.contentId === this.contentId) {
+                this.info[index].state = '终止中'
+              }
+            })
+          }
+        }, () => {
+          this.$indicator.close()
+          this.tip = '终止失败'
+        })
+      } else if (val.state && this.type === 'abolishRaise') {
+        this.$http.get(this.apiURL + 'member/abolish.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id + '&acceptOption=' + val.text).then((response) => {
+          if (response.data.state) {
+            this.info.forEach((item, index) => {
+              if (item.contentId === this.contentId) {
+                this.info[index].state = '废止中'
+              }
+            })
+          }
+        }, () => {
+          this.$indicator.close()
+          this.tip = '废止失败'
+        })
+      }
+    },
     deleteRaise: function (id) {
       this.confirmState = true
       this.type = 'deleteRaise'
@@ -118,16 +130,16 @@ export default {
       this.confirmInfo.name = '您确定要删除此条众筹？'
     },
     endRaise: function (id) {
-      this.confirmState = true
+      this.promptState = true
       this.type = 'endRaise'
       this.contentId = id
-      this.confirmInfo.name = '终止后不可恢复，您确定要终止此条众筹？'
+      this.promptInfo.name = '终止后不可恢复，请填写原因：'
     },
     abolishRaise: function (id) {
-      this.confirmState = true
+      this.promptState = true
       this.type = 'abolishRaise'
       this.contentId = id
-      this.confirmInfo.name = '废止后不可恢复，您确定要废止此条众筹？'
+      this.promptInfo.name = '废止后不可恢复，请填写原因：'
     },
     supplement: function (json) {
       this.confirmState = true

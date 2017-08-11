@@ -136,12 +136,16 @@ export default {
     url: function () {
       let url = ''
       if (this.type === this.LOGISTICS) {
+        document.title = '物流服务'
         url = 'member/message/logistics/list.jhtml'
       } else if (this.type === this.RETURN) {
+        document.title = '支持消息'
         url = 'member/message/support/list.jhtml'
       } else if (this.type === this.DYNAMIC) {
+        document.title = '动态通知'
         url = 'member/message/dynamic/list.jhtml'
       } else {
+        document.title = '项目通知'
         url = 'member/message/item/list.jhtml'
       }
       return url

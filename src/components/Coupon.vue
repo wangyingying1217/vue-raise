@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 积分兑换券 -->
     <div v-if="type == 'integral'">
       <router-link :to="{ path: '/ticket/'+item.id}" class="ticket act" v-for="(item, index) in info" :key="index" tag="div">
         <div class="money">￥<span class="num">{{item.money}}</span></div>
@@ -9,6 +10,7 @@
         </div>
       </router-link>
     </div>
+    <!-- 优惠券 -->
     <div v-if="type != 'integral'">
       <div class="ticket" v-for="(item, index) in info" :key="index" :class="mapClass[item.state - 1]">
         <div class="money">￥<span class="num">{{item.money}}</span></div>

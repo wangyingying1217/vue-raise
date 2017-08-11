@@ -64,13 +64,14 @@ export default {
       display: inline-block;
       width:5rem;
       height:5rem;
+      font-size: 0;
       background:#ffffff;
       border-radius:0.9rem;
       margin-bottom:0.5rem;
       overflow: hidden;
       img{
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
       }
     }
     p{

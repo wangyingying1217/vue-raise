@@ -1,13 +1,16 @@
 <template>
   <div class="mask">
-    <div class="confirm">
-      <div class="confirm-title">{{info.title}}
-        <span class="confirm-close" @click="cancel"></span>
+    <div class="prompt">
+      <div class="prompt-title">{{info.title}}
+        <span class="prompt-close" @click="cancel"></span>
       </div>
-      <div class="confirm-content">{{info.name}}</div>
-      <div class="confirm-btnwrap">
-        <a class="confirm-btn" @click="confirm">确定</a>
-        <a class="confirm-btn" @click="cancel">取消</a>
+      <div class="prompt-content">
+        <p>{{info.name}}</p>
+        <textarea class="prompt-textarea" v-model="text"></textarea>
+      </div>
+      <div class="prompt-btnwrap">
+        <a class="prompt-btn" @click="confirm">确定</a>
+        <a class="prompt-btn" @click="cancel">取消</a>
       </div>
     </div>
   </div>
@@ -21,16 +24,16 @@
 export default {
   data () {
     return {
-      mask: true
+      text: ''
     }
   },
   props: ['info'],
   methods: {
     cancel: function () {
-      this.$emit('confirm', false)
+      this.$emit('confirm', {'text': this.text, 'state': false})
     },
     confirm: function () {
-      this.$emit('confirm', true)
+      this.$emit('confirm', {'text': this.text, 'state': true})
     }
   }
 }
@@ -48,16 +51,16 @@ export default {
 	z-index:99;
 	background-color:rgba(0, 0, 0, 0.3);
 }
-.confirm{
+.prompt{
 	position:absolute;
-	top:7.6rem;
+	top:6rem;
 	left:2rem;
 	z-index:10;
 	width:14rem;
 	border-radius:0.1rem;
 	background:#ffffff;
 }
-.confirm-title{
+.prompt-title{
   height:2rem;
   line-height:2rem;
 	padding:0 0.7rem;
@@ -68,24 +71,34 @@ export default {
 	border-radius:0.1rem 0.1rem 0 0;
   overflow:hidden;
 }
-.confirm-close{
+.prompt-close{
 	float:right;
 	width:1.2em;
 	height:2rem;
 	background:url("../image/close.png") no-repeat center center;
   background-size: contain;
 }
-.confirm-content{
-	padding:1.3rem 1rem;
+.prompt-content{
+	padding:0.7rem 1rem;
 	line-height:1rem;
   font-size:0.7rem;
 	word-break:break-all;
 }
-.confirm-btnwrap{
+.prompt-textarea{
+  width: 100%;
+  height: 3.3rem;
+  font-size:0.7rem;
+  line-height:1rem;
+  margin-top: 0.5rem;
+  padding: 0.2rem;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.prompt-btnwrap{
 	text-align:center;
 	padding:0 0 1rem;
 }
-.confirm-btn{
+.prompt-btn{
 	display:inline-block;
 	height:1.6rem;
 	line-height:1.6rem;

@@ -8,22 +8,6 @@ css用less，flex布局，rem做移动端适配，最终效果web端移动端都
 
 用localStorage做缓存
 
-> 完成功能
-
-- [x] 首页列表
-- [x] 下拉加载
-- [x] 用户信息（点击头像）
-- [x] 主题内容
-- [x] 登录功能
-- [x] 收藏（取消收藏）主题
-- [x] 评论列表
-- [x] 点赞（取消点赞）功能
-- [x] 消息中心（已读、未读）
-- [x] 个人中心
-- [x] 发表评论
-- [x] 回复评论
-- [x] 发布主题（支持markdown编辑且可预览）
-
 ### 安装运行
 
 ``` bash
@@ -76,54 +60,224 @@ npm run build --report
 │   ├── build.js
 │   ├── check-versions.js
 │   ├── dev-client.js
-│   ├── dev-server.js
-│   ├── utils.js
-│   ├── vue-loader.conf.js
-│   ├── webpack.base.conf.js
-│   ├── webpack.dev.conf.js
-│   └── webpack.prod.conf.js
-├── config
-│   ├── dev.env.js
-│   ├── index.js
-│   └── prod.env.js
-├── dist                    //等写完项目后 $ npm run build 的打包文件
-│   ├── index.html
-│   └── static
-├── index.html              //首页入口文件
-├── node_modules
-├── package.json          
-├── src
-│   ├── App.vue             //项目入口文件
-│   ├── main.js             //核心文件 在这里引入了Muse UI 时间过滤器
-│   ├── image               //项目中用到的图片
-│   │
-│   ├── style               //静态样式
-│   │   ├── base.less       //公共样式
-│   │   └── reset.css       //默认样式重置       
-│   │
-│   ├── service             //公共js文件
-│   │   ├── city.js         //底部nav组件
-│   │   └── viewport_rem.js //定义视口和rem单位
-│   │
-│   ├── components          //组件
-│   │   ├── AddressList.vue //选择省市区地址列表组件
-│   │   ├── Confirm.vue     //确定弹出框组件
-│   │   ├── Coupon.vue      //优惠券组件
-│   │   ├── FooterBar.vue   //底部nav组件
-│   │   ├── ImageUpload.vue //图片剪裁组件
-│   │   ├── Coupon.vue      //优惠券
-│   │   ├── Coupon.vue      //优惠券
-│   │   └── Coupon.vue      //优惠券
-│   │
-│   ├── pages               //页面
-│   │   ├── content.vue     //帖子内容页面  
-│   │   ├── index.vue       //首页
-│   │   ├── login.vue       //登录页面
-│   │   ├── message.vue     //信息通知页面
-│   │   ├── more.vue        
-│   │   ├── my.vue          //个人信息页面
-│   │   ├── people.vue      //社区用户信息页面
-│   │   └── publish.vue     //发布帖子页面(此页面还没写完)
-│   └── router              //路由与组件配置
-│       └── index.js
-└── static
+│   ├── dev-server.js         
+│   ├── utils.js          
+│   ├── vue-loader.conf.js          
+│   ├── webpack.base.conf.js          
+│   ├── webpack.dev.conf.js         
+│   └── webpack.prod.conf.js          
+├── config          
+│   ├── dev.env.js          
+│   ├── index.js          
+│   └── prod.env.js         
+├── dist                                      //等写完项目后 $ npm run build 的打包文件
+│   ├── index.html                  
+│   └── static                  
+├── index.html                                //首页入口文件
+├── node_modules                  
+├── package.json                            
+├── src                 
+│   ├── App.vue                               //项目入口文件
+│   ├── main.js                               //核心文件 在这里引入了Muse UI 时间过滤器
+│   ├── image                                 //项目中用到的图片
+│   │                 
+│   ├── style                                 //静态样式
+│   │   ├── base.less                         //公共样式
+│   │   └── reset.css                         //默认样式重置       
+│   │                 
+│   ├── service                               //公共js文件
+│   │   ├── city.js                           //底部nav组件
+│   │   └── viewport_rem.js                   //定义视口和rem单位
+│   │                 
+│   ├── components                            //组件
+│   │   ├── loadmore                          
+│   │   │   ├── index.js                      //注册全局组件
+│   │   │   └── LoadMore.vue                  //加载更多组件
+│   │   │                 
+│   │   ├── tip                         
+│   │   │   ├── index.js                      //注册全局组件
+│   │   │   └── tip.vue                       //提示框组件
+│   │   │             
+│   │   ├── AddressList.vue                   //选择省市区地址列表组件
+│   │   ├── Confirm.vue                       //选择弹出框组件
+│   │   ├── Prompt.vue                        //输入弹出框组件
+│   │   ├── Coupon.vue                        //优惠券组件
+│   │   ├── Tabmenu.vue                       //Tab切换组件
+│   │   ├── FooterBar.vue                     //底部nav组件
+│   │   ├── Nodata.vue                        //无数据时提示组件
+│   │   ├── Pay.vue                           //支付组件
+│   │   ├── ProductList.vue                   //商品列表组件
+│   │   ├── RaiseList.vue                     //众筹列表组件
+│   │   ├── List.vue                          //跳转链接列表组件
+│   │   ├── TimeEvolve.vue                    //发展列表组件
+│   │   ├── ImageUpload.vue                   //图片剪裁组件
+│   │   └── Upload.vue                        //上传视频图片组件
+│   │                 
+│   ├── pages                                 //页面         
+│   │   ├── qrCode                            //二维码扫描关注公众号
+│   │   │   └── QrCode.vue
+│   │   │       
+│   │   ├── login                             //登录
+│   │   │   └── Login.vue
+│   │   │
+│   │   ├── register                          //注册（暂时废止）
+│   │   │   └── Register.vue
+│   │   │                  
+│   │   ├── findPassword                      //找回密码
+│   │   │   └── FindPassword.vue        
+│   │   │       
+│   │   ├── raiseshow                         //众筹列表
+│   │   │   └── Raiseshow.vue
+│   │   │         
+│   │   ├── search                            //众筹高级搜索
+│   │   │   └── Search.vue
+│   │   │         
+│   │   ├── searchType                        //搜索同类型的众筹
+│   │   │   └── SearchType.vue
+│   │   │  
+│   │   ├── raiseInfo                         //项目信息
+│   │   │   └── RaiseInfo.vue
+│   │   │    
+│   │   ├── question                          //向他提问
+│   │   │   └── Question.vue
+│   │   │  
+│   │   ├── details                           //项目详情
+│   │   │   └── Details.vue          
+│   │   │  
+│   │   ├── comment                           //项目评论
+│   │   │   └── Comment.vue         
+│   │   │          
+│   │   ├── supportRecord                     //支持记录
+│   │   │   └── SupportRecord.vue
+│   │   │         
+│   │   ├── evolve                            //项目动态
+│   │   │   └── Evolve.vue
+│   │   │         
+│   │   ├── supportType                       //支持项
+│   │   │   └── SupportType.vue
+│   │   │                                
+│   │   ├── order                             //下订单
+│   │   │   └── Order.vue       
+│   │   │         
+│   │   ├── success                           //订单成功
+│   │   │   └── Success.vue
+│   │   │        
+│   │   ├── create                            //发起众筹
+│   │   │   ├── Create.vue                    
+│   │   │   └── children          
+│   │   │       ├── PresonInfo.vue            //个人信息
+│   │   │       ├── RaiseInfo.vue             //众筹信息
+│   │   │       ├── Describe.vue              //众筹描述
+│   │   │       ├── Return.vue                //回报信息
+│   │   │       └── CreateSearch.vue          //在线商品
+│   │   │         
+│   │   ├── user                              //个人中心
+│   │   │   └── User.vue
+│   │   │                
+│   │   ├── informList                        //信封列表页面
+│   │   │   └── InformList.vue
+│   │   │         
+│   │   ├── letter                            //私信列表
+│   │   │   └── Letter.vue
+│   │   │               
+│   │   ├── messageList                       //物流服务、支持消息、动态通知、项目通知列表
+│   │   │   └── MessageList.vue
+│   │   │        
+│   │   ├── chat                              //聊天
+│   │   │   └── Chat.vue          
+│   │   │                  
+│   │   ├── mycollect                         //我的收藏
+│   │   │   └── Mycollect.vue
+│   │   │         
+│   │   ├── myproduct                         //在线商品
+│   │   │   └── Myproduct.vue
+│   │   │         
+│   │   ├── myraise                           //我的众筹
+│   │   │   └── Myraise.vue
+│   │   │         
+│   │   ├── reason                            //众筹审核未通过原因
+│   │   │   └── Reason.vue
+│   │   │         
+│   │   ├── modifyRaise                       //修改众筹、修改回报
+│   │   │   ├── ModifyRaise.vue                    
+│   │   │   └── children          
+│   │   │       ├── PresonInfo.vue            //个人信息
+│   │   │       ├── RaiseInfo.vue             //众筹信息
+│   │   │       ├── Describe.vue              //众筹描述
+│   │   │       ├── Return.vue                //回报信息
+│   │   │       └── CreateSearch.vue          //在线商品
+│   │   │         
+│   │   ├── returnProgress                    //回报进展
+│   │   │   └── ReturnProgress.vue
+│   │   │         
+│   │   ├── dynamic                           //创建项目动态
+│   │   │   └── Dynamic.vue          
+│   │   │         
+│   │   ├── mycoupons                         //我的卡券
+│   │   │   ├── Mycoupons.vue
+│   │   │   └── children          
+│   │   │       ├── Discount.vue              //优惠券
+│   │   │       └── Integral.vue              //积分
+│   │   │        
+│   │   ├── ticket                            //积分兑换券详情
+│   │   │   └── Ticket.vue
+│   │   │         
+│   │   ├── myorder                           //我的订单
+│   │   │   ├── Myorder.vue
+│   │   │   └── children          
+│   │   │       ├── raise.vue                 //众筹订单
+│   │   │       └── product.vue               //商品订单
+│   │   │
+│   │   ├── orderDetails                      //订单详情
+│   │   │   └── OrderDetails.vue
+│   │   │         
+│   │   ├── refundDetails                     //退款详情
+│   │   │   └── RefundDetails.vue
+│   │   │         
+│   │   ├── exchange                          //换货
+│   │   │   └── Exchange.vue
+│   │   │         
+│   │   ├── exchangeDetails                   //换货详情
+│   │   │   └── ExchangeDetails.vue
+│   │   │        
+│   │   ├── logisticsList                     //物流列表
+│   │   │   └── LogisticsList.vue
+│   │   │   
+│   │   ├── logistics                         //物流详情
+│   │   │   └── Logistics.vue
+│   │   │         
+│   │   ├── mynotice                          //活动公告
+│   │   │   └── Mynotice.vue
+│   │   │         
+│   │   ├── notice                            //公告详情
+│   │   │   └── Notice.vue
+│   │   │         
+│   │   ├── myinfo                            //个人信息
+│   │   │   ├── Myinfo.vue                    
+│   │   │   └── children          
+│   │   │       ├── UserName.vue              //修改用户名
+│   │   │       ├── Email.vue                 //修改邮箱
+│   │   │       ├── Tel.vue                   //修改电话
+│   │   │       ├── Signature.vue             //修改个性签名
+│   │   │       ├── Identification.vue        //个人、企业认证
+│   │   │       ├── Address.vue               //收货地址
+│   │   │       └── Newaddress.vue            //新增收货地址
+│   │   │
+│   │   ├── ours                              //关于我们
+│   │   │   └── Ours.vue
+│   │   │         
+│   │   ├── introduce                         //公司简介
+│   │   │   └── introduce.vue
+│   │   │         
+│   │   ├── contact                           //联系我们
+│   │   │   └── Contact.vue         
+│   │   │           
+│   │   ├── service                           //服务条款
+│   │   │   └── Service.vue
+│   │   │
+│   │   └── imagePreview                      //图片预览
+│   │       └── ImagePreview.vue
+│   │         
+│   └── router                                //路由与组件配置
+│       └── index.js                  
+└── static                  

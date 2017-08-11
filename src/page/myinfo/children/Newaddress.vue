@@ -20,7 +20,7 @@
     </ul>
     <AddressList :state.sync="state" :apiURL="apiURL" @address="address"></AddressList>
     <Tip :info.sync="tip"></Tip>
-    <div class="submit-btn" @click="submit">
+    <div class="submit-btn" @click="submit" v-show="state === ''">
       <a :class="{'act': name && tel && place && detial.length}">保存地址</a>
     </div>
   </div>

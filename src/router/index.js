@@ -40,7 +40,6 @@ import Signature from '@/page/myinfo/children/Signature'
 import Address from '@/page/myinfo/children/Address'
 import Newaddress from '@/page/myinfo/children/Newaddress'
 import Identification from '@/page/myinfo/children/Identification'
-import Password from '@/page/myinfo/children/Password'
 import Ours from '@/page/ours/Ours'
 import InformList from '@/page/informList/informList'
 import Letter from '@/page/letter/Letter'
@@ -305,9 +304,6 @@ export default new Router({
     }, {
       path: '/myinfo/identification/:type', // 认证
       component: Identification
-    }, {
-      path: '/myinfo/password', // 修改密码
-      component: Password
     }]
   }, {
     // 关于我们

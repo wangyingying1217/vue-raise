@@ -8,13 +8,18 @@
 </template>
 
 <script>
+/**
+ * 参数
+ * load：单次请求开关（）
+ * Boff：是否已经加载完成（true：未加载完成   false：已经加载完成）；
+ */
 export default {
   data () {
     return {}
   },
   props: ['load', 'Boff'],
   created () {
-    // 组件创建完后执行，
+    // 绑定window的滚动事件
     let scroll = () => {
       if (this.Boff) {
         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop

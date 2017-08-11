@@ -15,6 +15,7 @@ export default {
   },
   props: ['info'],
   watch: {
+    // 提示信息1500ms后消失
     info: function (val, oldVal) {
       if (this.info) {
         this.mask = true

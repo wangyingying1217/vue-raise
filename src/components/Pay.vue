@@ -12,6 +12,7 @@ export default {
     }
   },
   methods: {
+    // 获取配置参数
     getConfig: function () {
       if (this.id) {
         let url = encodeURIComponent(document.URL.split('#')[0])
@@ -32,6 +33,7 @@ export default {
         })
       }
     },
+    // 支付请求
     pay: function (data) {
       this.$http.post(this.apiURL + 'zhifu.jhtml', data).then((response) => {
         wx.chooseWXPay({

@@ -1,16 +1,14 @@
 <template>
   <div v-if="show">
+    <!-- 聊天信息列表 -->
     <ul class="chat-list" :style="{'min-height': height}">
       <li :class="{'left': !item.isMe,'right': item.isMe}" v-for="(item, index) in info.content" :key="index">
         <img class="avater" v-if="item.isMe" :src="info.senderImage" alt="pic">
         <img class="avater" v-else :src="info.receiverImage" alt="pic">
         <div class="text">{{decodeURI(item.content)}}</div>
       </li>
-      <li class="right" v-for="item in sendMessage" :key="item">
-        <img class="avater" :src="info.senderImage" alt="pic">
-        <div class="text">{{item}}</div>
-      </li>
     </ul>
+    <!-- 底部输入框 -->
     <div class="commentText">
       <input class="text" type="text" v-model="text">
       <input class="sure" type="button" value="发送" @click="send">
@@ -30,7 +28,6 @@ export default {
           contentId: 0
         }]
       },
-      sendMessage: [],
       page: 1,
       text: '',
       show: false,
@@ -41,7 +38,9 @@ export default {
   },
   methods: {
     getCustomers: function () {
+      // 数据初始化
       if (this.id) {
+        // 请求参数 {prevContentId：最后一条信息的id，wxbdopenId：用户微信id，receiverId：信息接收者id}
         this.$http.post(this.apiURL + 'member/message/chat.jhtml', {prevContentId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId}).then((response) => {
           document.title = response.data.title
           this.info = response.data
@@ -55,6 +54,8 @@ export default {
           this.tip = '请求失败'
         })
       }
+
+      // 定时器定时请求接口，获得聊天信息（当一次请求完成后再进行下一次请求）
       this.timer = setInterval(() => {
         if (this.id && this.requset) {
           this.requset = false
@@ -68,8 +69,10 @@ export default {
         }
       }, 500)
     },
+    // 发送信息
     send: function () {
       if (this.text.trim()) {
+        // 请求参数 {prevContentId：最后一条信息的id，wxbdopenId：用户微信id，receiverId：信息接收者id，content：聊天内容}
         this.$http.post(this.apiURL + 'member/message/sendChat.jhtml', {prevChatId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId, content: encodeURI(this.text)}).then((response) => {
           this.text = ''
         }, () => {
@@ -87,7 +90,7 @@ export default {
     }
   },
   created () {
-    // 组件创建完后获取数据，
+    // 组件创建完后获取数据
     document.title = ''
     this.getCustomers()
   },
@@ -102,6 +105,7 @@ export default {
       return document.documentElement.clientHeight + 'px'
     }
   },
+  // 离开页面钱清除定时器
   beforeRouteLeave (to, from, next) {
     clearInterval(this.timer)
     next()

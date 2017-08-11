@@ -31,7 +31,7 @@
           </div>
           <div class="raise-box">
             <span class="box-input-title">总份额数：</span>
-            <input class="box-input" type="number" placeholder="该回报的最大支持份数" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
+            <input class="box-input" type="number" placeholder="最大支持份数（0为不限制）" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
             <p class="errors" v-if="item.public.lotNum.invalid">{{validateMsg.nonegative}}</p>
           </div>
           <div class="raise-box">
@@ -51,13 +51,13 @@
           </div>
           <div class="raise-box">
             <span class="box-input-title">支持上限：</span>
-            <input class="box-input" type="number" placeholder="“0”为不限名额" :name="'lotLimit'+indexParent" v-model="item.public.lotLimit.value" @input="validate('faPeople',item.public.lotLimit)" @blur="validate('faPeople',item.public.lotLimit)">
+            <input class="box-input" type="number" placeholder="“0”为不限名额" :name="'lotLimit'+indexParent" v-model="item.public.lotLimit.value" @input="limitValidate(item.public.lotLimit,item.public.lotNum)" @blur="limitValidate(item.public.lotLimit,item.public.lotNum)">
             <p class="errors" v-if="item.public.lotLimit.invalid">{{validateMsg.faPeople}}</p>
           </div>
           <div class="raise-box">
             <span class="box-input-title">赠送积分：</span>
-            <input class="box-input" type="number" placeholder="“0”为不赠送积分" :name="'presentExp'+indexParent" v-model="item.public.presentExp.value" @input="validate('faPeople',item.public.presentExp)" @blur="validate('faPeople',item.public.presentExp)">
-            <p class="errors" v-if="item.public.presentExp.invalid">{{validateMsg.faPeople}}</p>
+            <input class="box-input" type="number" placeholder="“0”为不赠送积分" :name="'presentExp'+indexParent" v-model="item.public.presentExp.value" @input="validate('nonegative',item.public.presentExp)" @blur="validate('nonegative',item.public.presentExp)">
+            <p class="errors" v-if="item.public.presentExp.invalid">{{validateMsg.nonegative}}</p>
           </div>
           <div class="raise-box" v-if="item.returnType=='product'">
             <span class="box-input-title">运 &nbsp&nbsp&nbsp&nbsp&nbsp 费：</span>
@@ -349,6 +349,14 @@ export default {
     }
   },
   methods: {
+    limitValidate: function (item, total) {
+      let all = parseInt(total.value)
+      if (this.validators.nonegative(item.value) && (all && item.value < all)) {
+        item.invalid = false
+      } else {
+        item.invalid = true
+      }
+    },
     choose: function (item, value) {
       this.productChoosed = item
       this.onlineIndex = value
@@ -404,6 +412,8 @@ export default {
         localStorage.removeItem('describe')
         localStorage.removeItem('return')
         document.getElementById('create').submit()
+      } else {
+        this.tip = '请补充全信息再提交'
       }
     }
   },

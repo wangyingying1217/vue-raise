@@ -1,17 +1,20 @@
 <template>
-  <div class="address-wrapper" v-show="state.name">
+  <div class="address-wrapper" v-show="state">
+    <!-- 省列表 -->
     <transition name="slide-fade" mode="out-in">
-      <ul class="Region" v-show="state.name=='province'">
+      <ul class="Region" v-show="state=='province'">
         <li v-for="(item,index) in positionData" @click="province(item)">{{item.p}}</li>
       </ul>
     </transition>
+    <!-- 市列表 -->
     <transition name="slide-fade" mode="out-in">
-      <ul class="Region" v-show="state.name=='city'">
+      <ul class="Region" v-show="state=='city'">
         <li v-for="(item,index) in provinceData.c" @click="city(item)">{{item.n}}</li>
       </ul>
     </transition>
+    <!-- 县列表 -->
     <transition name="slide-fade" mode="out-in">
-      <ul class="Region" v-show="state.name=='county'">
+      <ul class="Region" v-show="state=='county'">
         <li v-for="(item,index) in cityData.a" @click="county(item.s)">{{item.s}}</li>
       </ul>
     </transition>
@@ -20,11 +23,17 @@
 
 <script>
 import cityData from '@/service/city.js'
+/**
+ * 参数
+ * load：单次请求开关（）
+ * Boff：是否已经加载完成（true：未加载完成   false：已经加载完成）；
+ *返回值：
+ *省/市/县
+ */
 export default {
-  props: ['info', 'apiURL'],
+  props: ['state', 'apiURL'],
   data () {
     return {
-      state: '',
       positionData: cityData,
       provinceData: {
         p: '',

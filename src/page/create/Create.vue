@@ -1,15 +1,17 @@
 <template>
-  <form id="create" :action="apiURL+'fundingSub.jhtml'" enctype="multipart/form-data" method="post" v-show="show">
-    <PresonInfo v-show="state.name=='presonInfo'" :state="state" :info="user" :type="itemtype"></PresonInfo>
-    <RaiseInfo v-show="state.name=='raiseInfo'" :apiURL="apiURL" :info="user" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate"></RaiseInfo>
-    <Describe v-show="state.name=='describe'" :apiURL="apiURL" :id="id" :state="state"></Describe>
-    <Return v-show="state.name=='return'" :apiURL="apiURL" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate" :productTypeList="productType"></Return>
-    <input type="hidden" :value="user.userName" name="userName">
-    <input type="hidden" :value="user.wxbdopenId" name="userId">
-    <input type="hidden" :value="codeState" name="state">
-    <input type="hidden" :value="redirectUrl" name="redirect">
+  <div class="">
+    <form id="create" :action="apiURL+'fundingSub.jhtml'" enctype="multipart/form-data" method="post" v-show="show">
+      <PresonInfo v-show="state.name=='presonInfo'" :state="state" :info="user" :type="itemtype"></PresonInfo>
+      <RaiseInfo v-show="state.name=='raiseInfo'" :apiURL="apiURL" :info="user" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate"></RaiseInfo>
+      <Describe v-show="state.name=='describe'" :apiURL="apiURL" :id="id" :state="state"></Describe>
+      <Return v-show="state.name=='return'" :apiURL="apiURL" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate" :productTypeList="productType"></Return>
+      <input type="hidden" :value="user.userName" name="userName">
+      <input type="hidden" :value="user.wxbdopenId" name="userId">
+      <input type="hidden" :value="codeState" name="state">
+      <input type="hidden" :value="redirectUrl" name="redirect">
+    </form>
     <Tip :info.sync="tip"></Tip>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -49,7 +51,7 @@ export default {
         faMoney: '*支持金额 (只能为整数,最高为99999元)',
         lotNum: '*支持份数为整数,(0-99999)',
         title: '*请添加标题',
-        faPeople: '*支持上限只能为整数,最多为999个',
+        faPeople: '*支持上限为小于总份额数的整数',
         freight: '*运费只能为整数,最多为99元',
         retime: '*回报时间只能为整数,最长为999天',
         integer: '*请输入大于1的整数',
@@ -128,7 +130,9 @@ export default {
             this.$indicator.close()
           } else {
             this.tip = response.data.info.msg
-            this.$router.push('/myinfo/check')
+            setTimeout(() => {
+              this.$router.push('/myinfo/check')
+            }, 1000)
           }
           this.user = response.data.info
           this.itemtype = response.data.itemtype

@@ -1,15 +1,13 @@
 <template>
   <div class="footer">
     <router-link :to="{path:'/'}" :class="{'action':type=='raise'}" tag="div">
-      <div class="bg-raise"></div>
-      众筹
+      <div class="bg-raise"></div>众筹
     </router-link>
     <router-link :to="{path:'/create'}" :class="{'action':type=='create'}" tag="div">
       <div class="create"></div>
     </router-link>
     <router-link :to="{path:'/person'}" :class="{'action':type=='person'}" tag="div">
-      <div class="bg-user"></div>
-      我
+      <div class="bg-user"></div>我
     </router-link>
   </div>
 </template>
