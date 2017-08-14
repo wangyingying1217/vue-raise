@@ -60,9 +60,6 @@
             <input type="hidden" name="licensePic" :value="licensePic">
           </li>
         </ul>
-        <input type="hidden" name="wxbdopenId" :value="id">
-        <input type="hidden" name="cardType" :value="tabIndex">
-        <input type="hidden" :value="redirectUrl" name="redirect">
         <div class="cause" v-if="cause">未通过原因：{{cause}}</div>
         <div v-if="identification === '已通过'" class="submit-btn"><a class="act" @click="confirmState = true">注销</a></div>
         <div v-else-if="identification === '未通过'" class="submit-btn"><a class="act" @click="logout()">重新认证</a></div>

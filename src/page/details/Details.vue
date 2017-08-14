@@ -1,7 +1,7 @@
 <template>
   <div class="bg" v-if="show" :style="{'min-height': height}">
     <div class="detial-wrapper">
-      <div class="media">
+      <div class="media" v-if="video">
         <video v-if="video" controls='controls' :src='video' :poster="poster"></video>
       </div>
       <div v-for="(item, index) in info" :key="index">

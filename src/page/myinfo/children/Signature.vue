@@ -3,7 +3,8 @@
     <textarea maxlength="50" class="textarea" v-model="textarea" name="idiograph"></textarea>
     <p class="length">{{textarea.length}}/50</p>
     <div class="submit-btn">
-      <a class="act" @click="confirm">确认修改</a>
+      <a v-if="signature" class="act" @click="confirm">确认修改</a>
+      <a v-else class="act" @click="confirm">确定</a>
     </div>
   </div>
 </template>

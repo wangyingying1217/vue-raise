@@ -67,7 +67,7 @@ export default {
             })
           } else if (this.type === this.DYNAMIC) {
             response.data.forEach((item) => {
-              item.href = '/supportRecord/' + item.id
+              item.href = '/evolve/' + item.id
             })
           } else if (this.type === this.NOTICE) {
             response.data.forEach((item) => {

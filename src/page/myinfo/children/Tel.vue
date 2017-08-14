@@ -4,7 +4,8 @@
     <div class="code-wrapper"><input class="w11" type="tel" v-model="verifyCode" placeholder="验证码"><a
       class="send" :class="{'act':telpre}" @click="sendVerify">{{verifyText | seconds}}</a></div>
     <div class="submit-btn">
-      <a :class="{'act':telpre && verifyCode}" @click="confirm">确认修改</a>
+      <a v-if="/^1[3|4|5|7|8][0-9]/.test(this.tel)" :class="{'act':telpre && verifyCode}" @click="confirm">确认修改</a>
+      <a v-else :class="{'act':telpre && verifyCode}" @click="confirm">绑定</a>
     </div>
     <Tip :info.sync="tip"></Tip>
   </div>
@@ -12,7 +13,7 @@
 
 <script>
 export default {
-  props: ['apiURL', 'id'],
+  props: ['apiURL', 'id', 'tel'],
   data () {
     return {
       telpre: '',

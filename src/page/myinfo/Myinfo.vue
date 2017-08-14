@@ -43,7 +43,7 @@
             </div>
           </router-link>
           <router-link :to="'/myinfo/tel'" tag="dd">
-            <span v-show="check && !tel" class="check-icon">*</span>
+            <span v-show="check && !/^1[3|4|5|7|8][0-9]/.test(this.tel)" class="check-icon">*</span>
             <div class="box">手机
               <div class="text">{{tel}}</div>
             </div>
@@ -83,7 +83,7 @@
             <div class="box">个性签名
               <div class="text" v-html="">
                 <span v-if="signature">{{signature}}</span>
-                <span class="placheholder" v-else>您还没有设置个人签名</span>
+                <span class="placheholder" v-else>您还没有设置个性签名</span>
               </div>
               <input type="hidden" name="idiograph" v-model="signature">
             </div>
@@ -105,7 +105,7 @@
     </div>
     <transition name="slide-fade">
       <router-view :apiURL="apiURL" :id="id" :signature="signature" :emailPre="email" :isEmail="isEmail"
-      :username="nickName" :localPic="localPic" type="headPic"></router-view>
+      :username="nickName" :localPic="localPic" type="headPic" :tel="tel"></router-view>
     </transition>
   </div>
 </template>
@@ -207,7 +207,7 @@ export default {
       }
     },
     identification: function () {
-      if (this.work && this.tel && this.isEmail) {
+      if (this.work && /^1[3|4|5|7|8][0-9]/.test(this.tel) && this.isEmail) {
         this.$router.push('/myinfo/identification/' + this.$route.params.type)
       } else {
         alert('请先认证邮箱、电话以及工作信息')

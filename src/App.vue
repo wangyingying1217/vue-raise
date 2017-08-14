@@ -13,7 +13,7 @@ export default {
       // apiURL: 'http://124.205.131.133:8088/raise/',
       apiURL: 'http://192.168.8.144/raise/',
       // apiURL: 'http://192.168.8.183:8080/raise/',
-      // apiURL: 'http://www.huizhi.com.cn/raise/',
+      // apiURL: 'http://web.huizhi.com.cn:8088/raise/',
       tip: '',
       qrCode: '',
       show: false,

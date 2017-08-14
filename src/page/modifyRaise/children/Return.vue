@@ -360,7 +360,7 @@ export default {
   methods: {
     limitValidate: function (item, total) {
       let all = parseInt(total.value)
-      if (this.validators.nonegative(item.value) && (all && item.value < all)) {
+      if (this.validators.nonegative(item.value) && (all && item.value <= all)) {
         item.invalid = false
       } else {
         item.invalid = true
