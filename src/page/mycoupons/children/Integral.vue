@@ -2,7 +2,7 @@
   <div v-if="show">
     <dt class="title">可用积分：<span class="red">{{point}}</span></dt>
     <Coupon :info="couponList" :type="'integral'"></Coupon>
-    <Nodata :showSwitch="couponList.length" :type="'integral'"></Nodata>
+    <Nodata :showSwitch="couponList.length" type="integral"></Nodata>
     <Tip :info.sync="tip"></Tip>
   </div>
 </template>

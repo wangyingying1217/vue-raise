@@ -1,22 +1,29 @@
 <template>
   <ul class="raise-pre">
     <li v-for="(item, index) in info" :key="index">
+      <!-- 跳转链接 -->
       <router-link :to="type === 'myOrder' ? '/orderDetails/'+item.orderCode : '/raiseInfo/'+item.contentId" tag="div">
         <div class="con-wrapper" v-drag="type">
+          <!-- 图片 -->
           <div class="con-img">
             <img :src="item.picsrc" alt="pic"/>
           </div>
+          <!-- 相关信息 -->
           <div class="con-info">
+            <!-- 标题 -->
             <h2 class="con-tit" v-html="item.title"></h2>
+            <!-- 众筹的起止时间 -->
             <div class="con-text"  v-if="type !== 'myOrder'">
               <span>{{item.stime}}-{{item.etime}}</span>
               <span class="raise-state">{{item.state}}</span>
             </div>
+            <!-- 价格、数量、状态 -->
             <div class="con-price" v-if="type === 'myOrder'">
               <span class="price">￥{{item.unitPrice}}</span>
               <span class="num">x{{item.num}}</span>
               <span class="raise-state">{{item.state}}</span>
             </div>
+            <!-- 支持百分比 -->
             <div class="percent-wrapper"  v-if="type !== 'myOrder'">
               <div class="percent">
                 <p :style="'width:'+item.progress"></p>
@@ -25,21 +32,28 @@
               <span class="percent-num" v-else>--%</span>
             </div>
             <div class="count-group">
+              <!-- 支持百分比 -->
               <span class="percent" v-if="type === 'myOrder'">{{item.progress | progress}}</span>
+              <!-- 支持总金额 -->
               <span class="money act" v-if="item.state == RAISEING || item.state == CLEARING || item.state == SUCCEED || item.state == RETURNING || item.state == FAILED || item.state == FINISHED || item.state === SLECTING">{{item.raiseAmount | num}}</span>
               <span class="money" v-else-if="type === 'myOrder'">{{item.raiseAmount | num}}</span>
               <span class="money" v-else>--</span>
+              <!-- 支持人数 -->
               <span class="support act" v-if="item.state == RAISEING || item.state == CLEARING || item.state == SUCCEED || item.state == RETURNING || item.state == FAILED || item.state == FINISHED || item.state === SLECTING">{{item.support | num}}</span>
               <span class="support"  v-else-if="type === 'myOrder'">{{item.support | num}}</span>
               <span class="support"  v-else>--</span>
+              <!-- 倒计时天数 -->
               <span class="date act" v-if="type !== 'myOrder' && item.state == RAISEING|| item.state == PASSED || item.state == PREHEATING || item.state === SLECTING">{{item.timeLeft}}</span>
               <span class="date" v-else-if="type !== 'myOrder'">--</span>
             </div>
           </div>
         </div>
+        <!-- 删除词条 -->
         <span class="delete" @click.stop="remove(item.concernId)" v-if="type === 'delete'">删除</span>
       </router-link>
+      <!-- 订单合计金额 -->
       <p class="total-money" v-if="type === 'myOrder'">共{{item.num}}件商品&nbsp;&nbsp;&nbsp;&nbsp;合计：￥{{item.money}}（含运费￥{{item.money}}）</p>
+      <!-- 我的众筹相关操作 -->
       <div class="interaction" v-if="type === 'myRaise'">
         <router-link :to="'/returnProgress/' + item.contentId" v-if=" item.state == RETURNING">回报进展</router-link>
         <router-link :to="'/supportRecord/' + item.contentId" v-if=" item.state == SUCCEED || item.state == RAISEING || item.state == CLEARING">支持记录</router-link>
@@ -52,6 +66,7 @@
         <router-link :to="'/modifyRaise/raise/' + item.contentId" v-if=" item.state == NOPASSED">修改众筹</router-link>
         <a @click="$emit('deleteRaise', item.contentId)" v-if=" item.state == NOPASSED || item.state == FINISHED  || item.state == ABOLISHED || item.state == FAILED">删除众筹</a>
       </div>
+      <!-- 我的订单相关操作 -->
       <div class="interaction" v-if="type === 'myOrder'&& item.state !== RAISEING">
         <router-link :to="'/logistics/' + item.orderCode" v-if=" item.state == RETURNING && item.type == NORECEIVE">查看物流</router-link>
         <a @click="$emit('confirmReceipt', item)" v-if=" item.state == RETURNING && item.type == NORECEIVE">确认收货</a>

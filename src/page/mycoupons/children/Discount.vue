@@ -4,7 +4,7 @@
     <Coupon :info="valid"></Coupon>
     <dt class="title" v-if="invalid.length">历史优惠券</dt>
     <Coupon :info="invalid"></Coupon>
-    <Nodata :showSwitch="valid.length || invalid.length" :type="'coupon'"></Nodata>
+    <Nodata :showSwitch="valid.length || invalid.length" type="coupon"></Nodata>
     <Tip :info.sync="tip"></Tip>
   </div>
 </template>

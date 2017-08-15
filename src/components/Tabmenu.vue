@@ -5,6 +5,10 @@
 </template>
 
 <script>
+/**
+ * 参数
+ * tabInfo：Tab切换的显示信息
+ */
 export default {
   data () {
     return {}

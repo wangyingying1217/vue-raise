@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="show">
     <div class="update" v-if="Boff && load">加载更多
       <div data-loader="circle"></div>
     </div>
@@ -15,7 +15,8 @@
  */
 export default {
   data () {
-    return {}
+    return {
+    }
   },
   props: ['load', 'Boff'],
   created () {
@@ -36,6 +37,11 @@ export default {
     } else {
       window.detachEvent('scroll', scroll, false)
       window.attachEvent('scroll', scroll, false)
+    }
+  },
+  computed: {
+    show: function () {
+      return (document.documentElement.scrollTop || document.body.scrollTop) !== 0
     }
   }
 }

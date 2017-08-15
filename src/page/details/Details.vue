@@ -11,7 +11,7 @@
       </div>
     </div>
     <Tip :info.sync="tip"></Tip>
-    <Nodata :showSwitch="info" :type="'detials'"></Nodata>
+    <Nodata :showSwitch="info" type="detials"></Nodata>
   </div>
 </template>
 

@@ -9,7 +9,7 @@
       </li>
     </ul>
     <RaiseList :info="info" :apiURL="apiURL" :id="id"></RaiseList>
-    <Nodata :showSwitch="info.length" :type="'content'"></Nodata>
+    <Nodata :showSwitch="info.length" type="content"></Nodata>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
     <Tip :info.sync="tip"></Tip>
   </div>

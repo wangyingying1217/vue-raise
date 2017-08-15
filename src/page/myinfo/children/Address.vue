@@ -22,7 +22,7 @@
       <div class="submit-btn" @click="addAddress"><a :class="{'act': info.length < 8}">添加新地址</a></div>
     </div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Nodata :showSwitch="info.length" :type="'address'"></Nodata>
+    <Nodata :showSwitch="info.length" type="address"></Nodata>
     <Tip :info.sync="tip"></Tip>
     <transition name="slide-fade">
       <router-view :apiURL="apiURL" :id="id" :info="editItem" @addState="getCustomers"></router-view>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <ProductList :info="info" :type="'inline'"></ProductList>
-    <Nodata :showSwitch="info.length" :type="'online'"></Nodata>
+    <Nodata :showSwitch="info.length" type="online"></Nodata>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>

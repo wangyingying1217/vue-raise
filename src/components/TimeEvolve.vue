@@ -11,6 +11,10 @@
 </template>
 
 <script>
+/**
+ * 参数
+ * info：显示信息列表（时间发展顺序排列的列表）
+ */
 export default {
   props: ['info']
 }

@@ -27,7 +27,7 @@
       </tbody>
     </table>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
-    <Nodata :showSwitch="info.length" :type="'returnProgress'"></Nodata>
+    <Nodata :showSwitch="info.length" type="returnProgress"></Nodata>
     <Tip :info.sync="tip"></Tip>
   </div>
 </template>

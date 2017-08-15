@@ -31,7 +31,7 @@
     <input class="sure" type="button" :value="commentInfo[commentType].buttonText" @click="submit">
   </div>
   <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-  <Nodata :showSwitch="info.length" :type="'comment'"></Nodata>
+  <Nodata :showSwitch="info.length" type="comment"></Nodata>
   <Tip :info.sync="tip"></Tip>
 </div>
 </template>

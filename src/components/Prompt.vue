@@ -19,7 +19,8 @@
 <script>
 /**
  * 返回值
- * 布尔值：true（确认）/ false（取消）
+ * text：字符串：输入的字符串
+ * state：布尔值：true（确认）/ false（取消）
  */
 export default {
   data () {

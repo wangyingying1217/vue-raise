@@ -47,6 +47,8 @@ export default {
   methods: {
     getCustomers: function () {
       document.title = '我的收藏'
+      this.loadState = false
+      this.loadBoff = true
       if (this.id) {
         this.page = 1
         this.$http.get(this.url).then((response) => {

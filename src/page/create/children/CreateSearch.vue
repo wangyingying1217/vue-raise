@@ -55,7 +55,7 @@
       </li>
     </ul>
     <Tip :info.sync="tip"></Tip>
-    <Nodata :showSwitch="info.length" :type="'content'"></Nodata>
+    <Nodata :showSwitch="info.length" type="content"></Nodata>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>

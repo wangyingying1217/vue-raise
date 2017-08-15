@@ -16,7 +16,7 @@
       </li>
     </ul>
     <Tip :info.sync="tip"></Tip>
-    <Nodata :showSwitch="info.length" :type="'update'"></Nodata>
+    <Nodata :showSwitch="info.length" type="update"></Nodata>
   </div>
 </template>
 

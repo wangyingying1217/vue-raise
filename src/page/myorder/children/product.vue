@@ -9,7 +9,7 @@
     </div>
     <router-view :info="info" :type="'myOrder'"></router-view>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
-    <Nodata :showSwitch="info.length" :type="'order'"></Nodata>
+    <Nodata :showSwitch="info.length" type="order"></Nodata>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
   </div>
 </template>

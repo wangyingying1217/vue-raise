@@ -159,6 +159,7 @@ export default {
             }, 200)
           }
         }
+        // 设置剪裁数据
         function siteData(dom) {
           imgLeft = parseInt(dom.offsetLeft)
           imgTop = parseInt(dom.offsetTop)

@@ -10,6 +10,14 @@
 </template>
 
 <script>
+/**
+ * 参数
+ * type：剪裁类型   （图片/视频）
+ * Boff：是否已经加载完成（true：未加载完成   false：已经加载完成）；
+ *返回值：
+ *图片：图片路径
+ *视频：视频路径、视频显示图片路径
+ */
 export default {
   props: {
     apiURL: [String, Number],
