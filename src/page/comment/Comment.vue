@@ -112,7 +112,7 @@ export default {
         this.tip = '请求失败'
       })
     },
-    // 信息重置
+    // 信息清零
     commentReset: function () {
       this.commentType = PUBLISH_STATE
       this.commentText = ''
