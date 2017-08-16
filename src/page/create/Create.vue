@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <!-- 因为这个页面太长  我就单独分为四个组件去写的 通过state.name进行控制显示的组件-->
     <form id="create" :action="apiURL+'fundingSub.jhtml'" enctype="multipart/form-data" method="post" v-show="show">
       <PresonInfo v-show="state.name=='presonInfo'" :state="state" :info="user" :type="itemtype"></PresonInfo>
       <RaiseInfo v-show="state.name=='raiseInfo'" :apiURL="apiURL" :info="user" :id="id" :state="state" :validateMsg="validateMsg" :validators="validators" :validate="validate"></RaiseInfo>
@@ -63,7 +64,7 @@ export default {
         length: '*标题的长度不能超过13个字符',
         product: '*请选择回报的商品'
       },
-      // 校验规则
+      // 校验规则(具体校验内容请看validateMsg内相关的提示或分析正则)
       validators: { // `numeric` and `url` custom validator is local registration
         unempty: function (val) {
           return /\s{0,}[\S]{1,}[\s\S]{0,}/.test(val)
@@ -127,22 +128,19 @@ export default {
       document.title = '发起众筹'
       if (this.id) {
         this.$http.get(this.apiURL + 'launch.jhtml?wxbdopenId=' + this.id).then((response) => {
-          // 判断是否认证
+          // 判断是否认证（如果没有认证跳转到认证页面）
           if (response.data.info.state) {
             this.user = response.data.info
             this.itemtype = response.data.itemtype
             this.productType = response.data.productType
             this.show = true
-            this.$indicator.close()
           } else {
             this.tip = response.data.info.msg
             setTimeout(() => {
               this.$router.push('/myinfo/check')
             }, 1000)
           }
-          this.user = response.data.info
-          this.itemtype = response.data.itemtype
-          this.productType = response.data.productType
+          this.$indicator.close()
         }, () => {
           this.tip = '请求失败'
         })

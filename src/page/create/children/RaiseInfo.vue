@@ -96,22 +96,22 @@ export default {
   data () {
     return {
       valid: {
-        cover: {invalid: '', value: ''},
-        cfName: {invalid: '', value: ''},
-        purpose: {invalid: '', value: ''},
-        totaltarget: {invalid: '', value: ''},
-        city: {invalid: '', value: ''},
-        timelimit: {invalid: '', value: ''}
+        cover: {invalid: '', value: ''}, // 已剪裁封面
+        cfName: {invalid: '', value: ''}, // 项目标题
+        purpose: {invalid: '', value: ''}, // 筹款目的
+        totaltarget: {invalid: '', value: ''}, // 筹资金额
+        city: {invalid: '', value: ''}, // 所选城市
+        timelimit: {invalid: '', value: ''} // 筹资天数
       },
       selfdomValid: {
-        value: '',
-        selfdomlength: {'invalid': false},
-        selfdomnum: {'invalid': false}
+        value: '', // 自定义标签的值
+        selfdomlength: {'invalid': false}, // 自定义标签长度校验结果
+        selfdomnum: {'invalid': false} // 自定义标签数量校验结果
       },
-      positionData: [],
-      cityDate: [],
-      province: '',
-      pic: ''
+      positionData: [], // 地点信息列表
+      cityDate: [], // 所选省份的尝试列表
+      province: '', // 所选省份
+      pic: '' // 为剪裁封面图片路径
     }
   },
   components: {
@@ -137,6 +137,7 @@ export default {
       }
       this.$indicator.close()
     },
+    // 获取选择省份的城市列表
     townData: function () {
       if (this.positionData) {
         this.positionData.forEach((item) => {
@@ -152,6 +153,7 @@ export default {
       this.selfdomValid.selfdomlength.invalid = !this.validators.selfdomlength(this.selfdomValid.value)
       this.selfdomValid.selfdomnum.invalid = !this.validators.selfdomnum(this.selfdomValid.value)
     },
+    // 页面切换
     submit: function (e) {
       var bOff = true
       for (var attr in this.valid) {
@@ -167,16 +169,19 @@ export default {
         this.state.name = 'describe'
       }
     },
+    // 封面剪裁
     localPic: function (url) {
       this.pic = url
       this.$router.push({ path: 'ImageClip' })
     },
+    // 设置封面
     setCover: function (url) {
       this.valid.cover.value = url
       this.validate('unempty', this.valid.cover)
     }
   },
   watch: {
+    // 本地存储
     info: {
       handler: function () {
         this.getCustomers()

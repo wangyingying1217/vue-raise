@@ -61,18 +61,16 @@ export default {
   props: ['info', 'type', 'state'],
   data () {
     return {
-      typeIndex: 0
+      typeIndex: 0 // 项目类型的索引
     }
   },
   created () {
     this.typeIndex = localStorage.getItem('typeIndex') || 0
   },
   watch: {
-    typeIndex: {
-      handler: function (val, oldVal) {
-        localStorage.setItem('typeIndex', this.typeIndex)
-      },
-      deep: true
+    // 项目类型的变化是本地存储
+    typeIndex: function () {
+      localStorage.setItem('typeIndex', this.typeIndex)
     }
   }
 }
