@@ -26,16 +26,20 @@ export default {
     return {
       tip: '',
       user: {},
+      // 个人认证类型（个人/公司）
       itemtype: [],
+      // 商品类型
       productType: [
         {
           productForm: []
         }
       ],
       show: false,
+      // 页面所处状态（个人信息/众筹信息/项目描述/回报）
       state: {
         name: 'presonInfo'
       },
+      // 校验显示信息
       validateMsg: {
         unempty: '*此项不能为空',
         usename: '*请输入正确的中文名字(2~5个汉字之间)',
@@ -59,6 +63,7 @@ export default {
         length: '*标题的长度不能超过13个字符',
         product: '*请选择回报的商品'
       },
+      // 校验规则
       validators: { // `numeric` and `url` custom validator is local registration
         unempty: function (val) {
           return /\s{0,}[\S]{1,}[\s\S]{0,}/.test(val)
@@ -122,6 +127,7 @@ export default {
       document.title = '发起众筹'
       if (this.id) {
         this.$http.get(this.apiURL + 'launch.jhtml?wxbdopenId=' + this.id).then((response) => {
+          // 判断是否认证
           if (response.data.info.state) {
             this.user = response.data.info
             this.itemtype = response.data.itemtype
@@ -142,6 +148,7 @@ export default {
         })
       }
     },
+    // 校验方法
     validate: function (reg, item) {
       item.invalid = !this.validators[reg](item.value)
     }
@@ -161,6 +168,7 @@ export default {
     codeState: function () {
       return localStorage.getItem('state')
     },
+    // 页面提交之后跳转的地址
     redirectUrl: function () {
       return location.href.split('#')[0] + '#/myraise/effective'
     }

@@ -125,6 +125,7 @@ export default {
     }
   },
   methods: {
+    // 添加描述
     addDescription: function (parent, children, num) {
       if (num && (parent.length > num - 1)) {
         this.tip = '最多只能上传' + num + '条'
@@ -135,6 +136,7 @@ export default {
         }, 10)
       }
     },
+    // 保存编辑
     saveEdit: function (item) {
       var arr = item.contentEdit.split('\n')
       var str = ''
@@ -185,6 +187,7 @@ export default {
     }
   },
   created () {
+    // 获取本地存储的信息
     let describe = JSON.parse(localStorage.getItem('describe'))
     let timestamp = new Date().getTime()
     const THREE = 2 * 24 * 60 * 60 * 1000

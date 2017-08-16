@@ -19,6 +19,7 @@ export default {
     }
   },
   methods: {
+    // 初始获得数据
     getCustomers: function () {
       document.title = '联系我们'
       this.$http.get(this.apiURL + 'aboutUs/contact_us.jhtml').then((response) => {

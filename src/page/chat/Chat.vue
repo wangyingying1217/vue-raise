@@ -2,9 +2,11 @@
   <div v-if="show">
     <!-- 聊天信息列表 -->
     <ul class="chat-list" :style="{'min-height': height}">
+      <!-- 自己的信息再右边   对方的信息再左边 -->
       <li :class="{'left': !item.isMe,'right': item.isMe}" v-for="(item, index) in info.content" :key="index">
         <img class="avater" v-if="item.isMe" :src="info.senderImage" alt="pic">
         <img class="avater" v-else :src="info.receiverImage" alt="pic">
+        <!-- 内容可能有表情,要解码才能显示 -->
         <div class="text">{{decodeURI(item.content)}}</div>
       </li>
     </ul>

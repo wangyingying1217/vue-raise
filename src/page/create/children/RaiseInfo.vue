@@ -2,6 +2,7 @@
   <div class="raise-wrapper">
     <dl v-show="$route.path == '/create'" class="raise-inner">
       <dt class="raise-title">创建你的项目信息</dt>
+      <!-- 上传封面图片 -->
       <dd class="raise-box">
         <span class="box-input-title">设置封面：</span>
         <Upload class="filePic" :apiURL="apiURL" :id="id" @pic="localPic">
@@ -24,6 +25,7 @@
         <textarea class="box-input" type="text" placeholder="请简单介绍一下项目（必填）" name="purpose" v-model="valid.purpose.value" @input="validate('unempty',valid.purpose)" @blur="validate('unempty',valid.purpose)"></textarea>
         <p class="errors" v-show="valid.purpose.invalid">{{validateMsg.unempty}}</p>
       </dd>
+      <!-- 选择项目地点 -->
       <dd class="raise-box">
         <span class="box-input-title">项目地点：</span>
         <select class="location mr1" name="itemProvince" v-model="province" @change="townData()">
@@ -145,6 +147,7 @@ export default {
       }
       this.valid.city.value = ''
     },
+    // 个性标签校验
     selfdomValidate: function () {
       this.selfdomValid.selfdomlength.invalid = !this.validators.selfdomlength(this.selfdomValid.value)
       this.selfdomValid.selfdomnum.invalid = !this.validators.selfdomnum(this.selfdomValid.value)

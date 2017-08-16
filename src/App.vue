@@ -30,6 +30,7 @@ export default {
     // let url = encodeURIComponent(document.URL.split('#')[0])
     // let parameter = location.search.split('?')[1]
     // let code = parameter.split('&')[0].split('=')[1]
+    // 微信的code值只能用一次   刷新时取到本地存贮的state和openId
     // if (code !== this.code) {
     //   let state = parameter.split('&')[1].split('=')[1]
     //   localStorage.setItem('code', code)
@@ -41,15 +42,18 @@ export default {
     this.$http.post(this.apiURL + 'gainWx.jhtml', data).then((response) => {
       localStorage.setItem('wxbdopenId', response.data.unionId)
       localStorage.setItem('openId', response.data.openId)
+      // 没有关注公众号跳转到关注页面
       if (response.data.qrCode) {
         this.qrCode = response.data.qrCode
         this.$router.push('/qrCode')
+        // 未登录跳转到登录页面
       } else if (response.data.msg === 'false') {
         this.$router.push('/login')
         this.username = response.data.username
         this.headimgurl = response.data.headimgurl
       }
       this.show = true
+      // 获取用户信息
       this.$http.get(this.apiURL + 'imageSign.jhtml?url=' + url + '&wxbdopenId=' + response.data.unionId).then((response) => {
         wx.config({
           // debug: true,

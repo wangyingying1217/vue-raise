@@ -1,35 +1,51 @@
 <template>
 <div v-if="show">
+  <!-- 评论列表 -->
   <ul class="comment" v-if="info.length" @click="commentReset">
     <li class="clearfix" v-for="(item,index) in info">
+      <!-- 头像 -->
       <img class="headerPic" :src="item.headPic" alt="pic"/>
+      <!-- 看法信息 -->
       <div class="infobox">
+        <!-- 发表看法人姓名、删除看法操作（只有本人发布的评论可以删除） -->
         <p class="title">{{item.commentName}}
           <span class="del" @click.stop="delComment(item,index)" v-if="( userName == item.commentName )"></span>
         </p>
-        <p class="info" v-html="item.comment"></p>
+        <!-- 看法的文字可能包含表情 要转码 -->
+        <p class="info" v-html="decodeURI(item.comment)"></p>
+        <!-- 操作 -->
         <div class="Interaction">
-          <span class="time">{{decodeURI(item.time)}}</span>
+          <span class="time">{{item.time}}</span>
+          <!-- 对上面的看法进行评论 -->
           <span class="commentBtn" @click.stop="comment(item,index)">评论</span>
+          <!-- 对此条看法进行点赞或者取消点赞 -->
           <span class="zan" :class="{'act':item.zan}" @click="zan(item)">赞({{item.zanNum | zanNum}})</span>
         </div>
+        <!-- 评论列表 -->
         <ul class="commentList">
           <li class="clearfix" v-for="(list,indexDiscuss) in item.discuss" @click.stop="repaly(item,index,list,indexDiscuss)">
-            <span class="clBlue">{{decodeURI(list.proactive)}}</span>
+            <!-- 发起人(发起评论或者回复的人)的昵称 -->
+            <span class="clBlue">{{list.proactive}}</span>
+            <!-- 被回复人的信息（只有在回复状态显示） -->
             <span v-if="list.passive">回复</span>
             <span class="clBlue" v-if="list.passive">{{list.passive}}</span>：
-            <span class="ml2" v-html="list.content"></span>
+            <!-- 评论或者回复的信息（有表情  需转码） -->
+            <span class="ml2" v-html="decodeURI(list.content)"></span>
+            <!-- 回复操作 （只有发起人不是自己的时候显示） -->
             <span class="clRed fr" v-if="list.proactive !=userName">回复</span>
+            <!-- 删除操作 （只有发起人是自己的时候显示） -->
             <span class="clRed fr" v-if="list.proactive == userName">删除</span>
           </li>
         </ul>
       </div>
     </li>
   </ul>
+  <!-- 评论输入框 -->
   <div class="commentText">
     <input class="text" ref="text" type="text" :placeholder="commentInfo[commentType].placeholder" v-model="commentText">
     <input class="sure" type="button" :value="commentInfo[commentType].buttonText" @click="submit">
   </div>
+  <!-- 组件 -->
   <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
   <Nodata :showSwitch="info.length" type="comment"></Nodata>
   <Tip :info.sync="tip"></Tip>
@@ -67,6 +83,7 @@ export default {
     }
   },
   methods: {
+    // 一进页面请求数据
     getCustomers: function () {
       document.title = '评论'
       this.contentId = this.$route.params.contentId
@@ -82,6 +99,7 @@ export default {
         })
       }
     },
+    // 点赞操作
     zan: function (item) {
       this.$http.get(this.apiURL + 'likes.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&commentId=' + item.commentId + '&zan=' + !item.zan).then((response) => {
         item.zan = !item.zan
@@ -94,6 +112,7 @@ export default {
         this.tip = '请求失败'
       })
     },
+    // 信息重置
     commentReset: function () {
       this.commentType = PUBLISH_STATE
       this.commentText = ''
@@ -102,6 +121,7 @@ export default {
       this.discussItem = {}
       this.discussIndex = ''
     },
+    // 评论操作
     comment: function (item, index) {
       this.commentReset()
       this.commentType = COMMEENT_STATE
@@ -109,6 +129,7 @@ export default {
       this.commentIndex = index
       this.$refs.text.focus()
     },
+    // 回复操作
     repaly: function (item, index, list, indexDiscuss) {
       this.commentReset()
       this.commentType = REPLAY_STATE
@@ -121,6 +142,7 @@ export default {
       }
       this.$refs.text.focus()
     },
+    // 删除评论
     delComment: function (item, index) {
       this.commentReset()
       this.confirmState = true
@@ -128,6 +150,7 @@ export default {
       this.commentItem = item
       this.commentIndex = index
     },
+    // 确认回复或评论
     submit: function () {
       if (!this.commentText) {
         this.tip = this.commentInfo[this.commentType].tip
@@ -163,6 +186,7 @@ export default {
         })
       }
     },
+    // 确定删除操作
     confirm: function (val) {
       this.confirmState = false
       if (val && this.commentType === COMMEENT_STATE) {

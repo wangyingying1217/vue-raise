@@ -38,6 +38,7 @@ export default {
       document.title = '发表动态'
       this.$indicator.close()
     },
+    // 发表动态
     confirm: function () {
       if (this.textarea || this.imgArr) {
         this.$refs.dynamic.submit()

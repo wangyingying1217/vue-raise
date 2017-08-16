@@ -170,11 +170,6 @@
               <span class="box-input-title">商品编号：</span>
               <input class="box-input" type="number" placeholder="若留空，则系统自动生成" :name="'productCode'+indexParent" v-model="item.upload.productCode.value">
             </div>
-            <!-- <div class="raise-box">
-              <span class="box-input-title">商品编号：</span>
-              <input class="box-input" type="number" placeholder="请输入商品编号" :name="'productCode'+indexParent" v-model="item.upload.productCode.value" @input="validate('unempty',item.upload.productCode)" @blur="validate('unempty',item.upload.productCode)">
-              <p class="errors" v-if="item.upload.productCode.invalid">{{validateMsg.unempty}}</p>
-            </div> -->
             <div class="raise-box">
               <span class="box-input-title">商品价格：</span>
               <input class="box-input" type="number" placeholder="请输入商品价格" :name="'productPirce'+indexParent" v-model="item.upload.productPirce.value" @input="validate('unempty',item.upload.productPirce)" @blur="validate('unempty',item.upload.productPirce)">
@@ -349,6 +344,7 @@ export default {
     }
   },
   methods: {
+    // 支持上限校验
     limitValidate: function (item, total) {
       let all = parseInt(total.value)
       if (this.validators.nonegative(item.value) && (all && item.value <= all)) {
@@ -357,11 +353,13 @@ export default {
         item.invalid = true
       }
     },
+    // 选择上传商品
     choose: function (item, value) {
       this.productChoosed = item
       this.onlineIndex = value
       this.$router.push('/create/search')
     },
+    // 删除已经选择的在线商品
     clear: function (item, value) {
       item.online[value].value = ''
       item.online[value].num = ''
@@ -369,12 +367,14 @@ export default {
       let unempty = Boolean(item.online.returnProductA.value || item.online.returnProductB.value || item.online.returnProductC.value)
       item.online.unempty = !unempty
     },
+    // 接受选择的在线商品
     productReceive: function (item) {
       this.productChoosed.online[this.onlineIndex].value = item.href
       this.productChoosed.online[this.onlineIndex].num = item.num
       this.productChoosed.online[this.onlineIndex].id = item.id
       this.productChoosed.online.unempty = false
     },
+    // 商品形态数据
     shapeData: function (value, item) {
       for (var i = 0; i < this.productTypeList.length; i++) {
         if (this.productTypeList[i].classify === value) {
@@ -382,6 +382,7 @@ export default {
         }
       }
     },
+    // 添加回报
     addDescription: function (parent, children, num) {
       if (num && (parent.length > num - 1)) {
         this.tip = '最多只能上传' + num + '条'

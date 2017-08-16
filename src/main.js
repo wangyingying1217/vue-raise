@@ -12,15 +12,15 @@ import './style/base.less'
 import 'mint-ui/lib/style.css'
 import Tip from './components/tip/index'
 import LoadMore from './components/loadmore/index'
-// import Confirm from './components/confirm123/index'
 
 Vue.use(Resource)
 Vue.use(Mint)
 Vue.use(Tip)
 Vue.use(LoadMore)
-// Vue.use(Confirm)
 
+// 页面跳转中间出现加载标志
 router.beforeEach((to, from, next) => {
+  // 主页Tab切换是不出现加载标志
   if (from.fullPath !== '/hot' && from.fullPath !== '/his' && from.fullPath !== '/pre' && from.fullPath !== '/create/search') {
     Mint.Indicator.open()
     let snake = document.querySelectorAll('.mint-spinner-snake')[0]
@@ -31,8 +31,9 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
-
+// 阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false
+// vue-resource 允许跨域携带cookie
 Vue.http.options.withCredentials = true
 
 /* eslint-disable no-new */

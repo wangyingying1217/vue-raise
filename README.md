@@ -280,4 +280,9 @@ npm run build --report
 │   │         
 │   └── router                                //路由与组件配置
 │       └── index.js                  
-└── static                  
+└── static  
+
+
+#### 项目注意点
+*页面中的info字段一般都是用来存储页面刚刚加载的信息（组件中用来传递信息）
+*页面中的getCustomers方法都是用来进入页面完后获取数据

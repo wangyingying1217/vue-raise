@@ -1,9 +1,11 @@
 <template>
   <div class="bg" v-if="show" :style="{'min-height': height}">
     <div class="detial-wrapper">
+      <!-- 视频 -->
       <div class="media" v-if="video">
         <video v-if="video" controls='controls' :src='video' :poster="poster"></video>
       </div>
+      <!-- 详情描述 -->
       <div v-for="(item, index) in info" :key="index">
         <h1 v-if="item.titleEdit">{{item.title}}</h1>
         <div v-if="item.contentEdit" v-html="item.content"></div>
@@ -47,6 +49,7 @@ export default {
         })
       }
     },
+    // 图片大图预览
     preview: function (index) {
       let page = index
       for (let i = 0; i < index; i++) {
