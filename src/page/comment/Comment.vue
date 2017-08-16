@@ -73,7 +73,7 @@ export default {
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
-      commentType: PUBLISH_STATE,
+      commentType: PUBLISH_STATE, // 
       commentText: '',
       commentItem: {},
       commentIndex: '',
@@ -152,6 +152,7 @@ export default {
     },
     // 确认回复或评论
     submit: function () {
+      //
       if (!this.commentText) {
         this.tip = this.commentInfo[this.commentType].tip
         return false
