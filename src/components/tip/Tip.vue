@@ -21,6 +21,7 @@ export default {
         this.mask = true
         setTimeout(() => {
           this.mask = false
+          // 提示框先消失   然后文字在改变
           setTimeout(() => {
             this.$emit('update:info', '')
           }, 300)

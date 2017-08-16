@@ -36,7 +36,7 @@
           </div>
         </div>
         <!-- 取消关注 -->
-        <span class="delete" @click.stop="remove(item.concernId)" v-if="type === 'delete'">删除</span>
+        <span class="delete" @click.stop="$emit('removeProduct', item.concernId)" v-if="type === 'delete'">删除</span>
       </div>
       <!-- 订单合计 -->
       <p class="total-money" v-if="type === 'myOrder'">共{{item.num}}件商品&nbsp;&nbsp;&nbsp;&nbsp;合计：￥{{item.money}}（含运费￥{{item.money}}）</p>
@@ -71,10 +71,6 @@ export default {
     }
   },
   methods: {
-    // 取消关注
-    remove: function (id) {
-      this.$emit('removeProduct', id)
-    },
     // 链接跳转（跳转到商品相关链接-没有完成）
     turnTo: function (item) {
       if (this.type === 'myOrder') {

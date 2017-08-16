@@ -18,6 +18,7 @@
 
 <script>
 /**
+ * （组件结构同comfirm组件）
  * 返回值
  * text：字符串：输入的字符串
  * state：布尔值：true（确认）/ false（取消）

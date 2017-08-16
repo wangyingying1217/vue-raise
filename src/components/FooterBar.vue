@@ -1,11 +1,14 @@
 <template>
   <div class="footer">
+    <!-- 跳转到首页众筹列表页面 -->
     <router-link :to="{path:'/'}" :class="{'action':type=='raise'}" tag="div">
       <div class="bg-raise"></div>众筹
     </router-link>
+    <!-- 跳转到发起众筹页面 -->
     <router-link :to="{path:'/create'}" :class="{'action':type=='create'}" tag="div">
       <div class="create"></div>
     </router-link>
+    <!-- 跳转到个人中心页面 -->
     <router-link :to="{path:'/person'}" :class="{'action':type=='person'}" tag="div">
       <div class="bg-user"></div>我
     </router-link>

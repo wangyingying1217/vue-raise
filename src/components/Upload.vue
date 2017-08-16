@@ -1,6 +1,7 @@
 <template>
   <div class="file-wrapper">
     <slot></slot>
+    <!-- 因为android和ios调用拍照和本地的方式不同，所以进行区分 -->
     <input class="file" v-if="isAndroid && isImage" type="file" :accept="imageAccept" capture="camera" @change="upload" ref="file">
     <input class="file" v-if="isIphone && isImage" type="file" :accept="imageAccept" @change="upload" ref="file">
     <input class="file" v-if="isAndroid && !isImage" type="file" :accept="videoAccept" capture="camcorder" @change="upload" ref="file">
@@ -43,6 +44,7 @@ export default {
       let formData = new FormData()
       let file = this.$refs.file.files[0]
       let size = file.size / 1024 / 1024
+      // 允许上传的文件大小小于100M
       if (size > 100) {
         this.tip = '请上传大小在100M以内的文件'
         return
@@ -62,6 +64,7 @@ export default {
     }
   },
   created() {
+    // 判断设备是android还是ios
     let u = navigator.userAgent
     if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
       this.isAndroid = true
@@ -70,6 +73,7 @@ export default {
     }
   },
   computed: {
+    // 剪裁类型是否为图片
     isImage: function () {
       let data = true
       if (this.type === 'video') {

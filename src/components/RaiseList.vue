@@ -49,7 +49,7 @@
           </div>
         </div>
         <!-- 删除词条 -->
-        <span class="delete" @click.stop="remove(item.concernId)" v-if="type === 'delete'">删除</span>
+        <span class="delete" @click.stop="$emit('removeRaise', item.concernId)" v-if="type === 'delete'">删除</span>
       </router-link>
       <!-- 订单合计金额 -->
       <p class="total-money" v-if="type === 'myOrder'">共{{item.num}}件商品&nbsp;&nbsp;&nbsp;&nbsp;合计：￥{{item.money}}（含运费￥{{item.money}}）</p>
@@ -87,6 +87,7 @@ const posLeft = '-' + width + 'rem'
 export default {
   props: ['info', 'type'],
   data () {
+    // 定义常量
     return {
       CHECKING: '审核中',
       PASSED: '已通过',
@@ -109,11 +110,7 @@ export default {
       SLECTING: ''
     }
   },
-  methods: {
-    remove: function (id) {
-      this.$emit('removeRaise', id)
-    }
-  },
+  // 具体注释请到procuctList组件中看相同方法
   directives: {
     'drag': function (el, state) {
       if (state.value === 'delete') {
@@ -161,6 +158,7 @@ export default {
     }
   },
   filters: {
+    // 数字过滤器（数字太长时空间不够）
     num: function (val) {
       let num = val
       if (val >= 1000) {
@@ -170,6 +168,7 @@ export default {
       }
       return num
     },
+    // 进度过滤器（数字太长时空间不够）
     progress: function (val) {
       let num = parseFloat(val)
       if (num < 10) {

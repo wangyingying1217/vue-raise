@@ -108,7 +108,6 @@ npm run build --report
 │   │   ├── Pay.vue                           //支付组件
 │   │   ├── ProductList.vue                   //商品列表组件
 │   │   ├── RaiseList.vue                     //众筹列表组件
-│   │   ├── List.vue                          //跳转链接列表组件
 │   │   ├── TimeEvolve.vue                    //发展列表组件
 │   │   ├── ImageUpload.vue                   //图片剪裁组件
 │   │   └── Upload.vue                        //上传视频图片组件
@@ -286,6 +285,32 @@ npm run build --report
 
 * 请求的参数以及返回值请参照后台写的接口文档
 
-* 页面中的info字段一般都是用来存储页面刚刚加载的信息（组件中用来传递信息）
+* 本地存储的`state`是此公众号的接口所属类别（分为众筹公众号、微书城电子书公众号、微书城纸质书公众号、微书城app）
 
-* 页面中的getCustomers方法都是用来进入页面完后获取数据
+* 页面中的`apiURL`字段为跨域请求的地址前缀（因为所有的请求地址都是在raise下的，所以在请求前缀中加入了`raise`）
+
+* 页面中的`id`字段为用户的微信`unionId`（用户的唯一标示）
+
+* 页面中的`contentId`字段为此项目的id
+
+* 页面中的`show`字段是控制页面的渲染（数据请求之后在进行渲染，否则会造成刚进入页面时没有数据）
+
+* 页面中的`info`字段一般都是用来存储页面刚刚加载的信息（组件中用来传递信息）
+
+* 页面中的`page`字段用来表示页面加载到第几页（分页中使用）
+
+* 页面中的`confirmInfo`字段为调用confirm组件传递的信息，其中`title`为标题、`name`为提示
+
+* 页面中的`confirmState`字段控制confirm组件是否显示
+
+* 页面中的`tip`字段为调用tip组件传递的信息
+
+* 页面中的`loadState`字段为调用loadmore组件传递的信息（每次请求的控制开关 true-加载数据 false-加载完成）
+
+* 页面中的`loadBoff`字段为调用loadmore组件传递的信息（是否还有数据可以加载  true-有数据 false-没有数据）
+
+* 页面中的`getCustomers`方法都是用来进入页面完后获取数据（参数都存在时再执行）
+
+* `路由`和`用户ID`发生变化时执行getCustomers方法，页面数据进行重新加载（以为用户id是异步加载过来的，一般执行getCustomers方法时需要判断用户id是否获取到）
+
+* 页面中`loadState`字段发生变化时判断其值为true时请求服务器加载数据，加载完成如果数据存在则将数据存在相应字段中然后将`loadState`状态改为false，如果数据不存在直接将`loadBoff`改为false

@@ -56,9 +56,9 @@
 import Nodata from '@/components/Nodata'
 import Confirm from '@/components/Confirm'
 
-const PUBLISH_STATE = 0
-const COMMEENT_STATE = 1
-const REPLAY_STATE = 2
+const PUBLISH_STATE = 0 // 发表看法的常量值为 0
+const COMMEENT_STATE = 1 // 评论的常量值为 1
+const REPLAY_STATE = 2 // 回复的常量值为 2
 
 export default {
   props: ['apiURL', 'id'],
@@ -67,18 +67,18 @@ export default {
       info: [],
       show: false,
       contentId: '',
-      userName: '',
+      userName: '', // 用户的用户名
+      commentType: PUBLISH_STATE, // 评论框类型
+      commentText: '', // 评论框内容
+      commentItem: {}, // 选中的看法
+      commentIndex: '', // 选中看法的索引
+      discussItem: {}, // 选中的评论
+      discussIndex: '', // 选中评论的索引
       confirmInfo: {
         title: '提示',
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
-      commentType: PUBLISH_STATE, // 
-      commentText: '',
-      commentItem: {},
-      commentIndex: '',
-      discussItem: {},
-      discussIndex: '',
       tip: ''
     }
   },
@@ -152,11 +152,12 @@ export default {
     },
     // 确认回复或评论
     submit: function () {
-      //
+      // 如果评论内容为空 提示不能提交
       if (!this.commentText) {
         this.tip = this.commentInfo[this.commentType].tip
         return false
       }
+      // 评论框状态为发表看法
       if (this.commentType === PUBLISH_STATE) {
         this.$http.get(this.apiURL + 'pinglun.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&context=' + encodeURI(this.commentText)).then((response) => {
           if (!response.data.permission) {
@@ -168,6 +169,7 @@ export default {
         }, () => {
           this.tip = '请求失败'
         })
+        // 评论框状态为评论或回复
       } else {
         var url = ''
         if (this.commentType === COMMEENT_STATE) {
@@ -190,6 +192,7 @@ export default {
     // 确定删除操作
     confirm: function (val) {
       this.confirmState = false
+      // 删除整条看法
       if (val && this.commentType === COMMEENT_STATE) {
         this.$http.get(this.apiURL + 'delComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&commentId=' + this.commentItem.commentId).then(function (response) {
           this.info.splice(this.commentIndex, 1)
@@ -197,6 +200,7 @@ export default {
         }, () => {
           this.tip = '请求失败'
         })
+        // 删除单条评论
       } else if (val && this.commentType === REPLAY_STATE) {
         this.$http.get(this.apiURL + 'delReplyComment.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&commentId=' + this.commentItem.commentId + '&discussId=' + this.discussItem.discussId).then(function (response) {
           if (response.data.success) {
@@ -229,6 +233,7 @@ export default {
     Confirm
   },
   computed: {
+    // 看法、评论、回复状态的预显示信息、按钮信息、提示信息
     commentInfo: function () {
       return [
         {
@@ -250,6 +255,7 @@ export default {
     }
   },
   filters: {
+    // 支持数超过99时显示99+
     zanNum: function (value) {
       if (value > 99) {
         return '99+'

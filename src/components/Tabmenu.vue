@@ -15,6 +15,7 @@ export default {
   },
   props: ['tabInfo'],
   methods: {
+    // 滚动到页面顶部
     scollTop: function () {
       /* eslint-disable no-unused-vars */
       var Timer = 0

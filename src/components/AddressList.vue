@@ -34,16 +34,15 @@ export default {
   props: ['state', 'apiURL'],
   data () {
     return {
-      positionData: cityData,
-      provinceData: {
+      positionData: cityData, // 地址的json数据
+      provinceData: { // 选中的省信息
         p: '',
         c: []
       },
-      cityData: {
+      cityData: { // 选中的市信息
         n: '',
         a: []
-      },
-      countyData: {}
+      }
     }
   },
   methods: {
@@ -53,14 +52,17 @@ export default {
     },
     city: function (item) {
       this.cityData = item
+      // 如果还有县列表继续选择
       if (item.a) {
         this.$emit('update:state', 'county')
+        // 如果没有县列表直接返回地址信息:省/市
       } else {
         this.$emit('update:state', '')
         this.$emit('address', this.provinceData.p + '/' + this.cityData.n)
       }
     },
     county: function (value) {
+      // 返回地址信息:省/市/县
       this.$emit('update:state', '')
       this.$emit('address', this.provinceData.p + '/' + this.cityData.n + '/' + value)
     }

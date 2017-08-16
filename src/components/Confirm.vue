@@ -1,10 +1,14 @@
 <template>
   <div class="mask">
     <div class="confirm">
+      <!-- 标题 -->
       <div class="confirm-title">{{info.title}}
+        <!-- 关闭提示框 -->
         <span class="confirm-close" @click="cancel"></span>
       </div>
+      <!-- 提示信息 -->
       <div class="confirm-content">{{info.name}}</div>
+      <!-- 操作按钮 -->
       <div class="confirm-btnwrap">
         <a class="confirm-btn" @click="confirm">确定</a>
         <a class="confirm-btn" @click="cancel">取消</a>
@@ -21,7 +25,6 @@
 export default {
   data () {
     return {
-      mask: true
     }
   },
   props: ['info'],

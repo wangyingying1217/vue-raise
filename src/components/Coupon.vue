@@ -2,20 +2,28 @@
   <div>
     <!-- 积分兑换券 -->
     <div v-if="type == 'integral'">
+      <!-- 兑换页面的路径 -->
       <router-link :to="{ path: '/ticket/'+item.id}" class="ticket act" v-for="(item, index) in info" :key="index" tag="div">
+        <!-- 优惠券面值 -->
         <div class="money">￥<span class="num">{{item.money}}</span></div>
         <div class="info">
+          <!-- 优惠券面值 -->
           <p>{{item.money}}元代金券</p>
+          <!-- 兑换所需积分 -->
           <p class="text">{{item.point}}积分兑换</p>
         </div>
       </router-link>
     </div>
     <!-- 优惠券 -->
     <div v-if="type != 'integral'">
+      <!-- 优惠券状态 (可使用,已使用,已过期) -->
       <div class="ticket" v-for="(item, index) in info" :key="index" :class="mapClass[item.state - 1]">
+        <!-- 优惠券面值 -->
         <div class="money">￥<span class="num">{{item.money}}</span></div>
         <div class="info">
+          <!-- 优惠券使用条件 -->
           <p>实际支付满{{item.fullPrice}}可用</p>
+          <!-- 优惠券有效的起止日期 -->
           <p class="text">{{item.startTime}}-{{item.endTime}}</p>
         </div>
       </div>
@@ -29,7 +37,7 @@ export default {
   props: ['info', 'type'],
   data () {
     return {
-      mapClass: ['act', 'used', 'exceed']
+      mapClass: ['act', 'used', 'exceed'] // 积分券状态的class(可使用,已使用,已过期)
     }
   }
 }

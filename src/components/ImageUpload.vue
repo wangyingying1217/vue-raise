@@ -1,8 +1,10 @@
 <template>
   <div class="imageupload-wrapper wrapper">
+    <!-- 待剪裁的图片 -->
     <img class="img" :src="localPic" v-scale>
+    <!-- 剪裁框（头像的剪裁框是原型、封面的剪裁框是矩形） -->
     <div class="clip" :class="{'circle': type === 'headPic','rectangle': type === 'cover'}"></div>
-    <div class="btn-bg"></div>
+    <!-- 建材按钮 -->
     <div class="btn-wrapper">
       <a class="fl" @click="cancel">取消</a>
       <a class="fr" @click="ensure">确定</a>
@@ -29,14 +31,16 @@ export default {
     }
   },
   methods: {
+    // 取消剪裁
     cancel: function () {
       window.history.go(-1)
     },
+    // 确定剪裁
     ensure: function () {
       let formData = new FormData()
       let URL = this.type === 'headPic' ? 'member/modifyHead.jhtml' : 'tailor/picture.jhtml'
-      formData.append('path', this.localPic)
-      formData.append('state', localStorage.getItem('state'))
+      formData.append('path', this.localPic) // 剪裁的图片路径
+      formData.append('state', localStorage.getItem('state')) // 公众号的接口所属类别
       formData.append('wxbdopenId', this.id)
       formData.append('xAxle', this.xAxle)
       formData.append('yAxle', this.yAxle)
@@ -56,14 +60,15 @@ export default {
         // 定义剪裁的宽度和高度（单位rem）
         const WIDTH = 14
         let HEIGHT = 0
+        // 头像剪裁和封面剪裁的高度不一样
         if (vnode.context.type === 'headPic') {
           HEIGHT = 14
         } else if (vnode.context.type === 'cover') {
           HEIGHT = 10
         }
-        // 计算rem的基础单位
+        // 计算rem的基础单位（1rem = ?px）
         const BASE_SIZE = document.documentElement.clientWidth / 18
-        //  页面的高度
+        //  页面可视区的高度
         const CLIENT_HEIGHT = document.documentElement.clientHeight
         let imgLeft // 图片的left值
         let imgTop // 图片的top值
@@ -81,6 +86,7 @@ export default {
           originalHeight = el.offsetHeight
           fileWidth = originalWidth = el.offsetWidth
           baseScale = parseFloat(originalWidth / originalHeight)
+          // 宽高中  较小的一方为18rem  较大的一方等比例放大（避免初始加载时图片大小小于剪裁框）
           if (baseScale > 1) {
             el.style.width = 18 * baseScale + 'rem'
             el.style.height = 18 + 'rem'
@@ -88,11 +94,17 @@ export default {
             el.style.width = 18 + 'rem'
             el.style.height = 18 / baseScale + 'rem'
           }
-          if (CLIENT_HEIGHT > originalHeight) {
-            el.style.top = (CLIENT_HEIGHT - originalHeight) / 2 + 'px'
+          // 动态计算图片的top值   使图片垂直居中
+          if (CLIENT_HEIGHT > el.offsetHeight) {
+            el.style.top = (CLIENT_HEIGHT - el.offsetHeight) / 2 + 'px'
           } else {
             el.style.top = 0
           }
+          // 动态计算图片的left值   使图片水平居中
+          if (parseInt(el.style.width) > 18) {
+            el.style.left = -(parseInt(el.style.width) - 18) / 2 + 'rem'
+          }
+          // 更新剪裁数据
           siteData(el)
         }
         el.ontouchstart = (ev) => {
@@ -110,6 +122,7 @@ export default {
               let endX = Math.sqrt(Math.pow((touch1.pageX - touch2.pageX), 2) + Math.pow((touch1.pageY - touch2.pageY), 2))
               // 手指运动的距离
               let scale = endX - startX
+              // 更新节点位置
               el.style.width = (originalWidth + scale) + 'px'
               el.style.height = (originalWidth + scale) / baseScale + 'px'
               el.style.left = imgLeft - scale / 2 + 'px'
@@ -121,6 +134,7 @@ export default {
             let x1 = touch1.pageX
             let y1 = touch1.pageY
             document.ontouchmove = (ev) => {
+              // 计算移动差  更新节点位置
               let touch1 = ev.targetTouches[0]
               let x2 = touch1.pageX
               let y2 = touch1.pageY
@@ -151,24 +165,27 @@ export default {
             }
             setTimeout(() => {
               el.style.transition = ''
+              // 将节点此时的宽高更新到节点每次移动之前的状态
               originalWidth = el.offsetWidth
               originalHeight = el.offsetHeight
+              // 更新剪裁数据
               siteData(el)
+              // 解绑事件
               document.ontouchmove = null
               document.ontouchend = null
             }, 200)
           }
         }
-        // 设置剪裁数据
+        // 更新剪裁数据
         function siteData(dom) {
-          imgLeft = parseInt(dom.offsetLeft)
-          imgTop = parseInt(dom.offsetTop)
-          imgWidth = dom.offsetWidth
-          let size = fileWidth / imgWidth  // 图片放大比例
-          vnode.context.xAxle = parseInt((clipLeft * BASE_SIZE - imgLeft) * size)
-          vnode.context.yAxle = parseInt((clipTop * BASE_SIZE - imgTop) * size)
-          vnode.context.width = parseInt(WIDTH * BASE_SIZE * size)
-          vnode.context.height = parseInt(HEIGHT * BASE_SIZE * size)
+          imgLeft = parseInt(dom.offsetLeft) // 节点的left值数值（px）
+          imgTop = parseInt(dom.offsetTop) // 节点的top值数值（px）
+          imgWidth = dom.offsetWidth // 节点的宽度数值（px）
+          let size = fileWidth / imgWidth  // 图片缩放比例
+          vnode.context.xAxle = parseInt((clipLeft * BASE_SIZE - imgLeft) * size) // 计算后的剪裁的left值
+          vnode.context.yAxle = parseInt((clipTop * BASE_SIZE - imgTop) * size) // 计算后的top值
+          vnode.context.width = parseInt(WIDTH * BASE_SIZE * size) // 计算后的剪裁的宽度
+          vnode.context.height = parseInt(HEIGHT * BASE_SIZE * size) // 计算后的剪裁的高度
         }
       }
     }

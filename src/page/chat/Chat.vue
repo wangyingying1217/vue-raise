@@ -30,11 +30,11 @@ export default {
           contentId: 0
         }]
       },
-      page: 1,
-      text: '',
       show: false,
-      requset: true,
-      timer: null,
+      page: 1,
+      text: '', // input输入框的信息
+      requset: true, // 单次请求是否完成
+      timer: null, // 定时器
       tip: ''
     }
   },
@@ -59,10 +59,12 @@ export default {
 
       // 定时器定时请求接口，获得聊天信息（当一次请求完成后再进行下一次请求）
       this.timer = setInterval(() => {
+        // 当一次请求完成后才能进行下一次请求
         if (this.id && this.requset) {
           this.requset = false
           this.$http.post(this.apiURL + 'member/message/chat.jhtml', {prevContentId: this.prevChatId, wxbdopenId: this.id, receiverId: this.receiverId}).then((response) => {
             this.info.content.push(...response.data.content)
+            // DOM节点加载完成后再滚动到页面底部
             this.$nextTick(function () {
               window.scrollTo(0, document.body.scrollHeight)
             })
@@ -97,12 +99,15 @@ export default {
     this.getCustomers()
   },
   computed: {
+    // 信息接收者id
     receiverId: function () {
       return this.$route.params.id
     },
+    // 最后一条信息的id
     prevChatId: function () {
       return this.info.content.length ? this.info.content[this.info.content.length - 1].contentId : 0
     },
+    // 手机可视区域高度
     height: function () {
       return document.documentElement.clientHeight + 'px'
     }

@@ -50,14 +50,16 @@
         </li>
       </ul>
     </div>
-    <List :info='detialInfo'></List>
+    <ul class="list-wrapper">
+      <router-link :to="{path:item.href}" v-for="item in detialInfo" tag="li" :key="item.name">
+        <p>{{item.name}}</p>
+      </router-link>
+    </ul>
     <Tip :info.sync="tip"></Tip>
   </div>
 </template>
 
 <script>
-import List from '@/components/List'
-
 export default {
   props: ['apiURL', 'id'],
   data () {
@@ -109,9 +111,6 @@ export default {
     id: function () {
       this.getCustomers()
     }
-  },
-  components: {
-    List
   },
   computed: {
     detialInfo: function () {
@@ -294,6 +293,29 @@ export default {
   .tip_info{
     margin-right:0.2rem;
   	color:#999999;
+  }
+}
+.list-wrapper{
+  &.margin{
+    li{
+      margin-bottom:0.5rem;
+      border-top:1px solid #ccc;
+    }
+  }
+  li{
+  	padding:0 1rem;
+  	font-size:0.7rem;
+  	line-height:2rem;
+  	height:2rem;
+    background:#fff;
+    border-bottom:1px solid #ccc;
+    &:first-of-type{
+  	   border-top:1px solid #ccc;
+    }
+    p{
+    	background:url("../../image/rightBlack.png") no-repeat right center;
+      background-size: 0.4rem;
+    }
   }
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
   <div v-show="show">
+    <!-- 数据加载中 -->
     <div class="update" v-if="Boff && load">加载更多
       <div data-loader="circle"></div>
     </div>
+    <!-- 没有数据可以加载 -->
     <div class="update" v-if="!Boff">已经到底了~~</div>
   </div>
 </template>
@@ -22,10 +24,12 @@ export default {
   created () {
     // 绑定window的滚动事件
     let scroll = () => {
+      // 如果有数据可以加载时执行
       if (this.Boff) {
         var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
         var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-        var windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+        var windowHeight = document.documentElement.clientHeight || document.body.clientHeigh
+        // 页面滚动到距离底部20px是更改单次请求状态，父页面进行加载数据
         if (scrollHeight - scrollTop - windowHeight < 20 && scrollTop !== 0) {
           this.$emit('update:load', true)
         }
@@ -40,6 +44,7 @@ export default {
     }
   },
   computed: {
+    // 页面未发生滚动时不显示组件
     show: function () {
       return (document.documentElement.scrollTop || document.body.scrollTop) !== 0
     }
