@@ -88,20 +88,20 @@ export default {
   data () {
     return {
       tip: '',
-      picItem: {},
-      video: '',
-      poster: '',
-      risk: '',
-      titlePlaceholder: '为什么我需要你的资金支持',
-      contentPlaceholder: '请在这里说明你的项目特色，以及详细的资 金用途，这会增加项目的可信度并由此提高筹资的成功率。',
+      picItem: {}, // 选择上传图片的详情内容
+      video: '', // 视频地址
+      poster: '', // 视频封面图片地址
+      risk: '', // 风险
+      titlePlaceholder: '为什么我需要你的资金支持', // 题目提示信息
+      contentPlaceholder: '请在这里说明你的项目特色，以及详细的资 金用途，这会增加项目的可信度并由此提高筹资的成功率。', // 内容提示信息
       details: [
         {
           type: 0, // 添加类型（文本）
-          edit: 0,
-          title: '为什么我需要你的资金支持',
-          titleEdit: '',
-          content: '<p>请在这里说明你的项目特色，以及详细的资 金用途，这会增加项目的可信度并由此提高筹资的成功率。</p>',
-          contentEdit: ''
+          edit: 0, // 编辑状态 （1-编辑中，0-编辑完成）
+          title: '为什么我需要你的资金支持', // 题目提示信息
+          titleEdit: '', // 题目输入框内容
+          content: '<p>请在这里说明你的项目特色，以及详细的资 金用途，这会增加项目的可信度并由此提高筹资的成功率。</p>', // 内容提示信息
+          contentEdit: '' // 内容输入框内容
         },
         {
           type: 1, // 添加类型（图片）
@@ -131,6 +131,7 @@ export default {
         this.tip = '最多只能上传' + num + '条'
       } else {
         parent.push(JSON.parse(JSON.stringify(children)))
+        // 添加之后滚动到页面底部
         setTimeout(() => {
           window.scrollTo(0, document.body.scrollHeight)
         }, 10)
@@ -140,6 +141,7 @@ export default {
     saveEdit: function (item) {
       var arr = item.contentEdit.split('\n')
       var str = ''
+      // 如果内容输入框去掉首位空格不为空的时候进行存储内容，否则显示提示信息（内容通过回行进行拆分，然后放入p标签内存入内容）
       if (item.contentEdit.replace(/(^\s*)|(\s*$)/g, '')) {
         for (var i = 0; i < arr.length; i++) {
           str += '<p>' + arr[i] + '</p>'
@@ -148,6 +150,7 @@ export default {
       } else {
         item.content = '<p>' + this.contentPlaceholder + '</p>'
       }
+      // 如果题目输入框去掉首位空格不为空的时候进行存储题目，否则显示提示信息
       if (item.titleEdit.replace(/(^\s*)|(\s*$)/g, '')) {
         item.title = item.titleEdit
       } else {
@@ -155,6 +158,7 @@ export default {
       }
       item.edit = 0
     },
+    // 跳转组件（检测是否有详情描述和是否存在编辑中状态）
     submit: function (e) {
       var bOff = true
       var details = this.details
@@ -173,6 +177,7 @@ export default {
     }
   },
   computed: {
+    // 将描述信息转化成字符串，听过表单上传服务器
     describeText: function () {
       let outer = {}
       this.details.forEach((item, index) => {
@@ -180,6 +185,7 @@ export default {
       })
       return JSON.stringify(outer)
     },
+    // 项目描述是否为空（false-空  true-非空）
     describeEmpty: function () {
       return this.details.some((item, index) => {
         return (item.titleEdit && item.titleEdit.replace(/\s*/g, '')) || (item.contentEdit && item.contentEdit.replace(/\s*/g, '')) || (item.picSrc && item.picSrc.replace(/\s*/g, ''))
@@ -202,6 +208,7 @@ export default {
     Upload
   },
   watch: {
+    // 本地信息存储
     risk: {
       handler: function (val, oldVal) {
         localStorage.setItem('describe', JSON.stringify({risk: this.risk, video: this.video, poster: this.poster, details: this.details, timestamp: new Date().getTime()}))

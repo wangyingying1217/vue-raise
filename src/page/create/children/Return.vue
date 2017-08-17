@@ -1,5 +1,6 @@
 <template>
   <div class="raise-wrapper">
+    <!-- 回报部分 -->
     <div v-show="$route.path == '/create'">
       <div class="raise-inner">
         <div class="retuen" v-for="(item,indexParent) in returnInfo">
@@ -8,7 +9,7 @@
           <div class="return-title" v-if="indexParent">回报{{1+indexParent}}
             <a class="delete" @click="returnInfo.splice(indexParent, 1)"></a>
           </div>
-          <!-- 回报信息 -->
+          <!-- 回报类型（抽奖回报只能选择一次） -->
           <div class="raise-box">
             <span class="box-title">回报类型：</span>
             <div class="radio-wrapper">
@@ -24,46 +25,55 @@
               </label>
             </div>
           </div>
+          <!-- 支持金额 -->
           <div class="raise-box">
             <span class="box-input-title">支持金额：</span>
             <input class="box-input" type="number" placeholder="输入需要用户支持的金额" :name="'supportAmount'+indexParent" v-model="item.public.supportAmount.value" @input="validate('faMoney',item.public.supportAmount)" @blur="validate('faMoney',item.public.supportAmount)">
             <p class="errors" v-if="item.public.supportAmount.invalid">{{validateMsg.faMoney}}</p>
           </div>
+          <!-- 总份额数 -->
           <div class="raise-box">
             <span class="box-input-title">总份额数：</span>
             <input class="box-input" type="number" placeholder="最大支持份数（0为不限制）" :name="'lotNum'+indexParent" v-model="item.public.lotNum.value" @input="validate('nonegative',item.public.lotNum)" @blur="validate('nonegative',item.public.lotNum)">
             <p class="errors" v-if="item.public.lotNum.invalid">{{validateMsg.nonegative}}</p>
           </div>
+          <!-- 支持标题 -->
           <div class="raise-box">
             <span class="box-input-title">支持标题：</span>
             <input class="box-input" type="text" placeholder="给你的项目回报设置一个标题" :name="'supportTitle'+indexParent" v-model="item.public.supportTitle.value" @input="validate('unempty',item.public.supportTitle)" @blur="validate('unempty',item.public.supportTitle)">
             <p class="errors" v-if="item.public.supportTitle.invalid">{{validateMsg.unempty}}</p>
           </div>
+          <!-- 支持解释 -->
           <div class="raise-box">
             <span class="box-input-title">支持解释：</span>
             <textarea class="box-input" type="text" placeholder="请简单的说明一下内容" :name="'supportExplain'+indexParent" v-model="item.public.supportExplain.value" @input="validate('unempty',item.public.supportExplain)" @blur="validate('unempty',item.public.supportExplain)"></textarea>
             <p class="errors" v-if="item.public.supportExplain.invalid">{{validateMsg.unempty}}</p>
           </div>
+          <!-- 抽奖概率 -->
           <div class="raise-box" v-if="item.returnType=='lottery'">
             <span class="box-input-title">抽奖概率：</span>
             <input class="box-input" type="number" placeholder="每多少人抽中1人" :name="'lotteryUnit'+indexParent" v-model="item.lottery.lotteryUnit.value" @input="validate('integer',item.lottery.lotteryUnit)" @blur="validate('integer',item.lottery.lotteryUnit)">
             <p class="errors" v-if="item.lottery.lotteryUnit.invalid">{{validateMsg.integer}}</p>
           </div>
+          <!-- 支持上限（小于总份额数）-->
           <div class="raise-box">
             <span class="box-input-title">支持上限：</span>
             <input class="box-input" type="number" placeholder="“0”为不限名额" :name="'lotLimit'+indexParent" v-model="item.public.lotLimit.value" @input="limitValidate(item.public.lotLimit,item.public.lotNum)" @blur="limitValidate(item.public.lotLimit,item.public.lotNum)">
             <p class="errors" v-if="item.public.lotLimit.invalid">{{validateMsg.faPeople}}</p>
           </div>
+          <!-- 赠送积分 -->
           <div class="raise-box">
             <span class="box-input-title">赠送积分：</span>
             <input class="box-input" type="number" placeholder="“0”为不赠送积分" :name="'presentExp'+indexParent" v-model="item.public.presentExp.value" @input="validate('nonegative',item.public.presentExp)" @blur="validate('nonegative',item.public.presentExp)">
             <p class="errors" v-if="item.public.presentExp.invalid">{{validateMsg.nonegative}}</p>
           </div>
+          <!-- 运费 -->
           <div class="raise-box" v-if="item.returnType=='product'">
             <span class="box-input-title">运 &nbsp&nbsp&nbsp&nbsp&nbsp 费：</span>
             <input class="box-input" type="number" placeholder="“0”为包邮，默认单位元" :name="'freight'+indexParent" v-model="item.product.freight.value" @input="validate('freight',item.product.freight)" @blur="validate('freight',item.product.freight)">
             <p class="errors" v-if="item.product.freight.invalid">{{validateMsg.freight}}</p>
           </div>
+          <!-- 发票 -->
           <div class="raise-box" v-if="item.returnType=='product'">
             <span class="box-title">发 &nbsp&nbsp&nbsp&nbsp&nbsp 票：</span>
             <div class="radio-wrapper">
@@ -84,11 +94,13 @@
               </label>
             </div>
           </div>
+          <!-- 回报时间 -->
           <div class="raise-box">
             <span class="box-input-title">回报时间：</span>
             <input class="box-input" type="number" placeholder="“0”为项目结束后立即发送" :name="'returnTime'+indexParent" v-model="item.public.returnTime.value" @input="validate('retime',item.public.returnTime)" @blur="validate('retime',item.public.returnTime)">
             <p class="errors" v-if="item.public.returnTime.invalid">{{validateMsg.retime}}</p>
           </div>
+          <!-- 在线选择回报商品/自行上传 -->
           <div class="raise-box">
             <span class="box-title">商品来源：</span>
             <div class="radio-wrapper">
@@ -104,6 +116,7 @@
               </label>
             </div>
           </div>
+          <!-- 在线选择商品 -->
           <div class="raise-box" v-if="item.productOrigin=='online'">
             <span class="box-input-title">回报商品：</span>
             <ul class="raise-product">
@@ -143,6 +156,7 @@
             </ul>
             <p class="errors" v-if="item.online.unempty">{{validateMsg.product}}</p>
           </div>
+          <!-- 自行上传商品 -->
           <div v-if="item.productOrigin=='upload'">
             <div class="raise-box">
               <span class="box-input-title">商品分类：</span>
@@ -189,6 +203,7 @@
               <img v-for="(list,index) in item.picSrc" @click="item.picSrc.splice(index, 1)" :src="list" v-if="list" alt="pic">
               <input v-for="(list,index) in item.picSrc" type="hidden" :name="indexParent+'favorerPic'+index" :value="list">
             </div>
+            <!-- 上传商品图片（最多三张） -->
             <div class="raise-box" v-show="item.picSrc.length<3">
               <span class="box-input-title">上传图片：</span>
               <Upload class="filePic" :apiURL="apiURL" :id="id" :num="3" @pic="(url) => {picItem.picSrc.push(url)}" @click.native="picItem = item">
@@ -207,6 +222,7 @@
       <input type="hidden" name="count" :value="returnInfo.length">
     </div>
     <Tip :info.sync="tip"></Tip>
+    <!-- 选择在线商品 -->
     <router-view :apiURL="apiURL" :id="id" :productType="productTypeList" @product="productReceive" :onlineIndex="onlineIndex"></router-view>
   </div>
 </template>
@@ -224,7 +240,7 @@ export default {
     state: {
       type: Object
     },
-    productTypeList: {
+    productTypeList: { // 商品类别列表
       type: Array
     },
     validateMsg: {
@@ -240,21 +256,20 @@ export default {
   data () {
     return {
       tip: '',
-      productChoosed: {},
-      onlineIndex: '',
-      picItem: '',
+      productChoosed: {}, // 用来存储当前选择在线商品的回报
+      onlineIndex: '', // 用来存储选择在线商品的索引（returnProductA/returnProductB/returnProductC）
+      picItem: '', // 用来存储上传商品图片的位置
       returnInfo: [
         {
           returnType: 'product',  // 抽奖回报：lottery，商品回报：product
           productOrigin: 'online',  // 在线选择：online；自行上传：upload
-          productType: '',
-          productFormOptions: ['全部'],
-          picSrc: [],
-          online: {
+          productFormOptions: ['全部'], // 商品形态列表
+          picSrc: [], // 上传图片的src数组
+          online: { // 在线选择商品的信息
             returnProductA: {
-              value: '',
-              num: '',
-              id: ''
+              value: '', // 商品图片路径
+              num: '', // 商品数量
+              id: '' // 商品ID
             },
             returnProductB: {
               value: '',
@@ -266,37 +281,36 @@ export default {
               num: '',
               id: ''
             },
-            unempty: false
+            unempty: false // 校验是否选择了上传的商品
           },
           upload: {
-            productTitle: {invalid: '', value: ''},
-            productAuthor: {invalid: '', value: ''},
-            productCode: {invalid: '', value: ''},
-            productPirce: {invalid: '', value: ''},
-            productNum: {invalid: false, value: ''},
-            productIntro: {invalid: '', value: ''}
+            productTitle: {invalid: '', value: ''}, // 自行上传商品的名称
+            productAuthor: {invalid: '', value: ''}, // 自行上传商品的作者
+            productCode: {invalid: '', value: ''}, // 自行上传商品的编号
+            productPirce: {invalid: '', value: ''}, // 自行上传商品的价格
+            productNum: {invalid: false, value: ''}, // 自行上传商品的数量
+            productIntro: {invalid: '', value: ''} // 自行上传商品的介绍
           },
           public: {
-            supportAmount: {invalid: '', value: ''},
-            lotNum: {invalid: '', value: ''},
-            supportTitle: {invalid: '', value: ''},
-            supportExplain: {invalid: '', value: ''},
-            lotLimit: {invalid: '', value: ''},
-            presentExp: {invalid: '', value: ''},
-            returnTime: {invalid: '', value: ''}
+            supportAmount: {invalid: '', value: ''}, // 支持金额
+            lotNum: {invalid: '', value: ''}, // 总份额数
+            supportTitle: {invalid: '', value: ''}, // 支持标题
+            supportExplain: {invalid: '', value: ''}, // 支持解释
+            lotLimit: {invalid: '', value: ''}, // 支持上限
+            presentExp: {invalid: '', value: ''}, // 赠送积分
+            returnTime: {invalid: '', value: ''} // 回报时间
           },
           lottery: {
-            lotteryUnit: {invalid: '', value: ''}
+            lotteryUnit: {invalid: '', value: ''} // 抽奖概率
           },
           product: {
-            freight: {invalid: '', value: ''}
+            freight: {invalid: '', value: ''} // 运费
           }
         }
       ],
       newReturn: {
         returnType: 'product',  // 抽奖回报：lottery，商品回报：product
         productOrigin: 'online',  // 在线选择：online；自行上传：upload
-        productType: '',
         productFormOptions: [],
         picSrc: [],
         online: {
@@ -390,7 +404,9 @@ export default {
         parent.push(JSON.parse(JSON.stringify(children)))
       }
     },
+    // 提交表单
     submit: function () {
+      // 校验是否信息填写完整
       var returnInfo = this.returnInfo
       let bOff1, bOff2, bOff3
       for (var i = 0; i < returnInfo.length; i++) {
@@ -407,6 +423,7 @@ export default {
           bOff3 = _check(returnInfo[i].upload)
         }
       }
+      // 删除本地存储并提交表单
       if (bOff1 && bOff2 && bOff3) {
         localStorage.removeItem('typeIndex')
         localStorage.removeItem('raiseInfo')
@@ -422,9 +439,11 @@ export default {
     Upload
   },
   watch: {
+    // 进入页面后初始化商品形态列表
     productTypeList: function () {
       this.returnInfo[0].productFormOptions = this.newReturn.productFormOptions = this.productTypeList[1].productForm
     },
+    // 本地存储
     returnInfo: {
       handler: function (val, oldVal) {
         localStorage.setItem('return', JSON.stringify({returnInfo: this.returnInfo, timestamp: new Date().getTime()}))
@@ -433,6 +452,7 @@ export default {
     }
   },
   created () {
+    // 获取本地存储
     let returnInfo = JSON.parse(localStorage.getItem('return'))
     let timestamp = new Date().getTime()
     const THREE = 2 * 24 * 60 * 60 * 1000
@@ -441,6 +461,7 @@ export default {
     }
   },
   computed: {
+    // 计算抽奖回报的索引，确保只能有一个抽奖回报
     lotteryIndex: function () {
       let num
       this.returnInfo.forEach((item, index) => {
@@ -452,6 +473,7 @@ export default {
     }
   }
 }
+// 校验方法
 var _check = function (obj) {
   var bOff = true
   for (var attr in obj) {

@@ -36,6 +36,7 @@ export default {
     getCustomers: function () {
       document.title = '项目详情'
       this.contentId = this.$route.params.contentId
+      // 将发起的详情JSON直接拿过来进行遍历
       if (this.contentId && this.id) {
         this.$http.get(this.apiURL + 'projectDetails.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
           this.video = response.data.videos

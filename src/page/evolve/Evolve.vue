@@ -1,20 +1,27 @@
 <template>
   <div v-if="show">
+    <!-- 项目动态列表 -->
     <ul class="evolve">
       <li class="clearfix" v-for="item in info">
+        <!-- 背景图标 -->
         <div class="icon"></div>
         <div class="infobox">
+          <!-- 用户名 -->
           <p class="title">
             {{item.userName}}
+            <!-- 时间 -->
             <span class="date fr">{{item.dayNum}}</span>
           </p>
+          <!-- 动态内容 -->
           <p class="info" v-html="item.context"></p>
+          <!-- 动态图片（点击查看大图） -->
           <div class="clearfix">
             <router-link :to="'/imagePreview/'+contentId+'/dynamic/'+index+'/' + item.dicId" tag="div"  class="img" v-for="(src, index) in item.pic" key="index" v-bind:style="'background: url('+src+') no-repeat;background-size: cover;'"></router-link>
           </div>
         </div>
       </li>
     </ul>
+    <!-- 组件 -->
     <Tip :info.sync="tip"></Tip>
     <Nodata :showSwitch="info.length" type="update"></Nodata>
   </div>

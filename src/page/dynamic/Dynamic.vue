@@ -1,14 +1,18 @@
 <template>
   <div>
     <form class="edit" :action="apiURL+'member/updateDynamic.jhtml'" method="post" ref="dynamic">
+      <!-- 输入框 -->
       <textarea class="text" maxlength="200" name="context" v-model="textarea"></textarea>
+      <!-- 字数提示 -->
       <p class="count">{{textarea.length}}/200</p>
+      <!-- 图片显示和上传 -->
       <div class="img-box">
         <div class="img" v-for="(item, index) in imgArr" :key="index" @click="imgArr.splice(index,1)" :style="{'background': 'url('+item+') no-repeat 0 0/cover'}">
           <input type="hidden" :name="'evPic'+index" :value="imgArr[index]">
         </div>
         <Upload :apiURL="apiURL" :id="id" @pic="(url) => {imgArr.push(url)}" v-show="imgArr.length < 4" class="img-add">照片</Upload>
       </div>
+      <!-- 提交按钮 -->
       <div class="submit-btn">
         <a :class="{'act': textarea || imgArr}" @click="confirm">发表</a>
       </div>
@@ -29,8 +33,8 @@ export default {
   data () {
     return {
       tip: '',
-      textarea: '',
-      imgArr: []
+      textarea: '', // 输入文字
+      imgArr: [] // 图片地址存储
     }
   },
   methods: {
