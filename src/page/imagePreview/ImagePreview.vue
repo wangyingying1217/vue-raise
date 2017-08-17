@@ -1,6 +1,8 @@
 <template>
   <div class="img-preview" v-if="show">
+    <!-- 图片放大查看 -->
     <div :style="{'height':height}" @click="goBack">
+      <!-- 调用mint-ui中swipe组件 -->
       <mt-swipe :showIndicators="url.length>1?true:false" :auto="0" :defaultIndex="page" :continuous="false">
         <mt-swipe-item v-for="(item, index) in url" :key="index" :style="{'background': 'url('+item+') no-repeat center center/contain'}"></mt-swipe-item>
       </mt-swipe>
@@ -15,7 +17,7 @@ export default{
     return {
       show: false,
       tip: '',
-      url: []
+      url: [] // 存储图片路径
     }
   },
   props: ['apiURL', 'id'],

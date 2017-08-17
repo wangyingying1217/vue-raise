@@ -1,10 +1,12 @@
 <template>
   <div class="find-password">
+    <!-- 后显示密码输入框 -->
     <div v-if="codeState">
       <div class="input-wrapper"><input type="password" v-model="password" placeholder="请输入新密码"></div>
       <div class="input-wrapper"><input type="password" v-model="confirmPassword" placeholder="请确认新密码"></div>
       <a class="submit" :class="{'act':password && password === confirmPassword}" @click="setPassword">下一步</a>
     </div>
+    <!-- 先验证手机号 -->
     <div v-else>
       <div class="input-wrapper"><input type="tel" v-model="tel" placeholder="输入已绑定的手机号"></div>
       <div class="code-wrapper">
@@ -22,18 +24,17 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
-      tel: '',
-      telErr: true,
-      verifyCode: '',
-      verifyText: '获取验证码',
-      codeState: false,
-      password: '',
-      confirmPassword: '',
-      errMsg: [],
+      tel: '', // 手机号
+      verifyCode: '', // 验证码
+      verifyText: '获取验证码', // 验证码按钮显示文字
+      codeState: false, // 验证码校验结果
+      password: '', // 密码
+      confirmPassword: '', // 确认密码
       tip: ''
     }
   },
   methods: {
+    // 发送验证码
     sendVerify: function () {
       if (this.tel === '') {
         this.tip = '请输入手机号码'
@@ -58,6 +59,7 @@ export default {
         })
       }
     },
+    // 校验验证码
     checkCode: function () {
       if (!/^1[3|4|5|7|8][0-9]{9}$/.test(this.tel)) {
         this.tip = '手机号输入错误'
@@ -75,6 +77,7 @@ export default {
         })
       }
     },
+    // 设置密码
     setPassword: function () {
       if (!this.password || !this.confirmPassword) {
         this.tip = '密码不能为空'

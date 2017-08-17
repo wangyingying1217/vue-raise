@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <!-- 公司简介 -->
     <div class="text-style" v-if="show" v-html="info" :style="{'min-height': height}">
     </div>
     <Tip :info.sync="tip"></Tip>

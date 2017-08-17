@@ -32,6 +32,7 @@ export default {
     }
   },
   methods: {
+    // 账号密码登录
     submit: function () {
       if (this.account && this.password) {
         this.$http.post(this.apiURL + 'submitwx.jhtml', {wxbdopenId: this.id, username: this.account, password: this.password, openId: this.openId, state: this.state}).then((response) => {
@@ -47,6 +48,7 @@ export default {
         })
       }
     },
+    // 微信登录（新注册用户）
     register: function () {
       this.$http.post(this.apiURL + 'registerwx.jhtml', {wxbdopenId: this.id, username: this.username, headimgurl: this.headimgurl, openId: this.openId, state: this.state}).then((response) => {
         if (response.data.msg === 'true') {

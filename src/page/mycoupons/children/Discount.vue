@@ -1,7 +1,9 @@
 <template>
   <div v-if="show">
+    <!-- 可用优惠券 -->
     <dt class="title" v-if="valid.length">可用优惠券</dt>
     <Coupon :info="valid"></Coupon>
+    <!-- 历史优惠券 -->
     <dt class="title" v-if="invalid.length">历史优惠券</dt>
     <Coupon :info="invalid"></Coupon>
     <Nodata :showSwitch="valid.length || invalid.length" type="coupon"></Nodata>

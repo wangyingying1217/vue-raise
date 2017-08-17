@@ -1,16 +1,21 @@
 <template>
   <div v-if="show">
     <ul>
+      <!-- 物流服务、支持消息、动态通知、项目通知列表 -->
       <li class="message-wrapper" v-for="(item, index) in info" :key="index">
         <p class="time"><span>{{item.acceptTime}}</span></p>
         <router-link class="message-box" :to="item.href" tag="div">
+          <!-- 物流服务 -->
           <p class="state" v-if="type==LOGISTICS">您的订单{{item.state}}<span class="tip">（{{item.source}}）</span></p>
+          <!-- 其他 -->
           <p class="state" v-else>{{item.title}}</p>
           <div class="message-item">
             <img :src="item.pic" alt="pic">
             <div class="con">
+              <!-- 支持消息 -->
               <p class="info" v-if="type==RETURN">【{{item.userName}}】支持了您的项目“{{item.title}}”{{item.money}}元</p>
               <p class="info" v-else>{{item.content}}</p>
+              <!-- 物流服务 -->
               <p class="tip" v-if="type==LOGISTICS">运单编号：{{item.logisticCode}}</p>
             </div>
           </div>
@@ -35,10 +40,10 @@ export default {
       show: false,
       loadState: false,
       loadBoff: true,
-      RETURN: 'return',
-      NOTICE: 'notice',
-      LOGISTICS: 'logistics',
-      DYNAMIC: 'dynamic'
+      RETURN: 'return', // 支持消息常量
+      NOTICE: 'notice', // 项目通知常量
+      LOGISTICS: 'logistics', // 物流服务常量
+      DYNAMIC: 'dynamic' // 动态通知常量
     }
   },
   methods: {
@@ -47,6 +52,7 @@ export default {
       if (this.id) {
         this.$http.get(this.apiURL + this.url + '?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
           if (this.type === this.LOGISTICS) {
+            // 物流信息按照时间倒序排列
             response.data.sort(function (a, b) {
               let timeA = a.acceptTime
               let timeB = b.acceptTime
@@ -58,18 +64,22 @@ export default {
                 return 0
               }
             })
+            // 为每条信息设置跳转地址
             response.data.forEach((item) => {
               item.href = '/logistics/' + item.id
             })
           } else if (this.type === this.RETURN) {
+            // 支持消息设置跳转地址
             response.data.forEach((item) => {
               item.href = '/supportRecord/' + item.id
             })
           } else if (this.type === this.DYNAMIC) {
+            // 动态通知设置跳转地址
             response.data.forEach((item) => {
               item.href = '/evolve/' + item.id
             })
           } else if (this.type === this.NOTICE) {
+            // 项目通知设置跳转地址
             response.data.forEach((item) => {
               item.href = '/myraise/effective'
             })
@@ -86,6 +96,7 @@ export default {
   },
   watch: {
     loadState: function (val, oldVal) {
+      // 物流动态没有分页 不需要分页加载
       if (val && this.type !== this.LOGISTICS) {
         this.page ++
         this.$http.get(this.apiURL + this.url + '?wxbdopenId=' + this.id + '&page=' + this.page).then((response) => {
@@ -130,9 +141,11 @@ export default {
     Nodata
   },
   computed: {
+    // 页面的类型你（支持消息/项目通知/物流服务/动态通知）
     type: function () {
       return this.$route.params.type
     },
+    // 设置请求地址
     url: function () {
       let url = ''
       if (this.type === this.LOGISTICS) {

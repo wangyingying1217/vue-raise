@@ -3,6 +3,7 @@
     <div v-show="$route.path == '/myinfo/check' || $route.path == '/myinfo/nocheck' ">
       <div class="wrapper">
         <dl class="personalInfo mt1">
+          <!-- 头像 -->
           <dt>
             <Upload :apiURL="apiURL" :id="id" @pic="getLocalPic">
               <div class="box clearfix">头像
@@ -12,16 +13,19 @@
               </div>
             </Upload>
           </dt>
+          <!-- 用户名 -->
           <dd>
             <div class="box">用户名
               <div class="text">{{userName}}</div>
             </div>
           </dd>
+          <!-- 昵称 -->
           <router-link :to="'/myinfo/userName'" tag="dd">
             <div class="box">昵称
               <div class="text">{{nickName}}</div>
             </div>
           </router-link>
+          <!-- 性别 -->
           <dd>
             <div class="box">性别
               <div class="text">{{gender | sex}}</div>
@@ -32,6 +36,7 @@
               <option :checked="gender=='female'" value="female">女</option>
             </select>
           </dd>
+          <!-- 邮箱 -->
           <router-link :to="'/myinfo/email'" tag="dd">
             <span v-show="check && !isEmail" class="check-icon">*</span>
             <div class="box">邮箱
@@ -42,6 +47,7 @@
               </div>
             </div>
           </router-link>
+          <!-- 手机 -->
           <router-link :to="'/myinfo/tel'" tag="dd">
             <span v-show="check && !/^1[3|4|5|7|8][0-9]/.test(this.tel)" class="check-icon">*</span>
             <div class="box">手机
@@ -49,6 +55,7 @@
             </div>
           </router-link>
         </dl>
+        <!-- 工作信息 -->
         <dl class="personalInfo">
           <dd>
             <span v-show="check && !unitType" class="check-icon">*</span>
@@ -79,6 +86,7 @@
           </dd>
         </dl>
         <dl class="personalInfo">
+          <!-- 个性签名 -->
           <router-link :to="'/myinfo/signature'" tag="dd">
             <div class="box">个性签名
               <div class="text" v-html="">
@@ -88,15 +96,18 @@
               <input type="hidden" name="idiograph" v-model="signature">
             </div>
           </router-link>
+          <!-- 收货地址 -->
           <router-link :to="'/myinfo/address'" tag="dd">
             <div class="box">收货地址</div>
           </router-link>
         </dl>
         <dl class="personalInfo">
+          <!-- 实名认证 -->
           <dd @click="identification">
             <span v-show="check && !isAuthentication" class="check-icon">*</span>
             <div class="box">实名认证</div>
           </dd>
+          <!-- 修改密码 -->
           <router-link to="/findPassword" tag="dd">
             <div class="box">修改密码</div>
           </router-link>
@@ -118,20 +129,20 @@ export default {
   data () {
     return {
       show: '',
-      avater: '',
-      userName: '',
-      nickName: '',
-      tel: '',
-      email: '',
-      isEmail: '',
-      signature: '',
-      gender: '',
-      localPic: '',
-      isAuthentication: false,
-      unitData: [],
-      unitType: '',
-      unitLevel: '',
-      work: ''
+      avater: '', // 头像地址
+      userName: '', // 用户名
+      nickName: '', // 昵称
+      tel: '', // 电话
+      email: '', // 邮箱
+      isEmail: '', // 邮箱是否认证
+      signature: '', // 个性签名
+      gender: '', // 性别
+      localPic: '', // 未剪裁的头像地址
+      isAuthentication: false, // 是否已经实名认证
+      unitData: [], // 单位信息列表
+      unitType: '', // 单位类别
+      unitLevel: '', // 单位层级
+      work: '' // 从事工作
     }
   },
   components: {
@@ -164,10 +175,12 @@ export default {
         })
       }
     },
+    // 跳转到图片剪裁
     getLocalPic: function (url) {
       this.localPic = url
       this.$router.push('/ImageUpload')
     },
+    // 更改性别
     changSex: function () {
       this.$http.post(this.apiURL + 'member/modify/gender.jhtml', {'wxbdopenId': this.id, 'gender': this.gender}).then((response) => {
         if (!response.data.state) {
@@ -177,6 +190,7 @@ export default {
         alert('性别修改失败')
       })
     },
+    // 更改工作信息
     changWorkInfo: function () {
       this.$http.post(this.apiURL + 'member/cause/unit.jhtml', {'wxbdopenId': this.id, 'unitCategory': this.unitType, 'unitHierarchy': this.unitLevel, 'performWork': this.work}).then((response) => {
         if (!response.data.state) {
@@ -186,6 +200,7 @@ export default {
         alert('信息修改失败')
       })
     },
+    // 更改单位类别
     changType: function () {
       if (this.unitType === '其它类') {
         this.unitLevel = '其它单位'
@@ -195,17 +210,20 @@ export default {
       this.work = ''
       this.changWorkInfo()
     },
+    // 更改单位层级
     changLevel: function () {
       if (this.unitLevel) {
         this.work = ''
         this.changWorkInfo()
       }
     },
+    // 更改从事工作
     changWork: function () {
       if (this.work) {
         this.changWorkInfo()
       }
     },
+    // 进行实名认证前检验是否邮箱、电话、工作信息已完善
     identification: function () {
       if (this.work && /^1[3|4|5|7|8][0-9]/.test(this.tel) && this.isEmail) {
         this.$router.push('/myinfo/identification/' + this.$route.params.type)
@@ -227,6 +245,7 @@ export default {
     this.getCustomers()
   },
   computed: {
+    // 判断是否需要对必填项进行提示（从发起认证页面跳转过来时需要提示）
     check: function () {
       let check = false
       if (this.$route.params.type === 'check') {
@@ -234,6 +253,7 @@ export default {
       }
       return check
     },
+    // 单位层级数据列表
     levelData: function () {
       if (this.unitType) {
         let data = []
@@ -245,6 +265,7 @@ export default {
         return data
       }
     },
+    // 从事工作数据列表
     workData: function () {
       if (this.unitLevel) {
         let data = []
@@ -258,6 +279,7 @@ export default {
     }
   },
   filters: {
+    // 将性别显示方式进行转换
     sex: function (value) {
       if (value === 'female') {
         return '女'
@@ -267,6 +289,7 @@ export default {
         return '保密'
       }
     },
+    // 对工作信息没有选择时进行提示
     placeholder: function (value, text) {
       if (value) {
         return value

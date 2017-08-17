@@ -27,7 +27,7 @@ export default {
       tip: '',
       info: [],
       page: 1,
-      type: '',
+      type: '', // 存储取消收藏的类型
       contentId: '',
       show: false,
       confirmInfo: {
@@ -61,20 +61,24 @@ export default {
         })
       }
     },
+    // 取消收藏众筹
     removeRaise: function (id) {
       this.confirmState = true
       this.type = 'removeRaise'
       this.contentId = id
       this.confirmInfo.name = '您确定要取消收藏此条众筹？'
     },
+    // 取消收藏商品
     removeProduct: function (id) {
       this.confirmState = true
       this.type = 'removeProduct'
       this.contentId = id
       this.confirmInfo.name = '您确定要取消收藏此条商品？'
     },
+    // 确定取消收藏
     confirm: function (val) {
       this.confirmState = false
+      // 众筹
       if (val && this.type === 'removeRaise') {
         this.info.forEach((item, index) => {
           if (item.concernId === this.contentId) {
@@ -82,6 +86,7 @@ export default {
           }
         })
         this.$http.post(this.apiURL + 'member/delete_concern.jhtml?wxbdopenId=' + this.id + '&id=' + this.contentId).then((response) => {})
+        // 商品
       } else if (val && this.type === 'removeProduct') {
         this.info.forEach((item, index) => {
           if (item.concernId === this.contentId) {
@@ -96,6 +101,7 @@ export default {
     this.getCustomers()
   },
   watch: {
+    // 加载更多
     loadState: function (val, oldVal) {
       if (val) {
         this.page ++
@@ -120,9 +126,11 @@ export default {
     }
   },
   computed: {
+    // 页面状态（众筹/商品）
     state: function () {
       return this.$route.path.split('/')[2]
     },
+    // 判断不同状态下的请求地址
     url: function () {
       if (this.state === 'raise') {
         return this.apiURL + 'member/conRaise.jhtml?wxbdopenId=' + this.id + '&page=' + this.page

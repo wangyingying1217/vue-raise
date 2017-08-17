@@ -1,5 +1,6 @@
 <template>
   <div v-if="show">
+    <!-- 信封列表 -->
     <ul class="notice">
       <router-link to="/messageList/notice" tag="li" :class="{'act':info.itemInfo.message}">
         <img src="../../image/announcement.png" alt="pic">

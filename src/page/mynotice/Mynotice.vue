@@ -1,13 +1,16 @@
 <template>
   <div v-if="show">
     <ul class="notice">
+      <!-- 活动公告列表 -->
       <router-link :to="'/notice/'+item.id" tag="li" v-for="item in info" :key="item.title">
         <img src="../../image/announcement.png" alt="pic">
         <div class="info">
+          <!-- 标题、时间 -->
           <p>
             <span class="tit">{{item.title}}</span>
             <span class="fr">{{item.time}}</span>
           </p>
+          <!-- 内容 -->
           <p>{{item.content}}</p>
         </div>
       </router-link>

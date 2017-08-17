@@ -1,13 +1,17 @@
 <template>
   <div v-if="show">
+    <!-- 私信列表 -->
     <ul class="notice">
       <router-link :to="{ path: '/chat/'+item.userId}" tag="li" v-for="(item, index) in info" :key="index">
+        <!-- 头像 -->
         <img :src="item.headPic" alt="pic">
         <div class="info">
+          <!-- 用户名和时间 -->
           <p>
             <span class="tit">{{item.userName}}</span>
             <span class="fr">{{item.time}}</span>
           </p>
+          <!-- 最后一条信息和未读数量 -->
           <p class="info-con">
             <span class="text">{{decodeURI(item.content)}}</span>
             <span class="num" v-if="item.count">{{item.count}}</span>
@@ -29,9 +33,7 @@ export default {
       info: [],
       tip: '',
       page: 1,
-      show: false,
-      SEND: '发布',
-      SUPPORT: '支持'
+      show: false
     }
   },
   methods: {

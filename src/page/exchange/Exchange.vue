@@ -1,7 +1,9 @@
 <template>
   <div class="exchange" v-if="show">
     <form :action="apiURL+'member/order/exchange.jhtml'" method="post" ref="exchange" v-if="info.state">
+      <!-- 换货信息 (未选择地点时显示) -->
       <div v-show="state === ''">
+        <!-- 商品信息列表 -->
         <div class="product-list">
           <div class="product-tit">
             <span class="tit-info">商品信息</span>
@@ -9,15 +11,20 @@
             <span class="tit-exnum">换货数量</span>
           </div>
           <div class="product-item" v-for="(item, index) in info.product" :key="index">
+            <!-- 选择按钮 -->
             <span class="check" :class="{'act':item.check}" @click="item.check=!item.check"></span>
+            <!-- 商品图片 -->
             <div class="con-img">
               <img :src="item.pic" alt="pic"/>
             </div>
+            <!-- 商品标题和作者 -->
             <div class="con-info">
               <div class="con-tit" v-html="item.title"></div>
               <div class="con-author">作者：{{item.authors}}</div>
             </div>
+            <!-- 购买数量 -->
             <div class="con-num">{{item.num}}</div>
+            <!-- 选择兑换数量 -->
             <div class="con-exnum">
               <span class="exnum-wrapper">
                 <span class="subtract" @click.stop="subtract(item)">-</span>
@@ -26,14 +33,18 @@
               </span>
             </div>
           </div>
+          <!-- 兑换信息 -->
           <input type="hidden" name="exchangeInfo" :value="JSON.stringify(exchangeInfo)">
         </div>
+        <!-- 便捷原因 -->
         <div class="edit">
+          <!-- 问题描述 -->
           <p class="edit-tit">问题描述</p>
           <div class="text-wraper">
             <textarea class="text" maxlength="200" name="context" placeholder="请输入你的问题描述" v-model="textarea"></textarea>
             <p class="count">{{textarea.length}}/200</p>
           </div>
+          <!-- 上传图片 -->
           <div class="img-box">
             <div class="img" v-for="(item, index) in imgArr" :key="index" @click="imgArr.splice(index,1)" :style="{'background': 'url('+item+') no-repeat 0 0/cover'}">
               <input type="hidden" :name="'pic'+index" :value="imgArr[index]">
@@ -44,6 +55,7 @@
             </div>
           </div>
         </div>
+        <!-- 收货人信息 -->
         <div class="list-list">
           <div class="list-item">
             <span class="list-span">收货人：</span>
@@ -62,6 +74,7 @@
             <input class="list-text" type="text" name="address" :value="info.address">
           </div>
         </div>
+        <!-- 提交按钮 -->
         <div class="submit-btn">
           <a :class="{'act': !exchangeInfo.exchangeInfo.length && !textarea}"@click="confirm">确定</a>
         </div>
@@ -73,6 +86,7 @@
     </form>
     <p class="nodata" v-else>{{info.msg}}</p>
     <Tip :info.sync="tip"></Tip>
+    <!-- 选择地点 -->
     <AddressList :state.sync="state" :apiURL="apiURL" @address="(val) => {info.areaName = val.replace(/\//g,'')}"></AddressList>
   </div>
 </template>
@@ -85,13 +99,12 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
-      info: {product: []},
+      info: {product: []}, // 商品信息列表
       tip: '',
       show: false,
-      state: '',
-      textarea: '',
-      imgArr: [],
-      region: ''
+      state: '', // 状态（编辑换货信息/选择地址）
+      textarea: '', // 原因描述
+      imgArr: [] // 问题图片
     }
   },
   methods: {
@@ -100,6 +113,7 @@ export default {
       if (this.id && this.orderCode) {
         this.$http.get(this.apiURL + 'member/order/apply/exchange.jhtml?wxbdopenId=' + this.id + '&orderCode=' + this.orderCode).then((response) => {
           if (response.data.state) {
+            // 添加换货信息字段
             response.data.product.forEach(function (item) {
               item.exNum = 0
               item.check = false
@@ -114,22 +128,26 @@ export default {
         })
       }
     },
+    // 增加换货数量
     add: function (item) {
       if (item.exNum < item.num) {
         item.exNum++
       }
     },
+    // 减少换货数量
     subtract: function (item) {
       if (item.exNum > 0) {
         item.exNum--
       }
     },
+    // 检查换货数量是否正确
     checkNum: function (item) {
       if (item.exNum > item.num) {
         item.exNum = item.num
         this.tip = '超过了您购买的数量'
       }
     },
+    // 确定换货（提交表单）
     confirm: function () {
       if (!this.exchangeInfo.exchangeInfo.length) {
         this.tip = '请选择将要换货的商品'
@@ -158,9 +176,11 @@ export default {
     Upload
   },
   computed: {
+    // 订单号
     orderCode: function () {
       return this.$route.params.orderCode
     },
+    // 换货信息（商品的id个数量）
     exchangeInfo: function () {
       let arr = []
       this.info.product.forEach(function (item) {
@@ -173,6 +193,7 @@ export default {
       })
       return {exchangeInfo: arr}
     },
+    // 公众号状态码
     codeState: function () {
       return localStorage.getItem('state')
     },

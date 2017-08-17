@@ -58,7 +58,6 @@ import Dynamic from '@/page/dynamic/Dynamic'
 import Reason from '@/page/reason/Reason'
 import ReturnProgress from '@/page/returnProgress/ReturnProgress'
 import Logistics from '@/page/logistics/Logistics'
-import LogisticsList from '@/page/logisticsList/LogisticsList'
 import RefundDetails from '@/page/refundDetails/RefundDetails'
 import Exchange from '@/page/exchange/Exchange'
 import ExchangeDetails from '@/page/exchangeDetails/ExchangeDetails'
@@ -344,10 +343,6 @@ export default new Router({
     // 订单详情
     path: '/orderDetails/:orderCode',
     component: OrderDetails
-  }, {
-    // 物流列表
-    path: '/logisticsList',
-    component: LogisticsList
   }, {
     // 物流信息
     path: '/logistics/:orderCode',

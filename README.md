@@ -238,9 +238,6 @@ npm run build --report
 │   │   │         
 │   │   ├── exchangeDetails                   //换货详情
 │   │   │   └── ExchangeDetails.vue
-│   │   │        
-│   │   ├── logisticsList                     //物流列表
-│   │   │   └── LogisticsList.vue
 │   │   │   
 │   │   ├── logistics                         //物流详情
 │   │   │   └── Logistics.vue
@@ -303,6 +300,8 @@ npm run build --report
 
 * 页面中的`page`字段用来表示页面加载到第几页（分页中使用）
 
+* 页面中的`tabInfo`字段为调用Tabmenu组件传递的信息，其中`name`为标题、`href`为跳转地址
+
 * 页面中的`confirmInfo`字段为调用confirm组件传递的信息，其中`title`为标题、`name`为提示
 
 * 页面中的`confirmState`字段控制confirm组件是否显示
@@ -322,3 +321,5 @@ npm run build --report
 * 修改回报和修改众筹是一个页面，修改众筹和发起众筹基本一样，只是发起众筹进入页面中的信息是从本地存储中获得或者为空，而修改众筹页面的信息是从服务器请求过来的，其他并无异议
 
 * 发起众筹页面内容太长，为了便于维护拆成四个组件和一个在线商品选择的组件，页面中存储的信息发生变化是会进行本地存储，方便下次进入时获取相应的数据（存储时间为2天），每个input控制一个相应的字段，字段的invalid属性为是否校验通过（值为false是代表通过校验 否则为未通过校验）,字段的value属性为用户输入的文本,组件向下的切换要校验通过才能切换的
+
+* 修改密码和找回密码跳转到的是同一个页面

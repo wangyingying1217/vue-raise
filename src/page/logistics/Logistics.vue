@@ -1,5 +1,6 @@
 <template>
   <div v-if="show">
+    <!-- 商品物流信息 -->
     <div class="info">
       <div class="img-wrap">
         <img :src="info.pic" alt="pic">
@@ -11,6 +12,7 @@
         <p>官方电话：暂无</p>
       </div>
     </div>
+    <!-- 物流时间线 -->
     <TimeEvolve :info="info.logistics"></TimeEvolve>
     <Tip :info.sync="tip"></Tip>
   </div>
