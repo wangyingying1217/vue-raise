@@ -29,7 +29,7 @@ export default {
       type: '', // 初始进入页面的搜索类别
       show: false,
       searchType: [], // 搜索信息列表
-      tabIndex: 999,  // 所选择的搜索的列表索引（999为均未选择）
+      tabIndex: 999, // 所选择的搜索的列表索引（999为均未选择）
       page: 1,
       tip: '',
       loadState: false,

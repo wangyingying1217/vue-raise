@@ -10,22 +10,21 @@ import wx from 'weixin-js-sdk'
 export default {
   data () {
     return {
-      // apiURL: 'http://124.205.131.133:8088/raise/',
-      apiURL: 'http://192.168.8.144/raise/',
-      // apiURL: 'http://192.168.8.183:8080/raise/',
-      // apiURL: 'http://web.huizhi.com.cn:8088/raise/',
+      apiURL: 'http://192.168.8.144/raise/', // 跨域请求接口地址公共部分
       tip: '',
-      qrCode: '',
+      qrCode: '', // 关注二维码值
       show: false,
-      username: '',
-      headimgurl: ''
+      username: '', // 用户名
+      headimgurl: '' // 用户头像
     }
   },
   created () {
+    // 死的用户（测试用）
     localStorage.setItem('openId', 'oxMYaszMJBAD6SDNjR--bELoeAeU')
     localStorage.setItem('state', 1)
     let data = {openId: this.openId, state: this.state}
     let url = encodeURIComponent(document.URL.split('#')[0])
+    // 正式请求信息
     // let data = {}
     // let url = encodeURIComponent(document.URL.split('#')[0])
     // let parameter = location.search.split('?')[1]

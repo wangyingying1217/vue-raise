@@ -6,6 +6,7 @@
         <div class="con-wrapper" v-drag="type">
           <!-- 图片 -->
           <div class="con-img">
+            <span v-if="item.isRecommend" class='recommend'>推荐</span>
             <img :src="item.picsrc" alt="pic"/>
           </div>
           <!-- 相关信息 -->
@@ -217,6 +218,22 @@ export default {
       	margin-right: 0.5rem;
         vertical-align:top;
         box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+      }
+      .recommend{
+        position:absolute;
+        left:-0.6rem;
+        top:1.5rem;
+        width:3rem;
+        height:0.8rem;
+        color: #fff;
+        font-size: 0.5rem;
+        line-height: 0.8rem;
+        background: #cc0001;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin:0 0;
       }
       .con-info{
       	display:inline-block;
