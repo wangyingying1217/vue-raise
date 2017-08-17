@@ -2,6 +2,7 @@
   <div class="my-raise">
     <Tabmenu :tabInfo = "tabInfo"></Tabmenu>
     <router-view :info="info" :type="'myRaise'" @deleteRaise="deleteRaise" @endRaise="endRaise" @abolishRaise="abolishRaise" @supplement="supplement"></router-view>
+    <!-- 组件 -->
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <Prompt :info="promptInfo" @confirm="prompt" v-show="promptState"></Prompt>
     <Nodata :showSwitch="info.length" type="index"></Nodata>
@@ -31,7 +32,7 @@ export default {
       }],
       info: [],
       page: 1,
-      money: 0,
+      money: 0, // 余款补齐的价钱
       loadState: false,
       loadBoff: true,
       confirmInfo: {
@@ -39,15 +40,15 @@ export default {
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
-      promptInfo: {
+      promptInfo: {  // 同confirmInfo
         title: '提示',
         name: '您确定要删除此条回复？'
       },
       promptState: false,
       tip: '',
-      type: '',
-      contentId: '',
-      cshId: ''
+      type: '', // 存储操作类型
+      contentId: '', // 操作项目的id
+      cshId: '' // 余款补齐所需id
     }
   },
   components: {
@@ -70,8 +71,10 @@ export default {
         })
       }
     },
+    // 确定
     confirm: function (val) {
       this.confirmState = false
+      // 删除众筹
       if (val && this.type === 'deleteRaise') {
         this.$http.get(this.apiURL + 'member/del_meRaise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -95,6 +98,7 @@ export default {
     },
     prompt: function (val) {
       this.promptState = false
+      // 终止众筹
       if (val.state && this.type === 'endRaise') {
         this.$http.get(this.apiURL + 'member/stop_raise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id + '&acceptOption=' + val.text).then((response) => {
           if (response.data.state) {
@@ -108,6 +112,7 @@ export default {
           this.$indicator.close()
           this.tip = '终止失败'
         })
+        // 废止众筹
       } else if (val.state && this.type === 'abolishRaise') {
         this.$http.get(this.apiURL + 'member/abolish.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id + '&acceptOption=' + val.text).then((response) => {
           if (response.data.state) {
@@ -123,24 +128,28 @@ export default {
         })
       }
     },
+    // 删除众筹
     deleteRaise: function (id) {
       this.confirmState = true
       this.type = 'deleteRaise'
       this.contentId = id
       this.confirmInfo.name = '您确定要删除此条众筹？'
     },
+    // 终止众筹
     endRaise: function (id) {
       this.promptState = true
       this.type = 'endRaise'
       this.contentId = id
       this.promptInfo.name = '终止后不可恢复，请填写原因：'
     },
+    // 废止众筹
     abolishRaise: function (id) {
       this.promptState = true
       this.type = 'abolishRaise'
       this.contentId = id
       this.promptInfo.name = '废止后不可恢复，请填写原因：'
     },
+    // 余款补齐
     supplement: function (json) {
       this.confirmState = true
       this.type = 'supplement'

@@ -1,18 +1,21 @@
 <template>
   <div class="search-wrapper" :style="{'min-height': height}">
     <ul class="search-tit clearfix">
+      <!-- 搜索的商品类别 -->
       <li v-on:click.stop="tabIndex = 1">
         <p class="search-choice">商品类别</p>
         <ul class="choice-list" v-show=" tabIndex === 1">
           <li v-for="item in productType" :class="{'act':classify == item.classify}" @click.stop="search('classify', item)">{{item.classify}}</li>
         </ul>
       </li>
+      <!-- 搜索的商品形态 -->
       <li v-on:click.stop="tabIndex = 2">
         <p class="search-choice">商品形态</p>
         <ul class="choice-list" v-show=" tabIndex === 2">
           <li v-for="item in classifySelected.productForm" :class="{'act':shape == item}" @click.stop="search('shape', item)">{{item}}</li>
         </ul>
       </li>
+      <!-- 搜索的价格区间 -->
       <li v-on:click.stop="tabIndex = 3">
         <p class="search-choice">价格区间</p>
         <div class="choice-list" v-show=" tabIndex === 3">
@@ -28,19 +31,24 @@
         </div>
       </li>
     </ul>
+    <!-- 商品列表 -->
     <ul class="raise-pre">
       <li v-for="(item, index) in info" :key="index" @click="confirm(item)">
+        <!-- 图片 -->
         <div class="con-img">
           <img :src="item.picsrc" alt="pic"/>
         </div>
         <div class="con-info">
+          <!-- 题目 -->
           <div class="con-tit">
             <span class="info-tit" v-html="item.title"></span>
             <span class="raise-state">{{item.state}}</span>
           </div>
+          <!-- 作者 -->
           <div class="con-author">
             <p class="author">作者：{{item.authors}}</p>
           </div>
+          <!-- 价格、数量选择 -->
           <div class="con-price">
             <div class="price-wrapper">
               <span class="price">￥{{item.unitPrice}}</span>
@@ -67,15 +75,15 @@ export default {
   data () {
     return {
       info: [],
-      tabIndex: 999,
+      tabIndex: 999, // 所选择的搜索的列表索引（999为均未选择）
       page: 1,
-      classify: '',
-      classifySelected: {
+      classify: '', // 商品类别列表
+      classifySelected: { // 所选择的的商品类别信息
         productForm: []
       },
-      shape: '',
-      floorPrice: '',
-      ceilingPrice: '',
+      shape: '', // 所选择的的商品形态信息
+      floorPrice: '', // 最低价
+      ceilingPrice: '', // 最高价
       loadState: false,
       loadBoff: true,
       tip: ''
@@ -91,6 +99,7 @@ export default {
         this.tip = '请求失败'
       })
     },
+    // 搜索
     search: function (attr, item) {
       this.page = 1
       this.tabIndex = 999
@@ -107,13 +116,16 @@ export default {
         this.tip = '请求失败'
       })
     },
+    // 选择完毕
     confirm: function (item) {
       this.$emit('product', {href: item.picsrc, num: item.num, id: item.concernId})
       this.$router.go(-1)
     },
+    // 增加数量
     add: function (item) {
       item.num++
     },
+    // 减少数量
     subtract: function (item) {
       if (item.num > 1) {
         item.num--
@@ -152,6 +164,7 @@ export default {
     Nodata
   },
   computed: {
+    // 搜索信息
     searchInfo: function () {
       return {
         page: this.page,

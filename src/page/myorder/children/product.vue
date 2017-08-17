@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="state-wrapper" ref="wrapper" @scroll="scroll">
+      <!-- 状态列表 -->
       <ul :style="{'width':mapProduct.length*4.5+'rem'}" ref="ul">
         <router-link :to="'/myorder/product/'+ mapState[index]" replace v-for="(item, index) in mapProduct" :key="item.key" tag="li">{{item}}</router-link>
       </ul>
+      <!-- 左右按钮 -->
       <span :style="{'top':iconTop+'rem'}" v-show="scrollState !== 'left'" class="left-icon" @click="scrollStart"></span>
       <span :style="{'top':iconTop+'rem'}" v-show="scrollState !== 'right'" class="right-icon" @click="scrollEnd"></span>
     </div>
@@ -14,6 +16,8 @@
   </div>
 </template>
 
+<!-- 此页面为商品页面,下面的很多操作的都是无用的   需要根据情况链接到商品的页面 -->
+
 <script>
 import Confirm from '@/components/Confirm'
 import Nodata from '@/components/Nodata'
@@ -21,8 +25,8 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
-      mapProduct: ['全部订单', '待付款', '待发货', '待收货', '已完成', '已退款', '已取消'],
-      mapState: ['all', 'nopay', 'nodispatch', 'noreceive', 'finished', 'refunded', 'canceled'],
+      mapProduct: ['全部订单', '待付款', '待发货', '待收货', '已完成', '已退款', '已取消'], // 状态列表数据
+      mapState: ['all', 'nopay', 'nodispatch', 'noreceive', 'finished', 'refunded', 'canceled'], // 状态所对应的地址
       info: [],
       page: 1,
       confirmInfo: {
@@ -32,8 +36,8 @@ export default {
       confirmState: false,
       loadState: false,
       loadBoff: true,
-      scrollState: 'left',
-      iconTop: 2.5
+      scrollState: 'left', // 控制按钮显示
+      iconTop: 2.5 //
     }
   },
   components: {
@@ -52,6 +56,7 @@ export default {
         })
       }
     },
+    // 状态水平滚动判断
     scroll: function () {
       if (this.$refs.wrapper) {
         if (this.$refs.wrapper.scrollLeft + this.$refs.wrapper.offsetWidth > this.$refs.ul.offsetWidth - 40) {
@@ -63,6 +68,7 @@ export default {
         }
       }
     },
+    // 滚动到开始
     scrollStart: function () {
       let timer = setInterval(() => {
         if (this.$refs.wrapper.scrollLeft > 0) {
@@ -72,6 +78,7 @@ export default {
         }
       }, 10)
     },
+    // 滚动到终端
     scrollEnd: function () {
       let length = this.$refs.ul.offsetWidth - this.$refs.wrapper.offsetWidth
       let timer = setInterval(() => {
@@ -82,8 +89,10 @@ export default {
         }
       }, 10)
     },
+    // 确定
     confirm: function (val) {
       this.confirmState = false
+      // 删除众筹
       if (val && this.type === 'deleteRaise') {
         this.$http.get(this.apiURL + 'member/del_meRaise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -94,6 +103,7 @@ export default {
         }, () => {
           alert('请求失败')
         })
+        // 结束众筹
       } else if (val && this.type === 'endRaise') {
         this.$http.get(this.apiURL + 'member/stop_raise.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -106,6 +116,7 @@ export default {
         }, () => {
           alert('请求失败')
         })
+        // 废止众筹
       } else if (val && this.type === 'abolishRaise') {
         this.$http.get(this.apiURL + 'member/abolish.jhtml?id=' + this.contentId + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -118,28 +129,33 @@ export default {
         }, () => {
           alert('请求失败')
         })
+        // 调用支付接口（未实现）
       } else if (val && this.commentType === 'supplement') {
         alert('supplement')
       }
     },
+    // 删除此条众筹
     deleteRaise: function (id) {
       this.confirmState = true
       this.type = 'deleteRaise'
       this.contentId = id
       this.confirmInfo.name = '您确定要删除此条众筹？'
     },
+    // 终止此条众筹
     endRaise: function (id) {
       this.confirmState = true
       this.type = 'endRaise'
       this.contentId = id
       this.confirmInfo.name = '终止后不可恢复，您确定要终止此条众筹？'
     },
+    // 废止此条众筹
     abolishRaise: function (id) {
       this.confirmState = true
       this.type = 'abolishRaise'
       this.contentId = id
       this.confirmInfo.name = '废止后不可恢复，您确定要废止此条众筹？'
     },
+    // 补齐余款
     supplement: function (json) {
       this.confirmState = true
       this.type = 'supplement'
@@ -180,9 +196,11 @@ export default {
   created () {
     // 组件创建完后获取数据，
     this.getCustomers()
+    // 计算1rem = ?px
     let iWidth = document.documentElement.clientWidth || document.body.clientWidth
     let baseSize = iWidth / 18
     const baseTop = 2.5
+    // 监听滚动事件(控制状态选择框的的top值)
     if (window.addEventListener) {
       window.addEventListener('scroll', () => {
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop

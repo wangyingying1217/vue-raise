@@ -1,10 +1,14 @@
 <template>
   <div class="question" v-if="show">
+    <!-- 提问人头像 -->
     <div class="avater">
       <img :src="info.pic" alt="pic">
     </div>
+    <!-- 提问人用户名 -->
     <p class="userName">{{info.userName}}</p>
+    <!-- 提问人个性签名 -->
     <p class="idiograph">{{info.idiograph}}</p>
+    <!-- 提问按钮 -->
     <router-link v-if="!info.isMe" :to="'/chat/'+info.userId" class="button">向他提问</router-link>
     <Tip :info.sync="tip"></Tip>
   </div>

@@ -1,5 +1,6 @@
 <template>
   <div class="search-wrapper" v-if="show">
+    <!-- 搜索类型列表 -->
     <RaiseList :info="info" :apiURL="apiURL" :id="id"></RaiseList>
     <Nodata :showSwitch="info.length" type="content"></Nodata>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
@@ -69,17 +70,11 @@ export default {
     RaiseList
   },
   computed: {
-    searchInfo: function () {
-      return {
-        page: this.page,
-        itemType: this.searchType[0].title,
-        dataType: this.searchType[1].title,
-        raiseType: this.searchType[2].title
-      }
-    },
+    // 搜索类别
     type: function () {
       return this.$route.params.type
     },
+    // 搜索内容
     value: function () {
       return this.$route.params.value
     }

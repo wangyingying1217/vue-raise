@@ -1,5 +1,6 @@
 <template>
   <div class="search-wrapper" v-if="show">
+    <!--搜索关键词列表  -->
     <ul class="search-tit clearfix">
       <li v-for="(item,index) in searchType" v-on:click.stop="tabIndex = index">
         <p class="search-choice">{{item.title}}</p>
@@ -8,6 +9,7 @@
         </ul>
       </li>
     </ul>
+    <!-- 商品列表 -->
     <RaiseList :info="info" :apiURL="apiURL" :id="id"></RaiseList>
     <Nodata :showSwitch="info.length" type="content"></Nodata>
     <LoadMore :load.sync="loadState" :Boff= "loadBoff"></LoadMore>
@@ -24,10 +26,10 @@ export default {
   data () {
     return {
       info: [],
-      type: '',
+      type: '', // 初始进入页面的搜索类别
       show: false,
-      searchType: [],
-      tabIndex: 999,
+      searchType: [], // 搜索信息列表
+      tabIndex: 999,  // 所选择的搜索的列表索引（999为均未选择）
       page: 1,
       tip: '',
       loadState: false,
@@ -54,6 +56,7 @@ export default {
         })
       }
     },
+    // 搜索
     search: function (item, list) {
       item.title = list
       this.page = 1
@@ -101,6 +104,7 @@ export default {
     RaiseList
   },
   computed: {
+    // 搜索的参数
     searchInfo: function () {
       return {
         page: this.page,

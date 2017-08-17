@@ -17,14 +17,8 @@ export default {
   data () {
     return {
       telpre: '',
-      telErr: true,
       verifyCode: '',
       verifyText: '获取验证码',
-      errMsg: [
-        '新手机号和原手机号相同',
-        '验证码错误',
-        '成功修改'
-      ],
       tip: ''
     }
   },

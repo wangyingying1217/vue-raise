@@ -5,20 +5,27 @@
         <li v-for="(item,index) in info" @click="send(item)">
           <div class="info-wrap">
             <p class="info clearfix">
+              <!-- 收货人姓名 -->
               <span class="fl">{{item.consignee}}</span>
+              <!-- 收货人电话 -->
               <span class="fr">{{item.phone}}</span>
             </p>
+            <!-- 收货地址 -->
             <p class="address">{{item.areaName}}{{item.address}}</p>
           </div>
           <div class="control clearfix">
+            <!-- 设置为默认地址 -->
             <div class="default fl" :class="{'act': item.defAddress}" @click="changeDefault(item)">默认地址</div>
+            <!-- 删除此地址 -->
             <div class="delete fr" @click="remove(item,index)">删除</div>
+            <!-- 编辑地址 -->
             <router-link :to="'/newaddress/edit'" tag="div">
               <div class="edit fr" @click="editItem = item">编辑</div>
             </router-link>
           </div>
         </li>
       </ul>
+      <!-- 添加新地址 -->
       <div class="submit-btn" @click="addAddress"><a :class="{'act': info.length < 8}">添加新地址</a></div>
     </div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
@@ -39,9 +46,9 @@ export default {
   data () {
     return {
       info: [],
-      deleteId: '',
-      deleteIndex: '',
-      editItem: {
+      deleteId: '', // 删除地址的id
+      deleteIndex: '', // 删除地址的索引
+      editItem: { // 传入编辑页面的信息
         address: '',
         areaName: '',
         consignee: '',
@@ -70,6 +77,7 @@ export default {
         })
       }
     },
+    // 订单页面进入时   选择收货地址
     send: function (item) {
       if (this.type === 'order') {
         this.$emit('info', item)
@@ -88,11 +96,13 @@ export default {
         this.tip = '修改失败失败'
       })
     },
+    // 删除地址
     remove: function (item, index) {
       this.confirmState = true
       this.deleteId = item.id
       this.deleteIndex = index
     },
+    // 添加新地址
     addAddress: function () {
       if (this.info.length > 7) {
         this.tip = '最多只能添加8条'
@@ -100,6 +110,7 @@ export default {
         this.$router.push('/newaddress/add')
       }
     },
+    // 确定删除地址
     confirm: function (val) {
       this.confirmState = false
       if (val) {

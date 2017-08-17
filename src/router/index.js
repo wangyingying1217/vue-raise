@@ -8,7 +8,6 @@ import TimeEvolve from '@/components/TimeEvolve'
 // 页面路由
 import QrCode from '@/page/qrCode/QrCode'
 import Login from '@/page/login/Login'
-import Register from '@/page/register/Register'
 import FindPassword from '@/page/findPassword/FindPassword'
 import Raiseshow from '@/page/raiseshow/Raiseshow'
 import Search from '@/page/search/Search'
@@ -95,10 +94,6 @@ export default new Router({
     // 登录
     path: '/login',
     component: Login
-  }, {
-    // 注册
-    path: '/register',
-    component: Register
   }, {
     // 找回密码
     path: '/findPassword',

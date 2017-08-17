@@ -22,12 +22,12 @@ export default {
   mixins: [Pay],
   data () {
     return {
-      mapRaise: ['全部订单', '待付款', '待发货', '待收货'],
-      mapState: ['all', 'nopay', 'nodispatch', 'noreceive'],
+      mapRaise: ['全部订单', '待付款', '待发货', '待收货'], // 状态列表数据
+      mapState: ['all', 'nopay', 'nodispatch', 'noreceive'], // 状态所对应的地址
       info: [],
       page: 1,
-      type: '',
-      item: '',
+      type: '', // 用于存储操作的类型
+      item: '', // 用于存储选择操作的订单
       confirmInfo: {
         title: '提示',
         name: '您确定要删除此条回复？'
@@ -54,8 +54,10 @@ export default {
         })
       }
     },
+    // 确定
     confirm: function (val) {
       this.confirmState = false
+      // 确定收货
       if (val && this.type === 'confirmReceipt') {
         this.$http.get(this.apiURL + 'member/order/confirm_receipt.jhtml?orderCode=' + this.item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           if (this.state === 'all') {
@@ -68,6 +70,7 @@ export default {
         }, () => {
           alert('请求失败')
         })
+        // 删除订单
       } else if (val && this.type === 'deleteOrder') {
         this.$http.get(this.apiURL + 'member/order/delete.jhtml?orderCode=' + this.item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -78,6 +81,7 @@ export default {
         }, () => {
           alert('请求失败')
         })
+        // 取消订单
       } else if (val && this.type === 'abolishOrder') {
         this.$http.get(this.apiURL + 'member/order/cancel.jhtml?orderCode=' + this.item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -96,24 +100,28 @@ export default {
         })
       }
     },
+    // 确定收货
     confirmReceipt: function (item) {
       this.confirmState = true
       this.type = 'confirmReceipt'
       this.item = item
       this.confirmInfo.name = '您确定已经收到货品？'
     },
+    // 删除订单
     deleteOrder: function (item) {
       this.confirmState = true
       this.type = 'deleteOrder'
       this.item = item
       this.confirmInfo.name = '您确定删除此订单？'
     },
+    // 取消订单
     abolishOrder: function (item) {
       this.confirmState = true
       this.type = 'abolishOrder'
       this.item = item
       this.confirmInfo.name = '您确定取消此订单？'
     },
+    // 提醒发货
     remind: function (item) {
       this.$http.get(this.apiURL + 'member/order/shipWarn.jhtml?orderCode=' + item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
         alert(response.data.type)
@@ -121,6 +129,7 @@ export default {
         alert('请求失败')
       })
     },
+    // 立即付款
     payment: function (item) {
       this.pay({'orderCode': item.orderCode, 'state': localStorage.getItem('state'), 'wxbdopenId': this.id})
     }
@@ -149,6 +158,7 @@ export default {
     }
   },
   computed: {
+    // 订单状态
     state: function () {
       return this.$route.params.state
     }

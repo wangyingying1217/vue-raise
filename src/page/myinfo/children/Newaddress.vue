@@ -18,7 +18,7 @@
         <div class="default fr" :class="{'act':defaultState}" @click="defaultState=!defaultState"></div>
       </li>
     </ul>
-    <AddressList :state.sync="state" :apiURL="apiURL" @address="address"></AddressList>
+    <AddressList :state.sync="state" :apiURL="apiURL" @address="(value) => {place = value}"></AddressList>
     <Tip :info.sync="tip"></Tip>
     <div class="submit-btn" @click="submit" v-show="state === ''">
       <a :class="{'act': name && tel && place && detial.length}">保存地址</a>
@@ -34,33 +34,36 @@ export default {
   data () {
     return {
       state: '',
-      editId: '',
-      name: '',
-      tel: '',
-      place: '',
-      detial: '',
-      defaultState: false,
+      editId: '', // 编辑地址的id
+      name: '', // 收货人姓名
+      tel: '', // 收货人电话
+      place: '', // 收货人地址
+      detial: '', // 收货人详细地址
+      defaultState: false, // 是否为默认地址
       tip: ''
     }
   },
   methods: {
     getCustomers: function () {
+      // 判读是新增还是编辑
       if (this.$route.params.type === 'edit') {
         document.title = '修改地址'
+        this.editId = this.info.id
+        this.name = this.info.consignee
+        this.tel = this.info.phone
+        this.place = this.info.areaName
+        this.detial = this.info.address
+        this.defaultState = this.info.defAddress
       } else {
         document.title = '新增地址'
       }
+      // 编辑页面刷新回到地址列表页面
       if (this.$route.params.type === 'edit' && this.info.id === '') {
         window.history.go(-1)
       }
-      this.editId = this.info.id
-      this.name = this.info.consignee
-      this.tel = this.info.phone
-      this.place = this.info.areaName
-      this.detial = this.info.address
-      this.defaultState = this.info.defAddress
       this.$indicator.close()
     },
+    // 提交
     submit: function (item) {
       if (!/\s{0,}[\S]{1,}[\s\S]{0,}/.test(this.name)) {
         this.tip = '收件人不能为空'
@@ -89,9 +92,6 @@ export default {
           this.tip = '操作失败'
         })
       }
-    },
-    address: function (value) {
-      this.place = value
     }
   },
   watch: {

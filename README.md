@@ -118,9 +118,6 @@ npm run build --report
 │   │   │       
 │   │   ├── login                             //登录
 │   │   │   └── Login.vue
-│   │   │
-│   │   ├── register                          //注册（暂时废止）
-│   │   │   └── Register.vue
 │   │   │                  
 │   │   ├── findPassword                      //找回密码
 │   │   │   └── FindPassword.vue        

@@ -1,5 +1,6 @@
 <template>
   <div v-if="show">
+    <!-- 退款进展 -->
     <ul class="stateList">
       <li class="state" v-for="(item, index) in stateList" :class="{'act':index <= stateIndex,'long':stateList.length == 3}" :key="index">
         <p class="tip" v-if="info.state == item.tip">{{item.tip}}</p>
@@ -7,6 +8,7 @@
         <p class="text">{{item.text}}</p>
       </li>
     </ul>
+    <!-- 退款详情 -->
     <ul class="infolist">
       <li class="item">
         <span class="itemTit">退款类型：</span>
@@ -38,7 +40,7 @@ export default {
     return {
       tip: '',
       info: {},
-      stateList: [
+      stateList: [ // 退款进展显示信息
         // {
         //   tip: '待退款',
         //   text: '待退款'
@@ -91,9 +93,11 @@ export default {
     TimeEvolve
   },
   computed: {
+    // 订单号
     orderCode: function () {
       return this.$route.params.orderCode
     },
+    // 退款进展状态
     stateIndex: function () {
       let stateIndex = 0
       this.stateList.forEach((item, index) => {

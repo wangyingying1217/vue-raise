@@ -1,10 +1,12 @@
 <template>
   <div class="wrapper">
     <div class="wrapper">
+      <!-- 未认证是两个都显示（认证之后只显示认证的） -->
         <div class="tab-menu">
           <a v-if="!(identification !== '未认证' && tabIndex == 'company')" :class="{'act': tabIndex == 'person'}" @click="tabIndex = 'person'">个人认证</a>
           <a v-if="!(identification !== '未认证' && tabIndex == 'person')" :class="{'act': tabIndex == 'company'}" @click="tabIndex = 'company'">企业认证</a>
         </div>
+        <!-- 个人认证 -->
         <ul class="identification" v-if="tabIndex == 'person'">
           <li>
             <span class="title">中文姓名</span>：
@@ -33,6 +35,7 @@
             <input type="hidden" name="inversePic" :value="inversePic">
           </li>
         </ul>
+        <!-- 企业认证 -->
         <ul class="identification" v-if="tabIndex == 'company'">
           <li>
             <span class="title">企业名称</span>：
@@ -60,10 +63,15 @@
             <input type="hidden" name="licensePic" :value="licensePic">
           </li>
         </ul>
+        <!-- 只有审核未通过时显示 -->
         <div class="cause" v-if="cause">未通过原因：{{cause}}</div>
+        <!-- 审核通过时显示 -->
         <div v-if="identification === '已通过'" class="submit-btn"><a class="act" @click="confirmState = true">注销</a></div>
+        <!-- 审核未通过时显示 -->
         <div v-else-if="identification === '未通过'" class="submit-btn"><a class="act" @click="logout()">重新认证</a></div>
+        <!-- 审核中时显示 -->
         <div v-else-if="identification === '待审核'" class="submit-btn"><a>审核中……</a></div>
+        <!-- 未认证是显示 -->
         <div v-else class="submit-btn"><a class="act" @click="submit()">确认</a></div>
       </div>
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
@@ -79,19 +87,18 @@ export default {
   props: ['apiURL', 'id'],
   data () {
     return {
-      identification: false,
-      check: false,
-      tabIndex: 'person',
-      userName: '',
-      IDcard: '',
-      tradeName: '',
-      license: '',
-      lawPerson: '',
-      inRegister: '',
-      positivePic: '',
-      inversePic: '',
-      licensePic: '',
-      cause: '',
+      identification: false, // 是否认证
+      tabIndex: 'person', // 选择认证类型
+      userName: '', // 用户名
+      IDcard: '', // 证件号码
+      tradeName: '', // 企业名称
+      license: '', // 营业执照号
+      lawPerson: '', // 法人姓名
+      inRegister: '', // 公司地址
+      positivePic: '', // 身份证正面
+      inversePic: '', // 身份证反面
+      licensePic: '', // 营业执照图
+      cause: '', // 用户名
       tip: '',
       confirmInfo: {
         title: '提示',
@@ -107,12 +114,14 @@ export default {
         // 获取个人信息
         this.$http.get(this.apiURL + 'member/authentication.jhtml?wxbdopenId=' + this.id).then((response) => {
           this.identification = response.data.state
+          // 判断是否认证
           if (response.data.state !== '未认证') {
             this.tabIndex = response.data.cardType
-            this.telReadonly = true
+            // 未通过显示原因
             if (response.data.state === '未通过') {
               this.cause = response.data.cause
             }
+            // 判断认证类别
             if (response.data.cardType === 'person') {
               this.userName = response.data.name
               this.IDcard = response.data.cardNo
@@ -130,10 +139,10 @@ export default {
         })
       }
     },
+    // 注销
     logout: function (json) {
       this.$http.get(this.apiURL + 'member/outApprove.jhtml?wxbdopenId=' + this.id).then((response) => {
         this.identification = false
-        this.check = false
         this.tabIndex = 'person'
         this.userName = ''
         this.IDcard = ''
@@ -151,6 +160,7 @@ export default {
         this.tip = '操作失败'
       })
     },
+    // 认证
     submit: function () {
       if (this.tabIndex === 'person') {
         if (!/^[\u4e00-\u9fa5]{2,5}$/.test(this.userName)) {
@@ -199,6 +209,7 @@ export default {
       }
       return false
     },
+    // 确定注销
     confirm: function (val) {
       this.confirmState = false
       if (val) {
@@ -223,6 +234,7 @@ export default {
     Upload
   },
   computed: {
+    // 提交的数据
     formData: function () {
       let formData = {}
       formData.wxbdopenId = this.id

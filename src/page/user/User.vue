@@ -3,17 +3,21 @@
     <!-- <div class="panel" :style="'background:url('+info.headPic+') no-repeat center center/cover'"> -->
     <div class="panel">
       <div class="person-info clearfix">
+        <!-- 用户头像 -->
         <router-link to="/myinfo/nocheck">
           <img :src="user.headPic" alt="pic">
         </router-link>
+        <!-- 用户名、积分 -->
         <div class="text">
           <p>{{user.nickName}}</p>
           <p>积分：{{user.integral}}</p>
         </div>
+        <!-- 信封 -->
         <router-link :to="'/informList'" class="letter" :class="{'act':user.messages}" tag="li"></router-link>
       </div>
       <p class="welcome">{{user.companyName}}欢迎您！</p>
     </div>
+    <!-- 详情列表 -->
     <ul class="my-list clearfix">
       <router-link :to="{ path: item.path}" tag="li" v-for="item in routerDate" :key="item.name">
         <p>{{item.name}}</p>
@@ -34,7 +38,7 @@ export default {
       user: {},
       show: false,
       tip: '',
-      routerDate: [{
+      routerDate: [{ // 详情列表信息
         path: '/mycollect',
         name: '我的收藏'
       }, {

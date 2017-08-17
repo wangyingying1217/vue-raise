@@ -1,7 +1,10 @@
 <template>
   <div class="text-style" v-if="show" :style="{'min-height': height}">
+    <!-- 公告标题 -->
     <h2 v-html="info.title"></h2>
+    <!-- 公告时间 -->
     <p class="time" v-html="info.time"></p>
+    <!-- 公告内容 -->
     <div v-html="info.content"></div>
     <Tip :info.sync="tip"></Tip>
   </div>

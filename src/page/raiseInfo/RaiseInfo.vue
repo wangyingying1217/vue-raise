@@ -1,9 +1,11 @@
 <template>
   <div class='wrap_preview' v-if="show" :style="{'min-height': height}">
     <div class='per_info clearfix'>
+      <!-- 用户头像 -->
       <router-link :to="'/question/'+ contentId" tag="div" class="imgWrap">
         <img class='fl' v-bind:src='info.headerPic' alt='pic'>
       </router-link>
+      <!-- 项目标题、发起人昵称 -->
       <div class='text_info'>
         <p v-html='info.title'></p>
         <div>
@@ -14,12 +16,15 @@
         </div>
       </div>
     </div>
+    <!-- 项目封面图片 -->
     <div class='show_pic'>
+      <!-- 项目状态 -->
       <span class='raise-state'>{{info.state}}</span>
       <router-link :to="'/imagePreview/'+contentId+'/coverPic/0'">
         <img v-bind:src='info.coverPic' alt='pic'>
       </router-link>
     </div>
+    <!-- 众筹进度 -->
     <div class='prograss'>
       <p><span><strong>{{info.supportNum}}</strong></span>支持数</p>
       <p><span>￥<strong>{{info.raisedNum}}</strong></span>已筹款</p>
@@ -34,6 +39,7 @@
         </p>
       </div>
       <div class='supportBtn' :class="{'act':info.isSupport}" @click="support">查看支持项</div>
+      <!-- 项目标签 -->
       <ul class='tip clearfix'>
         <li>
           <span class='tip_ico1 tip_ico'></span>
@@ -50,6 +56,7 @@
         </li>
       </ul>
     </div>
+    <!-- 链接列表 -->
     <ul class="list-wrapper">
       <router-link :to="{path:item.href}" v-for="item in detialInfo" tag="li" :key="item.name">
         <p>{{item.name}}</p>
@@ -86,6 +93,7 @@ export default {
         })
       }
     },
+    // 收藏
     concern: function () {
       this.$http.get(this.apiURL + 'concern.jhtml?contentId=' + this.contentId + '&wxbdopenId=' + this.id + '&concern=' + !this.info.concern).then((response) => {
         this.info.concern = !this.info.concern
@@ -94,6 +102,7 @@ export default {
         this.tip = '请求失败'
       })
     },
+    // 跳转到支持页面(众筹没有过期)
     support: function () {
       if (this.info.isSupport) {
         this.$router.push('/supportType/' + this.info.contentId)
@@ -113,6 +122,7 @@ export default {
     }
   },
   computed: {
+    // 跳转链接信息
     detialInfo: function () {
       return [
         {

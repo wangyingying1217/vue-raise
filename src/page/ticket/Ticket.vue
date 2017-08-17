@@ -52,6 +52,7 @@ export default {
         })
       }
     },
+    // 兑换
     confirm: function (val) {
       this.confirmState = false
       if (val) {

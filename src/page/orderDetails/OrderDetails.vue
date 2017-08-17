@@ -1,6 +1,7 @@
 <template>
   <div v-if="show">
     <div class="order-details">
+      <!-- 订单地址信息（非无私回报显示） -->
       <div v-if="info.type !== GRATISRETURN" class="address">
         <div class="bg-local"></div>
         <p>收货人：{{info.receiveName}}
@@ -9,6 +10,7 @@
         <p>收货地址：{{info.areaName + info.address}}</p>
         <div class="bg-right"></div>
       </div>
+      <!-- 订单信息 -->
       <ul class="con-list">
         <li class="item">
           <span class="item-tit">订单编号：</span>
@@ -43,6 +45,7 @@
           <span class="item-con">{{info.invoiceHead}}</span>
         </li>
       </ul>
+      <!--订单金额信息  -->
       <div class="money">
         <div class="show">
           <p>
@@ -59,6 +62,7 @@
           <span class="clRed">￥{{parseInt(info.payMoney).toFixed(2)}}</span>
         </div>
       </div>
+      <!-- 众筹发起者信息 -->
       <div class="author">
         <div class="info">
           <div class="img-wrap">
@@ -71,6 +75,7 @@
           <a class="tel" :href="'tel:'+info.sponsorTel">电话联系</a>
         </div>
       </div>
+      <!-- 订单相关操作 -->
       <div class="operation clearfix">
         <span class="delete" @click="deleteOrder" v-if=" info.state == RAISED || info.state == RAISEFAILED || info.state == LOSER">删除订单</span>
         <span class="btn" @click="remind" v-if=" info.state == NODISPATCH">提醒发货</span>
@@ -84,6 +89,7 @@
         <router-link class="btn" :to="'/logistics/' + orderCode" v-if=" info.state == NORECEIVE || info.state == EXCHANGEING">查看物流</router-link>
       </div>
     </div>
+    <!-- 组件 -->
     <Confirm :info="confirmInfo" @confirm="confirm" v-show="confirmState"></Confirm>
     <Tip :info.sync="tip"></Tip>
   </div>
@@ -101,20 +107,19 @@ export default {
       tip: '',
       show: false,
       info: {},
-      type: '',
+      type: '', // 存储操作状态
       confirmInfo: {
         title: '提示',
         name: '您确定要删除此条回复？'
       },
       confirmState: false,
-      RAISED: '众筹结束',
+      RAISED: '众筹结束', // 常量定义
       RAISEFAILED: '众筹失败',
       LOSER: '未中奖',
       NOPAY: '待付款',
       REFUNDING: '退款中',
       NODISPATCH: '待发货',
       NORECEIVE: '待收货',
-      // PRODUCTRETURN: '商品回报',
       GRATISRETURN: '无偿支持',
       GRATISETURN: '待收货',
       EXCHANGEING: '换货中'
@@ -136,14 +141,17 @@ export default {
         this.$indicator.close()
       }
     },
+    // 确定操作
     confirm: function (val) {
       this.confirmState = false
+      // 确认收货
       if (val && this.type === 'confirmReceipt') {
         this.$http.get(this.apiURL + 'member/order/confirm_receipt.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           this.info.state = 'RAISED'
         }, () => {
           this.tip = '请求失败'
         })
+        // 删除订单
       } else if (val && this.type === 'deleteOrder') {
         this.$http.get(this.apiURL + 'member/order/delete.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           if (response.data.state) {
@@ -153,6 +161,7 @@ export default {
           this.$indicator.close()
           this.tip = '删除失败'
         })
+        // 取消订单
       } else if (val && this.type === 'abolishOrder') {
         this.$http.get(this.apiURL + 'member/order/cancel.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           this.$router.go(-1)
@@ -160,6 +169,7 @@ export default {
           this.$indicator.close()
           this.tip = '取消失败'
         })
+        // 取消换货申请
       } else if (val && this.type === 'abolishExchange') {
         this.$http.get(this.apiURL + 'member/order/stopExchange.jhtml?orderCode=' + this.orderCode + '&wxbdopenId=' + this.id).then((response) => {
           this.info.state = '待收货'
@@ -169,26 +179,31 @@ export default {
         })
       }
     },
+    // 确认收货
     confirmReceipt: function (item) {
       this.confirmState = true
       this.type = 'confirmReceipt'
       this.confirmInfo.name = '您确定已经收到货品？'
     },
+    // 删除订单
     deleteOrder: function (item) {
       this.confirmState = true
       this.type = 'deleteOrder'
       this.confirmInfo.name = '您确定删除此订单？'
     },
+    // 取消订单
     abolishOrder: function () {
       this.confirmState = true
       this.type = 'abolishOrder'
       this.confirmInfo.name = '您确定取消此订单？'
     },
+    // 取消换货申请
     abolishExchange: function () {
       this.confirmState = true
       this.type = 'abolishExchange'
       this.confirmInfo.name = '您确定取消此换货申请？'
     },
+    // 提醒发货
     remind: function (item) {
       this.$http.get(this.apiURL + 'member/order/shipWarn.jhtml?orderCode=' + this.item.orderCode + '&wxbdopenId=' + this.id).then((response) => {
         this.tip = '提醒成功'
@@ -197,6 +212,7 @@ export default {
         this.tip = '提醒失败'
       })
     },
+    // 立即支付
     payment: function (item) {
       this.pay(item.data)
     }

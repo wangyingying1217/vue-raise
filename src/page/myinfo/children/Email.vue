@@ -16,10 +16,6 @@ export default {
   data () {
     return {
       email: '',
-      errMsg: [
-        '验证码错误',
-        '成功修改'
-      ],
       tip: ''
     }
   },
